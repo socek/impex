@@ -1,4 +1,4 @@
-from impaf.controller import Controller
+from impex.application.controller import Controller
 
 
 class HomeController(Controller):
