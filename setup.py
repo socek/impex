@@ -3,11 +3,16 @@ from setuptools import setup, find_packages
 
 install_requires = [
     'impaf',
+
+    'impaf-haml',
+
     'waitress',
 ]
 prefix = 'https://github.com/socek/'
 dependency_links = [
     prefix + 'impaf/tarball/master#egg=impaf-0.1',
+    prefix + 'impaf/tarball/master#egg=impaf-jinja2-0.1',
+    prefix + 'impaf/tarball/master#egg=impaf-haml-0.1',
 ]
 
 if __name__ == '__main__':

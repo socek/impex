@@ -3,4 +3,4 @@ from impaf.controller import Controller
 
 class HomeController(Controller):
 
-    renderer = 'impex.home:elo.jinja2'
+    renderer = 'impex.home:me.haml'
