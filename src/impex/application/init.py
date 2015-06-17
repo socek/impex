@@ -1,7 +1,11 @@
+from implugin.beaker import BeakerApplication
 from implugin.haml import HamlApplication
 
 
-class ImpexApplication(HamlApplication):
+class ImpexApplication(
+    HamlApplication,
+    BeakerApplication,
+):
 
     def __init__(self):
         super().__init__('impex')

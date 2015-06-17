@@ -1,5 +1,7 @@
-from impaf.requestable import Requestable as Base
+from implugin.beaker import BeakerRequestable
 
 
-class Requestable(Base):
+class Requestable(
+    BeakerRequestable,
+):
     pass

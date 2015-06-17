@@ -5,14 +5,16 @@ install_requires = [
     'impaf',
 
     'impaf-haml',
+    'impaf-beaker',
 
     'waitress',
 ]
 prefix = 'https://github.com/socek/'
 dependency_links = [
     prefix + 'impaf/tarball/master#egg=impaf-0.1',
-    prefix + 'impaf/tarball/master#egg=impaf-jinja2-0.1',
-    prefix + 'impaf/tarball/master#egg=impaf-haml-0.1',
+    prefix + 'impaf-jinja2/tarball/master#egg=impaf-jinja2-0.1',
+    prefix + 'impaf-haml/tarball/master#egg=impaf-haml-0.1',
+    prefix + 'impaf-beaker/tarball/master#egg=impaf-beaker-0.1',
 ]
 
 if __name__ == '__main__':
