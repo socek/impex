@@ -1,10 +1,12 @@
 from implugin.beaker import BeakerApplication
 from implugin.haml import HamlApplication
+from implugin.sqlalchemy.application import SqlAlchemyApplication
 
 
 class ImpexApplication(
     HamlApplication,
     BeakerApplication,
+    SqlAlchemyApplication,
 ):
 
     def __init__(self):

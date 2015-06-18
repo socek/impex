@@ -6,4 +6,6 @@ class HomeController(Controller):
     renderer = 'impex.home:me.haml'
 
     def make(self):
-        print(self.session)
+        print('start')
+        self.database()
+        self.database()

@@ -6,15 +6,27 @@ install_requires = [
 
     'impaf-haml',
     'impaf-beaker',
+    'impaf-sqlalchemy',
 
     'waitress',
 ]
-prefix = 'https://github.com/socek/'
+
+
+def create_link(name, version):
+    data = {
+        'prefix': 'https://github.com/socek',
+        'name': name,
+        'version': version,
+    }
+    template = '%(prefix)s/%(name)s/tarball/master#egg=%(name)s-%(version)s'
+    return template % data
+
 dependency_links = [
-    prefix + 'impaf/tarball/master#egg=impaf-0.1',
-    prefix + 'impaf-jinja2/tarball/master#egg=impaf-jinja2-0.1',
-    prefix + 'impaf-haml/tarball/master#egg=impaf-haml-0.1',
-    prefix + 'impaf-beaker/tarball/master#egg=impaf-beaker-0.1',
+    create_link('impaf', '0.1'),
+    create_link('impaf-jinja2', '0.1'),
+    create_link('impaf-haml', '0.1'),
+    create_link('impaf-beaker', '0.1'),
+    create_link('impaf-sqlalchemy', '0.1'),
 ]
 
 if __name__ == '__main__':
