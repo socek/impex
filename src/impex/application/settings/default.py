@@ -1,6 +1,6 @@
 def make_settings(settings, paths):
     settings['debug'] = True
-    paths.set_path('sqlite_db', 'data', '%(db:name)s.db')
+    settings['pyramid.reload_templates'] = True
     session(settings, paths)
     database(settings, paths)
     envoritment(settings, paths)
@@ -35,4 +35,4 @@ def database(settings, paths):
 
 
 def envoritment(settings, paths):
-    paths.set_path('data', 'project', 'data')
+    paths.set_path('data', 'project', '../../data')

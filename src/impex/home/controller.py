@@ -6,6 +6,6 @@ class HomeController(Controller):
     renderer = 'impex.home:me.haml'
 
     def make(self):
-        print('start')
-        self.database()
-        self.database()
+        data = self.SampleData.upsert(name='elf')
+        self.database().commit()
+        self.context['data'] = data
