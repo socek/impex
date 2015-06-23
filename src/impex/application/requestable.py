@@ -1,7 +1,7 @@
 from implugin.beaker import BeakerRequestable
 from implugin.sqlalchemy.requestable import SqlalchemyRequestable
 
-from impex.home.driver import SampleDataDriver
+from .driver import ImpexDriverHolder
 
 
 class Requestable(
@@ -9,6 +9,5 @@ class Requestable(
     BeakerRequestable,
 ):
 
-    def _generate_drivers(self):
-        super()._generate_drivers()
-        self.SampleData = self.feeded_driver(SampleDataDriver())
+    def _get_driver_holder_cls(self):
+        return ImpexDriverHolder
