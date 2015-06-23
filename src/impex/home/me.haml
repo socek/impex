@@ -4,6 +4,7 @@
       elo
     %li
       dwa
-    %li
-      {{data.name}} ({{ data.id }})
+    -for obj in data:
+      %li
+        {{obj.name}} ({{ obj.id }})
 
