@@ -4,6 +4,7 @@ def make_settings(settings, paths):
     project(settings, paths)
     session(settings, paths)
     database(settings, paths)
+    alembic(settings, paths)
 
 
 def session(settings, paths):
@@ -39,3 +40,10 @@ def project(settings, paths):
 
     paths.set_path('application', 'project', 'application')
     paths.set_path('routing', 'application', 'routing.yaml')
+
+
+def alembic(settings, paths):
+    paths['alembic'] = {
+        'versions': ["%(project)s", 'versions'],
+        'ini': ["%(data)s", "alembic.ini"],
+    }

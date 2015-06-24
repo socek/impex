@@ -7,6 +7,7 @@ install_requires = [
     'impaf-haml',
     'impaf-beaker',
     'impaf-sqlalchemy',
+    'impaf-alembic',
 
     'waitress',
 ]
@@ -27,6 +28,7 @@ dependency_links = [
     create_link('impaf-haml', '0.1'),
     create_link('impaf-beaker', '0.1'),
     create_link('impaf-sqlalchemy', '0.1'),
+    create_link('impaf-alembic', '0.1'),
 ]
 
 if __name__ == '__main__':
@@ -40,6 +42,9 @@ if __name__ == '__main__':
         include_package_data=True,
         entry_points=(
             '\n'.join([
+                '[console_scripts]',
+                'imalembic = impex.application.alembic:alembic',
+                'iminitdb = impex.application.alembic:initdb',
                 '[paste.app_factory]',
                 'main = impex.application.init:main',
                 ''
