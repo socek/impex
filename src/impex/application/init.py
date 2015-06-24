@@ -13,9 +13,7 @@ class ImpexApplication(
         super().__init__('impex')
 
     def _generate_routes(self):
-        self.routing.read_from_file(
-            '/home/socek/projects/impaf/example/src/impex/application/routing.yaml'
-        )
+        self.routing.read_from_file(self.paths['routing'])
 
 
 main = ImpexApplication()
