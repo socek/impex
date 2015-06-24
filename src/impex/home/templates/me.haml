@@ -1,10 +1,12 @@
-%div
-  %ul
-    %li
-      elo
-    %li
-      dwa
-    -for obj in data:
+-extends "impex.application:templates/main.haml"
+-block body
+  %div
+    %ul
       %li
-        {{obj.name}} ({{ obj.id }})
+        elo
+      %li
+        dwa
+      -for obj in data:
+        %li
+          {{obj.name}} ({{ obj.id }})
 
