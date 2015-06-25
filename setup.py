@@ -43,8 +43,8 @@ if __name__ == '__main__':
         entry_points=(
             '\n'.join([
                 '[console_scripts]',
-                'imalembic = impex.application.alembic:alembic',
-                'iminitdb = impex.application.alembic:initdb',
+                'im-alembic = impex.application.alembic:alembic',
+                'im-initdb = impex.application.alembic:initdb',
                 '[paste.app_factory]',
                 'main = impex.application.init:main',
                 ''

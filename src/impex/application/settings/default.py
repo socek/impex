@@ -36,7 +36,8 @@ def database(settings, paths):
 
 
 def project(settings, paths):
-    paths.set_path('data', 'project', '../../data')
+    paths.set_path('maindir', 'project', '../..')
+    paths.set_path('data', 'maindir', 'data')
 
     paths.set_path('application', 'project', 'application')
     paths.set_path('routing', 'application', 'routing.yaml')
@@ -44,6 +45,6 @@ def project(settings, paths):
 
 def alembic(settings, paths):
     paths['alembic'] = {
-        'versions': ["%(project)s", 'versions'],
+        'versions': ["%(maindir)s", 'migrations'],
         'ini': ["%(data)s", "alembic.ini"],
     }
