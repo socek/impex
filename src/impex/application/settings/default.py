@@ -5,6 +5,7 @@ def make_settings(settings, paths):
     session(settings, paths)
     database(settings, paths)
     alembic(settings, paths)
+    fanstatic(settings, paths)
 
 
 def session(settings, paths):
@@ -47,4 +48,11 @@ def alembic(settings, paths):
     paths['alembic'] = {
         'versions': ["%(maindir)s", 'migrations'],
         'ini': ["%(data)s", "alembic.ini"],
+    }
+
+
+def fanstatic(settings, paths):
+    settings['fanstatic'] = {
+        'bottom': True,
+        'debug': True,
     }

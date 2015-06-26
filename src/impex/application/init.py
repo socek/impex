@@ -2,11 +2,14 @@ from implugin.beaker import BeakerApplication
 from implugin.haml import HamlApplication
 from implugin.sqlalchemy.application import SqlAlchemyApplication
 
+from implugin.fanstatic import FanstaticApplication
+
 
 class ImpexApplication(
     HamlApplication,
     BeakerApplication,
     SqlAlchemyApplication,
+    FanstaticApplication,
 ):
 
     def __init__(self):

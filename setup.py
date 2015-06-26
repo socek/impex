@@ -8,6 +8,10 @@ install_requires = [
     'impaf-beaker',
     'impaf-sqlalchemy',
     'impaf-alembic',
+    'impaf-fanstatic',
+
+    'js.jquery',
+    'js.bootstrap',
 
     'waitress',
 ]
@@ -29,6 +33,7 @@ dependency_links = [
     create_link('impaf-beaker', '0.1'),
     create_link('impaf-sqlalchemy', '0.1'),
     create_link('impaf-alembic', '0.1'),
+    create_link('impaf-fanstatic', '0.1'),
 ]
 
 if __name__ == '__main__':
@@ -40,14 +45,16 @@ if __name__ == '__main__':
         install_requires=install_requires,
         dependency_links=dependency_links,
         include_package_data=True,
-        entry_points=(
-            '\n'.join([
-                '[console_scripts]',
+        entry_points={
+            'fanstatic.libraries': (
+                'home = impex.home.resources:library',
+            ),
+            'console_scripts': (
                 'im-alembic = impex.application.alembic:alembic',
                 'im-initdb = impex.application.alembic:initdb',
-                '[paste.app_factory]',
+            ),
+            'paste.app_factory': (
                 'main = impex.application.init:main',
-                ''
-            ])
-        ),
+            )
+        }
     )
