@@ -1,15 +1,13 @@
-from impaf.controller import Controller as Base
+from implugin.fanstatic import FanstaticController
 
 from .requestable import Requestable
-from .resources import static_need
 
 
 class Controller(
     Requestable,
-    Base,
+    FanstaticController,
 ):
-    pass
 
-    def _create_context(self):
-        super()._create_context()
-        self.context['need'] = static_need
+    def _generate_resources(self):
+        super()._generate_resources()
+        self.resources.add_resource('home', 'impex.home.resources:home')
