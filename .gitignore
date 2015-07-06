@@ -46,3 +46,4 @@ local.py
 flags
 data/*
 TODO
+pytest.ini
