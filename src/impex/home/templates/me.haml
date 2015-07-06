@@ -11,3 +11,8 @@
         %li
           {{obj.name}} ({{ obj.id }})
 
+  = form.begin()
+  = form.text('name')
+  = form.text('room')
+  = form.submit('elo')
+  = form.end()

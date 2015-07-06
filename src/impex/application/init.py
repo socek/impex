@@ -18,5 +18,11 @@ class ImpexApplication(
     def _generate_routes(self):
         self.routing.read_from_file(self.paths['routing'])
 
+    def _create_jinja2_settings(self):
+        super()._create_jinja2_settings()
+        self.settings['jinja2.extensions'].append(
+            'jinja2.ext.with_'
+        )
+
 
 main = ImpexApplication()
