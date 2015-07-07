@@ -11,4 +11,5 @@ class HomeController(Controller):
         self.context['data'] = data
         form = self.add_form(FirstForm)
         if form.validate():
+            self.add_flashmsg('info', 'success')
             self.redirect('home')

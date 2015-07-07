@@ -10,6 +10,7 @@ install_requires = [
     'impaf-alembic',
     'impaf-fanstatic',
     'impaf-formskit',
+    'impaf-flashmsg',
 
     'js.jquery',
     'js.bootstrap',
@@ -37,6 +38,7 @@ dependency_links = [
     create_link('impaf-alembic', '0.1'),
     create_link('impaf-fanstatic', '0.1'),
     create_link('impaf-formskit', '0.1'),
+    create_link('impaf-flashmsg', '0.1'),
 ]
 
 if __name__ == '__main__':
