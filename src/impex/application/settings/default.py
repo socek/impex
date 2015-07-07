@@ -1,11 +1,10 @@
 def make_settings(settings, paths):
-    settings['debug'] = True
-    settings['pyramid.reload_templates'] = True
     project(settings, paths)
     session(settings, paths)
     database(settings, paths)
     alembic(settings, paths)
     fanstatic(settings, paths)
+    debug(settings, paths)
 
 
 def session(settings, paths):
@@ -56,3 +55,10 @@ def fanstatic(settings, paths):
         'bottom': True,
         'debug': True,
     }
+
+
+def debug(settings, paths):
+    settings['debug'] = True
+    settings['pyramid.reload_templates'] = True
+    settings['pyramid.debug_notfound'] = True
+    settings['pyramid.debug_routematch'] = True

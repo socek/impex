@@ -15,6 +15,7 @@ install_requires = [
     'js.bootstrap',
 
     'waitress',
+    'pyramid_debugtoolbar',
 ]
 
 
