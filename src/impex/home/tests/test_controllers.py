@@ -10,12 +10,11 @@ class TestHomeController(
     FormskitControllerFixture,
 ):
 
-    def _cls_controller(self):
-        return HomeController
+    _testable_cls = HomeController
 
     def test_simple(
         self,
-        controller,
+        testable,
         context,
         mdrivers,
         registry,
@@ -25,7 +24,7 @@ class TestHomeController(
     ):
         fform.validate.return_value = False
 
-        controller.make()
+        testable.make()
 
         madd_form.assert_called_once_with(FirstForm)
         assert context == {
@@ -35,7 +34,7 @@ class TestHomeController(
 
     def test_on_form_submit(
         self,
-        controller,
+        testable,
         context,
         mdrivers,
         registry,
@@ -44,8 +43,7 @@ class TestHomeController(
         mredirect,
     ):
         fform.validate.return_value = True
-
-        controller.make()
+        testable.make()
 
         madd_form.assert_called_once_with(FirstForm)
         assert context == {
