@@ -13,7 +13,6 @@ install_requires = [
     'impaf-flashmsg',
 
     'js.jquery',
-    'js.bootstrap',
 
     'waitress',
     'pyramid_debugtoolbar',
@@ -53,6 +52,7 @@ if __name__ == '__main__':
         entry_points={
             'fanstatic.libraries': (
                 'home = impex.home.resources:library',
+                'bootstrap = impex.application.resources:library',
             ),
             'console_scripts': (
                 'im-alembic = impex.application.alembic:alembic',
