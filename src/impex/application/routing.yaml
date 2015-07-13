@@ -3,3 +3,7 @@ impex.home.controller:
         controller: HomeController
         route: home
         url: /
+    -
+        controller: LoginController
+        route: login
+        url: /login

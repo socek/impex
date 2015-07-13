@@ -19,3 +19,7 @@ class Controller(
             'bootstrap',
             'impex.application.resources:bootstrap',
         )
+
+    def _create_context(self):
+        super()._create_context()
+        self.context['user'] = self.get_user()
