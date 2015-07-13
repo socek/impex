@@ -3,7 +3,7 @@ from implugin.alembic.commands import InitDatabase
 
 from .init import ImpexApplication
 from .generator import ImpexDataGenerator
-from .models import Base
+from .driver import ImpexDriverHolder
 
 
 class ImpexAlembicCommand(ImpexApplication, AlembicCommand):
@@ -15,8 +15,8 @@ class ImpexInitDatabase(ImpexApplication, InitDatabase):
     def get_datagenerator(self):
         return ImpexDataGenerator()
 
-    def get_metadata(self):
-        return Base.metadata
+    def get_driver(self):
+        return ImpexDriverHolder
 
 
 def alembic():
