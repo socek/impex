@@ -1,6 +1,7 @@
 from implugin.beaker import BeakerApplication
 from implugin.haml import HamlApplication
 from implugin.sqlalchemy.application import SqlAlchemyApplication
+from implugin.auth.application import AuthApplication
 
 from implugin.fanstatic import FanstaticApplication
 
@@ -10,6 +11,7 @@ class ImpexApplication(
     BeakerApplication,
     SqlAlchemyApplication,
     FanstaticApplication,
+    AuthApplication,
 ):
 
     def __init__(self):
