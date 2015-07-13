@@ -11,6 +11,7 @@ install_requires = [
     'impaf-fanstatic',
     'impaf-formskit',
     'impaf-flashmsg',
+    'impaf-auth',
 
     'js.jquery',
 
@@ -38,6 +39,7 @@ dependency_links = [
     create_link('impaf-fanstatic', '0.1'),
     create_link('impaf-formskit', '0.1'),
     create_link('impaf-flashmsg', '0.1'),
+    create_link('impaf-auth', '0.1'),
 ]
 
 if __name__ == '__main__':
