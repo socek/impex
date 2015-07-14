@@ -1,22 +1,11 @@
 =need('home')
 -extends "impex.application:templates/authencitated.haml"
 -block content
-  =flashmsg()
-  %div
-    %ul
-      %li
-        elo
-      %li
-        dwa
-      -for obj in data:
-        %li
-          {{obj.name}} ({{ obj.id }})
 
-  = form.begin()
-  = form.text('name')
-  = form.text('room')
-  = form.submit('elo')
-  = form.end()
+  %div.col-lg-12
+    %div.bs-component
+      %div.jumbotron
+        %h1 << Witamy
+        %p
+          Username: {{user.name}}
 
-  %div
-    Username: {{user.name}}
