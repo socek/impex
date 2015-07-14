@@ -1,0 +1,19 @@
+-extends "main.haml"
+-block body
+  %div.navbar.navbar-default.navbar-inverse id="bs-example-navbar-collapse-2"
+    %div.container
+      %div.navbar-header
+        %a.navbar-brand href="#"
+          Impex
+      %div.navbar-collapse.collapse id="navbar-main"
+        %ul.nav.navbar-nav
+          %li
+            %a href="#"
+              Link
+              %span.sr-only
+                (current)
+        %ul.nav.navbar-nav.navbar-right
+          %li
+            %a href="{{route_path('auth:logout')}}"
+              Logout
+  -block content

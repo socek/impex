@@ -3,7 +3,12 @@ impex.home.controller:
         controller: HomeController
         route: home
         url: /
+impex.auth.controllers:
     -
-        controller: LoginController
-        route: login
+        controller: ImpexLoginController
+        route: auth:login
         url: /login
+    -
+        controller: ImpexLogoutController
+        route: auth:logout
+        url: /logout
