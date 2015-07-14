@@ -8,13 +8,13 @@
       %div.navbar-collapse.collapse id="navbar-main"
         %ul.nav.navbar-nav
           %li
-            %a href="#"
+            %a.btn.btn-success href="#"
               Link
-              %span.sr-only
-                (current)
         %ul.nav.navbar-nav.navbar-right
           %li
             %a href="{{route_path('auth:logout')}}"
               Logout
-  =flashmsg()
-  -block content
+  %div.container
+    %div.row
+      =flashmsg()
+      -block content
