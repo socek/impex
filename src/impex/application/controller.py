@@ -3,6 +3,7 @@ from implugin.formskit.controller import FormskitController
 from implugin.flashmsg.controller import FlashMessageController
 
 from .requestable import Requestable
+from .plugins.flashmessage import ImpexFlashMessageWidget
 
 
 class Controller(
@@ -11,6 +12,7 @@ class Controller(
     FormskitController,
     FlashMessageController,
 ):
+    _cls_flash_message_widget = ImpexFlashMessageWidget
 
     def _generate_resources(self):
         super()._generate_resources()

@@ -1,0 +1,8 @@
+-for message in messages:
+  %div.col-lg-12
+    %div.bs-component
+      %div class="alert alert-dismissible alert-{{message.msgtype}}"
+        %button.close data-dismiss="alert" type="button"
+          x
+        =message.message
+
