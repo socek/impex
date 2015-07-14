@@ -1,3 +1,5 @@
+from pyramid.exceptions import Forbidden
+
 from implugin.beaker import BeakerApplication
 from implugin.haml import HamlApplication
 from implugin.sqlalchemy.application import SqlAlchemyApplication
@@ -25,6 +27,10 @@ class ImpexApplication(
 
     def _generate_routes(self):
         self.routing.read_from_file(self.paths['routing'])
+        self.routing.add_view(
+            'impex.auth.controllers.ImpexForbiddenController',
+            context=Forbidden,
+        )
 
     def _create_config(self):
         super()._create_config()
