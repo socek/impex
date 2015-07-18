@@ -4,6 +4,7 @@ from implugin.auth.controllers import BaseAuthController
 from implugin.auth.controllers import ForbiddenController
 from implugin.auth.controllers import LoginController
 from implugin.auth.controllers import LogoutController
+from implugin.auth.controllers import RegisterController
 
 from .forms import ImpexLoginForm
 
@@ -24,4 +25,8 @@ class ImpexLogoutController(LogoutController, ImpexBaseAuthController):
 
 
 class ImpexForbiddenController(ForbiddenController, ImpexBaseAuthController):
+    pass
+
+
+class ImpexRegisterController(RegisterController, ImpexBaseAuthController):
     pass

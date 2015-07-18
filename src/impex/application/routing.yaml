@@ -12,3 +12,7 @@ impex.auth.controllers:
         controller: ImpexLogoutController
         route: auth:logout
         url: /logout
+    -
+        controller: ImpexRegisterController
+        route: auth:register
+        url: /register
