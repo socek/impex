@@ -9,6 +9,12 @@ class ImpexDataGenerator(DataGenerator):
         return ImpexDriverHolder
 
     def make_all(self):
-        self._create('SampleData', name='elf')
-        self._create('SampleData', name='elf2')
-        self._create('SampleData', name='elf3')
+        self.create_users()
+
+    def create_users(self):
+        self._create(
+            'Auth',
+            name='admin',
+            email='admin@admin.com',
+            password='admin',
+        )

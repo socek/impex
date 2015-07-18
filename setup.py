@@ -17,6 +17,7 @@ install_requires = [
 
     'waitress',
     'pyramid_debugtoolbar',
+    'psycopg2',
 ]
 
 
