@@ -17,7 +17,7 @@ class ImpexBaseAuthController(BaseAuthController, Controller):
 
 class ImpexLoginController(LoginController, ImpexBaseAuthController):
     form = ImpexLoginForm
-    header_text = 'Impax Login'
+    header_text = 'Impax - Zaloguj się'
 
 
 class ImpexLogoutController(LogoutController, ImpexBaseAuthController):
@@ -29,4 +29,4 @@ class ImpexForbiddenController(ForbiddenController, ImpexBaseAuthController):
 
 
 class ImpexRegisterController(RegisterController, ImpexBaseAuthController):
-    pass
+    header_text = 'Impax - Rejestracja'
