@@ -1,5 +1,3 @@
-from pyramid.exceptions import Forbidden
-
 from implugin.beaker import BeakerApplication
 from implugin.haml import HamlApplication
 from implugin.sqlalchemy.application import SqlAlchemyApplication
@@ -7,6 +5,7 @@ from implugin.auth.application import AuthApplication
 from implugin.fanstatic import FanstaticApplication
 
 from .entryfactory import EntryFactory
+from .routing import ImpexRouting
 
 
 class ImpexApplication(
@@ -16,6 +15,7 @@ class ImpexApplication(
     FanstaticApplication,
     AuthApplication,
 ):
+    _routing_cls = ImpexRouting
 
     def __init__(self):
         super().__init__('impex')
@@ -24,13 +24,6 @@ class ImpexApplication(
         data = super()._get_config_kwargs()
         data['root_factory'] = EntryFactory
         return data
-
-    def _generate_routes(self):
-        self.routing.read_from_file(self.paths['routing'])
-        self.routing.add_view(
-            'impex.auth.controllers.ImpexForbiddenController',
-            context=Forbidden,
-        )
 
     def _create_config(self):
         super()._create_config()
