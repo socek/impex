@@ -9,4 +9,4 @@ class FirstForm(PostForm):
         self.add_field('room', label='Pokoje')
 
     def on_success(self):
-        print('success')
+        pass
