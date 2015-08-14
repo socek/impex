@@ -1,0 +1,13 @@
+impex.orders.controllers:
+    -
+        controller: OrdersListController
+        route: orders:list
+        url: /orders
+    -
+        controller: OrderCreateController
+        route: orders:create
+        url: /orders/create
+    -
+        controller: OrderReadController
+        route: orders:read
+        url: /orders/{order_id:\d+}/

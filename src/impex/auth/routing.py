@@ -12,3 +12,4 @@ class ImpexAuthRouting(Routing):
             'impex.auth.controllers.ImpexForbiddenController',
             context=Forbidden,
         )
+        self.read_from_dotted('impex.orders:routing.yaml')

@@ -1,0 +1,14 @@
+-extends "impex.application:templates/authencitated.haml"
+-block content
+    %div.col-lg-12
+      %div.bs-component
+        %div.jumbotron
+          %h1
+            Lista zamówień&nbsp;
+            %a.btn.btn-small.btn-primary href="{{route_path('orders:create')}}"
+              Stwórz
+          %ul
+            -for order in orders:
+              %li
+                %a href="{{route_path('orders:read', order_id=order.id)}}"
+                  =order.name

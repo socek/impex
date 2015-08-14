@@ -3,13 +3,13 @@
   %div.navbar.navbar-default.navbar-inverse id="bs-example-navbar-collapse-2"
     %div.container
       %div.navbar-header
-        %a.navbar-brand href="#"
+        %a.navbar-brand href="{{route_path('home')}}"
           Impex
       %div.navbar-collapse.collapse id="navbar-main"
         %ul.nav.navbar-nav
           %li
-            %a.btn.btn-success href="#"
-              Link
+            %a.btn.btn-success href="{{route_path('orders:list')}}"
+              Zamówienia
         %ul.nav.navbar-nav.navbar-right
           %li
             %a href="{{route_path('auth:logout')}}"

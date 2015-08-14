@@ -1,0 +1,9 @@
+-extends "impex.application:templates/authencitated.haml"
+-block content
+    %div.col-lg-6
+      %div.well.bs-component
+        %legend << Stwórz zamówienie
+        = form.begin()
+        = form.text('name')
+        = form.submit('Zapisz')
+        = form.end()
