@@ -1,13 +1,12 @@
 from mock import sentinel
 
-from impaf.testing import PyTestCase
 from impaf.testing import cache
-from implugin.sqlalchemy.testing import SqlalchemyCase
 
 from ..forms import CreateForm
+from impex.application.testing import RequestCase
 
 
-class TestCreateForm(SqlalchemyCase, PyTestCase):
+class TestCreateForm(RequestCase):
     _object_cls = CreateForm
 
     @cache

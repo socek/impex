@@ -1,18 +1,13 @@
 from mock import sentinel
 
-from impaf.testing import ControllerCase
-from impaf.testing import PyTestCase
-from implugin.flashmsg.testing import FlashMessageCase
-from implugin.formskit.testing import FormskitControllerCase
-from implugin.sqlalchemy.testing import SqlalchemyCase
-
 from ..controllers import OrderCreateController
 from ..controllers import OrderReadController
 from ..controllers import OrdersListController
 from ..forms import CreateForm
+from impex.application.testing import ControllerCase
 
 
-class TestOrdersListController(ControllerCase, SqlalchemyCase, PyTestCase):
+class TestOrdersListController(ControllerCase):
     _object_cls = OrdersListController
 
     def test_make(self):
@@ -25,7 +20,7 @@ class TestOrdersListController(ControllerCase, SqlalchemyCase, PyTestCase):
         }
 
 
-class TestOrderReadController(ControllerCase, SqlalchemyCase, PyTestCase):
+class TestOrderReadController(ControllerCase):
     _object_cls = OrderReadController
 
     def test_make(self):
@@ -40,12 +35,7 @@ class TestOrderReadController(ControllerCase, SqlalchemyCase, PyTestCase):
         self.context()['order'] = self.mdrivers().Orders.get_by_id.return_value
 
 
-class TestOrderCreateController(
-    FormskitControllerCase,
-    SqlalchemyCase,
-    PyTestCase,
-    FlashMessageCase,
-):
+class TestOrderCreateController(ControllerCase):
     _object_cls = OrderCreateController
 
     def test_make_form_not_valid(self):
