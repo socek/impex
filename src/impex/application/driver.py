@@ -6,7 +6,10 @@ from impex.orders.driver import OrderDriver
 
 class ImpexDriverHolder(AuthDriverHolder):
 
-    def generate_drivers(self):
-        super().generate_drivers()
-        self.SampleData = self.feeded_driver(SampleDataDriver())
-        self.Orders = self.feeded_driver(OrderDriver())
+    @property
+    def SampleData(self):
+        return self.feeded_driver(SampleDataDriver())
+
+    @property
+    def Orders(self):
+        return self.feeded_driver(OrderDriver())

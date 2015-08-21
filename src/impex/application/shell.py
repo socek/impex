@@ -7,4 +7,3 @@ def setup(env):
     env['main'] = main
     env['db'] = db
     env['drivers'] = ImpexDriverHolder(lambda: db)
-    env['drivers'].generate_drivers()

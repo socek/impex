@@ -10,6 +10,4 @@ class Requestable(
     Jinja2Requestable,
     AuthRequestable,
 ):
-
-    def _get_driver_holder_cls(self):
-        return ImpexDriverHolder
+    DRIVER_HOLDER_CLS = ImpexDriverHolder
