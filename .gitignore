@@ -47,3 +47,4 @@ flags
 data/*
 TODO
 pytest.ini
+.cache
