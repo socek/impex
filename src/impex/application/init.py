@@ -15,7 +15,8 @@ class ImpexApplication(
     FanstaticApplication,
     AuthApplication,
 ):
-    _routing_cls = ImpexRouting
+    class Config(HamlApplication.Config):
+        routing_cls = ImpexRouting
 
     def __init__(self):
         super().__init__('impex')

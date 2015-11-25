@@ -10,3 +10,10 @@ bootstrap = Resource(
         bootstrap_js,
     ]
 )
+custom = Resource(
+    library,
+    'bootstrap/css/custom.min.css',
+    depends=[
+        bootstrap_js,
+    ]
+)

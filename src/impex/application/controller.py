@@ -21,6 +21,10 @@ class Controller(
             'bootstrap',
             'impex.application.resources:bootstrap',
         )
+        self.resources.add_resource(
+            'custom',
+            'impex.application.resources:custom',
+        )
 
     def _create_context(self):
         super()._create_context()
