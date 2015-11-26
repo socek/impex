@@ -9,7 +9,7 @@ install_requires = [
     'impaf-sqlalchemy',
     'impaf-alembic',
     'impaf-fanstatic',
-    'impaf-formskit',
+    'impaf-formskit==0.1.1',
     'impaf-flashmsg',
     'impaf-auth',
 
@@ -18,6 +18,9 @@ install_requires = [
     'waitress',
     'pyramid_debugtoolbar',
     'psycopg2',
+
+    'baelfire==0.3.1',
+    'bael.project==0.2',
 ]
 
 
@@ -38,9 +41,12 @@ dependency_links = [
     create_link('impaf-sqlalchemy', '0.1'),
     create_link('impaf-alembic', '0.1'),
     create_link('impaf-fanstatic', '0.1'),
-    create_link('impaf-formskit', '0.1'),
+    create_link('impaf-formskit', '0.1.1'),
     create_link('impaf-flashmsg', '0.1'),
     create_link('impaf-auth', '0.1'),
+
+    create_link('bael.project', '0.2'),
+    create_link('baelfire', '0.3.1'),
 ]
 
 if __name__ == '__main__':
@@ -60,6 +66,7 @@ if __name__ == '__main__':
             'console_scripts': (
                 'im-alembic = impex.application.alembic:alembic',
                 'im-initdb = impex.application.alembic:initdb',
+                'imcmd = impex.console.cmd:run',
             ),
             'paste.app_factory': (
                 'main = impex.application.init:main',

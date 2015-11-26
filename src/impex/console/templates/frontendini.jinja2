@@ -1,0 +1,18 @@
+[app:main]
+use = egg:{{settings['package_name']}}
+
+[server:main]
+use = egg:waitress#main
+host = 0.0.0.0
+port = 6543
+
+{% for key, data in settings['loggers'].items() %}
+[{{key}}]
+    {% for name, value in data.items() -%}
+        {{name}} = {{value}}
+    {% endfor -%}
+{% endfor %}
+[alembic]
+    {% for name, value in alembic.items() -%}
+        {{name}} = {{value}}
+    {% endfor %}
