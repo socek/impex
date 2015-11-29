@@ -1,15 +1,15 @@
 from implugin.auth.driver import AuthDriverHolder
 
-from impex.home.driver import SampleDataDriver
 from impex.orders.driver import OrderDriver
+from impex.teams.driver import TeamDriver
 
 
 class ImpexDriverHolder(AuthDriverHolder):
 
     @property
-    def SampleData(self):
-        return self.feeded_driver(SampleDataDriver())
+    def orders(self):
+        return self.feeded_driver(OrderDriver())
 
     @property
-    def Orders(self):
-        return self.feeded_driver(OrderDriver())
+    def teams(self):
+        return self.feeded_driver(TeamDriver())

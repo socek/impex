@@ -6,4 +6,7 @@ class ImpexRouting(
     ImpexAuthRouting,
     HomeRouting,
 ):
-    pass
+    def make(self):
+        super().make()
+        # self.read_from_dotted('impex.orders:routing.yaml')
+        self.read_from_dotted('impex.teams:routing.yaml')

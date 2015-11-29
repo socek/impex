@@ -9,7 +9,7 @@ class OrdersListController(Controller):
     permission = 'auth'
 
     def make(self):
-        self.context['orders'] = self.drivers.Orders.find_all()
+        self.context['orders'] = self.drivers.orders.find_all()
 
 
 class OrderCreateController(Controller):
@@ -32,5 +32,5 @@ class OrderReadController(Controller):
 
     def make(self):
         order_id = self.matchdict['order_id']
-        order = self.drivers.Orders.get_by_id(order_id)
+        order = self.drivers.orders.get_by_id(order_id)
         self.context['order'] = order
