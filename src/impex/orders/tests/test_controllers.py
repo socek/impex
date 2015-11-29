@@ -57,7 +57,7 @@ class TestOrderCreateController(ControllerCase):
         assert self.object().make() is None
 
         self.madd_form().assert_called_once_with(CreateForm)
-        self.mdatabase().return_value.commit.assert_called_once_with()
+        self.mdatabase().commit.assert_called_once_with()
         self.madd_flashmsg().assert_called_once_with(
             'Dodano zamówienie.',
             'info',

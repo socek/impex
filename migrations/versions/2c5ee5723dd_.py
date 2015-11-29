@@ -27,11 +27,6 @@ def upgrade():
             primary_key=True),
 
         Column(
-            'priority',
-            Integer,
-            nullable=False),
-
-        Column(
             'name',
             String,
             nullable=False),

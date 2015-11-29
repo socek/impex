@@ -25,6 +25,6 @@ class TestCreateForm(RequestCase):
         self.object().on_success()
 
         self.mdata().assert_called_once_with(True)
-        self.mdrivers().Orders.create.assert_called_once_with(
+        self.mdrivers().orders.create.assert_called_once_with(
             name=sentinel.name
         )
