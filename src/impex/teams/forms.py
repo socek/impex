@@ -21,7 +21,6 @@ class CreateTeamForm(PostForm):
 class EditTeamForm(CreateTeamForm):
 
     def on_success(self):
-        # print('0', self.database())
         data = self.get_data_dict(True)
         self.instance.name = data['name']
         self.instance.hometown = data['hometown']

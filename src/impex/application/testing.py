@@ -2,7 +2,10 @@ from impaf.testing import cache
 from impaf.testing.case import PyTestCase
 from implugin.flashmsg.testing import FlashMessageCase
 from implugin.formskit.testing import FormskitControllerCase
+from implugin.sqlalchemy.testing import DriverCase as BaseDriverCase
 from implugin.sqlalchemy.testing import SqlalchemyCase
+
+from impex.application.init import ImpexApplication
 
 
 class RequestCase(
@@ -30,3 +33,7 @@ class PostFormCase(RequestCase):
     @cache
     def mdata(self):
         return self.pobject(self.object(), 'get_data_dict')
+
+
+class DriverCase(BaseDriverCase):
+    _application_cls = ImpexApplication
