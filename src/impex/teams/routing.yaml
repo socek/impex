@@ -1,13 +1,13 @@
 impex.teams.controllers:
     -
-        controller: OrdersListController
+        controller: TeamListController
         route: teams:admin:list
         url: /admin/teams
-    # -
-    #     controller: OrderCreateController
-    #     route: teams:create
-    #     url: /teams/create
-    # -
-    #     controller: OrderReadController
-    #     route: teams:read
-    #     url: /teams/{order_id:\d+}/
+    -
+        controller: TeamCreateController
+        route: teams:admin:create
+        url: /admin/teams/create
+    -
+        controller: TeamEditController
+        route: teams:admin:edit
+        url: /teams/{team_id:\d+}/

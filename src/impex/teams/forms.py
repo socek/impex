@@ -16,3 +16,18 @@ class CreateTeamForm(PostForm):
             hometown=data['hometown']
         )
         self.database().commit()
+
+
+class EditTeamForm(CreateTeamForm):
+
+    def on_success(self):
+        # print('0', self.database())
+        data = self.get_data_dict(True)
+        self.instance.name = data['name']
+        self.instance.hometown = data['hometown']
+        self.drivers.teams.update(self.instance)
+
+    def read_from(self, team):
+        self.set_value('name', team.name)
+        self.set_value('hometown', team.hometown)
+        self.instance = team

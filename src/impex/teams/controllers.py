@@ -1,36 +1,46 @@
 from impex.application.controller import Controller
 
-# from .forms import CreateForm
+from .forms import CreateTeamForm
+from .widgets import CreateTeamFormWidget
+from .widgets import EditTeamFormWidget
 
 
-class OrdersListController(Controller):
+class TeamListController(Controller):
 
     renderer = 'impex.teams:templates/admin/list.haml'
     # permission = 'auth'
 
     def make(self):
-        pass
+        self.context['teams'] = self.drivers.teams.list()
 
 
-# class OrderCreateController(Controller):
+class TeamCreateController(Controller):
 
-#     renderer = 'impex.orders:templates/create.haml'
-#     permission = 'auth'
+    renderer = 'impex.teams:templates/admin/create.haml'
+    # permission = 'auth'
 
-#     def make(self):
-#         form = self.add_form(CreateForm)
-#         if form.validate():
-#             self.database().commit()
-#             self.add_flashmsg('Dodano zamówienie.', 'info')
-#             self.redirect('orders:list')
+    def make(self):
+        form = self.add_form(
+            CreateTeamForm,
+            widgetcls=CreateTeamFormWidget,
+        )
+
+        if form.validate():
+            self.add_flashmsg('Dodano drużynę.', 'info')
+            self.redirect('teams:admin:list')
 
 
-# class OrderReadController(Controller):
+class TeamEditController(Controller):
 
-#     renderer = 'impex.orders:templates/read.haml'
-#     permission = 'auth'
+    renderer = 'impex.teams:templates/admin/edit.haml'
+    # permission = 'auth'
 
-#     def make(self):
-#         order_id = self.matchdict['order_id']
-#         order = self.drivers.Orders.get_by_id(order_id)
-#         self.context['order'] = order
+    def make(self):
+        team_id = self.matchdict['team_id']
+        team = self.drivers.teams.get_by_id(team_id)
+        form = self.add_form_widget(EditTeamFormWidget)
+        form.read_from(team)
+
+        if form.validate():
+            self.add_flashmsg('Zapisano zmiany w drużunie.', 'info')
+            self.redirect('teams:admin:list')

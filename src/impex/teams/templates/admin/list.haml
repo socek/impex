@@ -5,8 +5,11 @@
         %div.jumbotron
           %h1
             Lista drużyn&nbsp;
+            %a.btn.btn-small.btn-primary href="{{route_path('teams:admin:create')}}"
+              Nowa
           %ul
-            -for order in orders:
+            -for team in teams:
               %li
-                %a href="{{route_path('orders:read', order_id=order.id)}}"
-                  =order.name
+                %a href="{{route_path('teams:admin:edit', team_id=team.id)}}"
+                  {{team.name}} ({{team.hometown}})
+
