@@ -16,7 +16,7 @@ class TestOrdersListController(ControllerCase):
         self.object().make()
 
         assert self.context() == {
-            'orders': self.mdrivers().Orders.find_all.return_value,
+            'orders': self.mdrivers().orders.find_all.return_value,
         }
 
 
@@ -29,7 +29,7 @@ class TestOrderReadController(ControllerCase):
 
         self.object().make()
 
-        self.mdrivers().Orders.get_by_id.assert_called_once_with(
+        self.mdrivers().orders.get_by_id.assert_called_once_with(
             sentinel.order_id
         )
         self.context()['order'] = self.mdrivers().Orders.get_by_id.return_value
@@ -48,6 +48,7 @@ class TestOrderCreateController(ControllerCase):
         assert not self.mdatabase().return_value.commit.called
 
     def test_make_form_valid(self):
+        self.mdatabase()
         self.madd_form()
         self.madd_flashmsg()
         self.mredirect()
