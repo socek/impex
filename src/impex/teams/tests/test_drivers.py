@@ -3,7 +3,7 @@ from impex.teams.driver import TeamDriver
 from impex.teams.models import Team
 
 
-class TestTeamDriver(DriverCase):
+class TestDriverTeam(DriverCase):
     _object_cls = TeamDriver
 
     def test_list(self):

@@ -34,6 +34,10 @@ class PostFormCase(RequestCase):
     def mdata(self):
         return self.pobject(self.object(), 'get_data_dict')
 
+    @cache
+    def mget_csrf_token(self):
+        return self.mrequest().session.get_csrf_token
+
 
 class DriverCase(BaseDriverCase):
     _application_cls = ImpexApplication

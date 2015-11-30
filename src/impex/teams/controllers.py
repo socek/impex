@@ -1,6 +1,5 @@
 from impex.application.controller import Controller
 
-from .forms import CreateTeamForm
 from .widgets import CreateTeamFormWidget
 from .widgets import EditTeamFormWidget
 
@@ -20,10 +19,7 @@ class TeamCreateController(Controller):
     # permission = 'auth'
 
     def make(self):
-        form = self.add_form(
-            CreateTeamForm,
-            widgetcls=CreateTeamFormWidget,
-        )
+        form = self.add_form_widget(CreateTeamFormWidget)
 
         if form.validate():
             self.add_flashmsg('Dodano drużynę.', 'info')
