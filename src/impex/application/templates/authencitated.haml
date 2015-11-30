@@ -4,16 +4,22 @@
     %div.container
       %div.navbar-header
         %a.navbar-brand href="{{route_path('home')}}"
-          Impex
+          Wyniki Turniejów
       %div.navbar-collapse.collapse id="navbar-main"
         %ul.nav.navbar-nav
-          %li
-            %a.btn.btn-success href="{{route_path('teams:admin:list')}}"
-              Drużyny
+          -if request.has_permission('admin')
+            %li
+              %a href="{{route_path('teams:admin:list')}}"
+                Drużyny
         %ul.nav.navbar-nav.navbar-right
-          %li
-            %a href="{{route_path('auth:logout')}}"
-              Logout
+          -if request.has_permission('guest')
+            %li
+              %a href="{{route_path('auth:login')}}"
+                Login
+          -if request.has_permission('auth')
+            %li
+              %a href="{{route_path('auth:logout')}}"
+                Logout
   %div.container
     %div.row
       =flashmsg()

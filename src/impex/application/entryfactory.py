@@ -7,12 +7,17 @@ from .requestable import Requestable
 
 
 class EntryFactory(Requestable):
-    __acl__ = [
-        (Allow, Everyone, 'view'),
-        (Deny, Authenticated, 'guest'),
-        (Allow, Everyone, 'guest'),
-        (Allow, Authenticated, 'auth'),
-    ]
+    @property
+    def __acl__(self):
+        acl = [
+            (Allow, Everyone, 'view'),
+            (Deny, Authenticated, 'guest'),
+            (Allow, Everyone, 'guest'),
+            (Allow, Authenticated, 'auth'),
+        ]
+        if self.user.is_admin:
+            acl.append((Allow, Authenticated, 'admin'))
+        return acl
 
     def __init__(self, request):
         self.feed_request(request)

@@ -7,7 +7,7 @@ from .widgets import EditTeamFormWidget
 class TeamListController(Controller):
 
     renderer = 'impex.teams:templates/admin/list.haml'
-    # permission = 'auth'
+    permission = 'admin'
 
     def make(self):
         self.context['teams'] = self.drivers.teams.list()
@@ -16,7 +16,7 @@ class TeamListController(Controller):
 class TeamCreateController(Controller):
 
     renderer = 'impex.teams:templates/admin/create.haml'
-    # permission = 'auth'
+    permission = 'admin'
 
     def make(self):
         form = self.add_form_widget(CreateTeamFormWidget)
@@ -29,7 +29,7 @@ class TeamCreateController(Controller):
 class TeamEditController(Controller):
 
     renderer = 'impex.teams:templates/admin/edit.haml'
-    # permission = 'auth'
+    permission = 'admin'
 
     def make(self):
         team_id = self.matchdict['team_id']
