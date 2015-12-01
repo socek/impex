@@ -15,5 +15,5 @@ class EventDriver(ModelDriver):
     def list_for_admin(self):
         return (
             self.find_all()
-            .order_by('-start_date')
+            .order_by(self.model.start_date.desc())
         )

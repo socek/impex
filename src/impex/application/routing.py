@@ -8,5 +8,5 @@ class ImpexRouting(
 ):
     def make(self):
         super().make()
-        # self.read_from_dotted('impex.orders:routing.yaml')
         self.read_from_dotted('impex.teams:routing.yaml')
+        self.read_from_dotted('impex.events:routing.yaml')

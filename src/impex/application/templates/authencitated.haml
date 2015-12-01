@@ -11,6 +11,9 @@
             %li
               %a href="{{route_path('teams:admin:list')}}"
                 Drużyny
+            %li
+              %a href="{{route_path('events:admin:list')}}"
+                Wydarzenia
         %ul.nav.navbar-nav.navbar-right
           -if request.has_permission('guest')
             %li

@@ -3,7 +3,7 @@ from implugin.auth.driver import AuthDriverHolder
 from impex.orders.driver import OrderDriver
 from impex.teams.driver import TeamDriver
 from impex.auth.drivers import AuthDriver
-from impex.event.driver import EventDriver
+from impex.events.driver import EventDriver
 
 
 class ImpexDriverHolder(AuthDriverHolder):
@@ -21,5 +21,5 @@ class ImpexDriverHolder(AuthDriverHolder):
         return self.feeded_driver(AuthDriver())
 
     @property
-    def event(self):
+    def events(self):
         return self.feeded_driver(EventDriver())
