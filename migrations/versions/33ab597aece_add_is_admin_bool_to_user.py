@@ -1,4 +1,4 @@
-"""Add is_admin bool to user.
+"""Create users table.
 
 Revision ID: 33ab597aece
 Revises: 2c5ee5723dd
@@ -15,14 +15,55 @@ depends_on = None
 from alembic import op
 from sqlalchemy import Boolean
 from sqlalchemy import Column
+from sqlalchemy import Integer
+from sqlalchemy import String
 
 
 def upgrade():
-    op.add_column(
+    table = op.create_table(
         'users',
-        Column('is_admin', Boolean(), default=False)
+        Column(
+            'id',
+            Integer,
+            primary_key=True
+        ),
+
+        Column(
+            'name',
+            String,
+        ),
+        Column(
+            'email',
+            String,
+            unique=True,
+        ),
+        Column(
+            'password',
+            String(128),
+        ),
+        Column(
+            'is_admin',
+            Boolean(),
+            default=False,
+        )
+    )
+
+    op.bulk_insert(
+        table,
+        [
+            {
+                'id': 1,
+                'name': 'admin',
+                'email': 'admin@admin.com',
+                'password': 'e8dce00e7eb216e09d6ca309f862650495d7282092a1d2d41659d7f54a183780d69d8be907d5793c',
+                'is_admin': True,
+
+            },
+        ]
     )
 
 
 def downgrade():
-    op.drop_column('users', 'is_admin')
+    op.drop_table(
+        'users',
+    )

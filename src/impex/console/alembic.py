@@ -1,4 +1,5 @@
 import os
+from logging import getLogger
 
 from alembic import command
 from alembic.config import Config
@@ -8,6 +9,8 @@ from baelfire.dependencies import RunBefore
 
 from .base import IniTemplate
 from .dependency import MigrationChanged
+
+log = getLogger(__name__)
 
 
 def touch(fname, mode=0o666, dir_fd=None, **kwargs):
@@ -24,6 +27,7 @@ class AlembicUpgrade(BaseVirtualenv):
         self.add_dependency(MigrationChanged('versions', 'sqlite_db'))
 
     def build(self):
+        log.info("Running migrations...")
         alembic_cfg = Config(self.paths['frontendini'])
         command.upgrade(alembic_cfg, "head")
         touch(self.paths['sqlite_db'])
@@ -37,4 +41,5 @@ class AlembicRevision(BaseVirtualenv):
 
     def build(self):
         alembic_cfg = Config(self.paths['frontendini'])
-        command.revision(alembic_cfg)
+        message = input('Revision message:')
+        command.revision(alembic_cfg, message)

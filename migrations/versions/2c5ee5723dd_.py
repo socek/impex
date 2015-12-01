@@ -1,14 +1,14 @@
-"""empty message
+"""Create teams table
 
 Revision ID: 2c5ee5723dd
-Revises: 351daa7c83b
+Revises:
 Create Date: 2015-11-27 15:27:35.981503
 
 """
 
 # revision identifiers, used by Alembic.
 revision = '2c5ee5723dd'
-down_revision = '351daa7c83b'
+down_revision = None
 branch_labels = None
 depends_on = None
 
