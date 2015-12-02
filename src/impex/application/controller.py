@@ -5,6 +5,7 @@ from implugin.formskit.controller import FormskitController
 from .plugins.flashmessage import ImpexFlashMessageWidget
 from .requestable import Requestable
 from .resources import Resources
+from impex.breadcrumb.widgets import BreadCrumbsWidget
 
 
 class Controller(
@@ -21,3 +22,4 @@ class Controller(
     def _create_context(self):
         super()._create_context()
         self.context['user'] = self.get_user()
+        self.add_widget('crumbs', BreadCrumbsWidget(self))
