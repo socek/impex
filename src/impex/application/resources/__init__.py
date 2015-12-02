@@ -2,7 +2,7 @@ from fanstatic import Library, Resource
 
 from implugin.fanstatic.resources import Resources as BaseResources
 
-library = Library('bootstrap', '.')
+library = Library('impex', '.')
 
 bootstrap_js = Resource(
     library,
@@ -42,6 +42,11 @@ datepicker = Resource(
     ]
 )
 
+fontawesome = Resource(
+    library,
+    'fontawesome/css/font-awesome.min.css',
+)
+
 
 class Resources(BaseResources):
 
@@ -59,4 +64,8 @@ class Resources(BaseResources):
         self.add_resource(
             'datepicker',
             'impex.application.resources:datepicker',
+        )
+        self.add_resource(
+            'fontawesome',
+            'impex.application.resources:fontawesome',
         )

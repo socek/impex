@@ -14,12 +14,16 @@ class FormWidget(BaseFormWidget):
     class Templates(BaseFormWidget.Templates):
         text = 'impex.application:templates/formskit/text.haml'
         date = 'impex.application:templates/formskit/date.haml'
-
-    def date(self, name, disabled=False, autofocus=False):
-        return self._input('date', name, disabled, autofocus)
+        checkbox = 'impex.application:templates/formskit/checkbox.haml'
 
     def _base_input(self, name):
         data = super()._base_input(name)
         self.resources = Resources()
         data['need'] = self.resources.need
         return data
+
+    def date(self, name, disabled=False, autofocus=False):
+        return self._input('date', name, disabled, autofocus)
+
+    def checkbox(self, name, disabled=False, autofocus=False):
+        return self._input('checkbox', name, disabled, autofocus)

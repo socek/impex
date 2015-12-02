@@ -4,7 +4,10 @@
     =label
     -include templates['field_error']
   %div.col-lg-10
-    %input.form-control value="{{value.strftime('%Y-%m-%d')}}" name="{{name}}" placeholder={{name}} id="{{id}}"{%- if disabled %} disabled=disabled{% endif %}
+    -if value:
+      %input.form-control value="{{value.strftime('%Y-%m-%d')}}" name="{{name}}" placeholder={{name}} id="{{id}}"{%- if disabled %} disabled=disabled{% endif %}
+    -else:
+      %input.form-control value="" name="{{name}}" placeholder={{name}} id="{{id}}"{%- if disabled %} disabled=disabled{% endif %}
 %script
   $(function(){
     $('#{{id}}').datepicker({format: 'yyyy-mm-dd'});

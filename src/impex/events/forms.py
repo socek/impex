@@ -13,7 +13,7 @@ class CreateEventForm(PostForm):
                        convert=ToDatetime())
         self.add_field('end_date', label='Data zakończenia',
                        convert=ToDatetime())
-        self.add_field('is_visible', label='Widoczne', convert=ToBool())
+        self.add_field('is_visible', label='Opublikowane', convert=ToBool())
 
     def on_success(self):
         data = self.get_data_dict(True)
@@ -35,6 +35,7 @@ class EditEventForm(CreateEventForm):
         self.instance.end_date = data['end_date']
         self.instance.is_visible = data['is_visible']
         self.drivers.events.update(self.instance)
+        self.database().commit()
 
     def read_from(self, event):
         self.set_value('name', event.name)

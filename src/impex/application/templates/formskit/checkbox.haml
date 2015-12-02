@@ -1,0 +1,7 @@
+%div.form-group
+  %div.col-lg-10.col-lg-offset-2
+    %div.checkbox
+      %label for="{{id}}"
+        %input value="2" type="checkbox" name="{{name}}" id="{{id}}"{%- if disabled %} disabled=disabled{% endif %}{%- if value %} checked{% endif -%}
+        =label
+        -include templates['field_error']

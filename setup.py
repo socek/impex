@@ -8,8 +8,8 @@ install_requires = [
     'impaf-beaker',
     'impaf-sqlalchemy',
     'impaf-alembic',
-    'impaf-fanstatic',
-    'impaf-formskit==0.1.1',
+    'impaf-fanstatic==0.1.1',
+    'impaf-formskit==0.1.2',
     'impaf-flashmsg',
     'impaf-auth',
 
@@ -21,6 +21,8 @@ install_requires = [
 
     'baelfire==0.3.1',
     'bael.project==0.2',
+    # 'css.fontawesome',
+    'formskit==0.5.4.10',
 ]
 
 
@@ -40,13 +42,14 @@ dependency_links = [
     create_link('impaf-beaker', '0.1'),
     create_link('impaf-sqlalchemy', '0.1'),
     create_link('impaf-alembic', '0.1'),
-    create_link('impaf-fanstatic', '0.1'),
-    create_link('impaf-formskit', '0.1.1'),
+    create_link('impaf-fanstatic', '0.1.1'),
+    create_link('impaf-formskit', '0.1.2'),
     create_link('impaf-flashmsg', '0.1'),
     create_link('impaf-auth', '0.1'),
 
     create_link('bael.project', '0.2'),
     create_link('baelfire', '0.3.1'),
+    create_link('formskit', '0.5.4.10'),
 ]
 
 if __name__ == '__main__':
@@ -61,7 +64,7 @@ if __name__ == '__main__':
         entry_points={
             'fanstatic.libraries': (
                 'home = impex.home.resources:library',
-                'bootstrap = impex.application.resources:library',
+                'impex = impex.application.resources:library',
             ),
             'console_scripts': (
                 'im-alembic = impex.application.alembic:alembic',
