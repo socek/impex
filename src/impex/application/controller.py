@@ -1,9 +1,10 @@
 from implugin.fanstatic import FanstaticController
-from implugin.formskit.controller import FormskitController
 from implugin.flashmsg.controller import FlashMessageController
+from implugin.formskit.controller import FormskitController
 
-from .requestable import Requestable
 from .plugins.flashmessage import ImpexFlashMessageWidget
+from .requestable import Requestable
+from .resources import Resources
 
 
 class Controller(
@@ -15,16 +16,7 @@ class Controller(
     _cls_flash_message_widget = ImpexFlashMessageWidget
 
     def _generate_resources(self):
-        super()._generate_resources()
-        self.resources.add_resource('home', 'impex.home.resources:home')
-        self.resources.add_resource(
-            'bootstrap',
-            'impex.application.resources:bootstrap',
-        )
-        self.resources.add_resource(
-            'custom',
-            'impex.application.resources:custom',
-        )
+        self.resources = Resources()
 
     def _create_context(self):
         super()._create_context()

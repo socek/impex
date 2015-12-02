@@ -1,8 +1,8 @@
 =widget.begin(htmlcls='form-horizontal')
   %fieldset
     =widget.text("name")
-    =widget.text("start_date")
-    =widget.text("end_date")
+    =widget.date("start_date")
+    =widget.date("end_date")
     =widget.text("is_visible")
     -block submit
       =widget.submit("Dodaj")

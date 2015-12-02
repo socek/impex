@@ -1,0 +1,11 @@
+=need('datepicker')
+%div.form-group
+  %label.col-lg-2.control-label for="{{id}}"
+    =label
+    -include templates['field_error']
+  %div.col-lg-10
+    %input.form-control value="{{value.strftime('%Y-%m-%d')}}" name="{{name}}" placeholder={{name}} id="{{id}}"{%- if disabled %} disabled=disabled{% endif %}
+%script
+  $(function(){
+    $('#{{id}}').datepicker({format: 'yyyy-mm-dd'});
+  });
