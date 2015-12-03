@@ -1,0 +1,5 @@
+impex.games.admin_controllers:
+    -
+        controller: GameListController
+        route: games:admin:list
+        url: /event/{event_id:\d+}/games/

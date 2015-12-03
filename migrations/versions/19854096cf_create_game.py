@@ -17,6 +17,7 @@ from sqlalchemy import Column
 from sqlalchemy import DateTime
 from sqlalchemy import ForeignKey
 from sqlalchemy import Integer
+from sqlalchemy.dialects.postgresql import JSON
 
 
 def upgrade():
@@ -27,6 +28,9 @@ def upgrade():
         Column('priority', Integer, nullable=False),
         Column('status', Integer, nullable=False, default=0),
         Column('event_id', Integer, ForeignKey('events.id'), nullable=False),
+        Column('left_id', Integer, ForeignKey('teams.id')),
+        Column('right_id', Integer, ForeignKey('teams.id')),
+        Column('scores', JSON),
     )
 
 

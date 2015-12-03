@@ -4,6 +4,7 @@ from implugin.sqlalchemy.application import SqlAlchemyApplication
 from implugin.auth.application import AuthApplication
 from implugin.fanstatic import FanstaticApplication
 
+
 from .entryfactory import EntryFactory
 from .routing import ImpexRouting
 
@@ -15,6 +16,7 @@ class ImpexApplication(
     FanstaticApplication,
     AuthApplication,
 ):
+
     class Config(HamlApplication.Config):
         routing_cls = ImpexRouting
 

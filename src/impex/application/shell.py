@@ -1,9 +1,10 @@
-from .init import main
-from .driver import ImpexDriverHolder
+from implugin.sqlalchemy.requestable import DatabaseConnection
+
+from impex.application.init import main
+from impex.application.driver import ImpexDriverHolder
 
 
 def setup(env):
-    db = env['registry']['db']
     env['main'] = main
-    env['db'] = db
-    env['drivers'] = ImpexDriverHolder(lambda: db)
+    env['db'] = DatabaseConnection(main.settings, main.config.registry).database()
+    env['drivers'] = ImpexDriverHolder(lambda: env['db'])

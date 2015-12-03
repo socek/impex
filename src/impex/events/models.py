@@ -6,7 +6,7 @@ from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
 from impex.application.models import Base
-from impex.game.models import Game
+from impex.games.models import Game
 
 
 class Event(Base):

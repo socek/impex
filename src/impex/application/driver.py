@@ -4,6 +4,7 @@ from impex.orders.driver import OrderDriver
 from impex.teams.driver import TeamDriver
 from impex.auth.drivers import AuthDriver
 from impex.events.driver import EventDriver
+from impex.games.driver import GameDriver
 
 
 class ImpexDriverHolder(AuthDriverHolder):
@@ -23,3 +24,7 @@ class ImpexDriverHolder(AuthDriverHolder):
     @property
     def events(self):
         return self.feeded_driver(EventDriver())
+
+    @property
+    def games(self):
+        return self.feeded_driver(GameDriver())
