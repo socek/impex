@@ -10,7 +10,8 @@ class EventListController(Controller):
     permission = 'admin'
 
     def set_crumbs(self, widget):
-        widget.add_breadcrumb('Główna', self.route_path('home'))
+        route = self.route_path('home')
+        widget.add_breadcrumb('Główna', route)
         widget.add_breadcrumb('Wydarzenia', None, True)
 
     def make(self):
