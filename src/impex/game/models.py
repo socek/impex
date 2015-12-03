@@ -1,6 +1,8 @@
 from sqlalchemy import Column
-from sqlalchemy import Integer
 from sqlalchemy import DateTime
+from sqlalchemy import ForeignKey
+from sqlalchemy import Integer
+from sqlalchemy.orm import relationship
 
 from impex.application.models import Base
 
@@ -16,3 +18,6 @@ class Game(Base):
     plaing_at = DateTime()
     priority = Column(Integer, nullable=False)
     status = Column(Integer, nullable=False, default=STATUS_NOT_STARTED)
+    event_id = Column(Integer, ForeignKey('events.id'), nullable=False)
+
+    event = relationship("Event")

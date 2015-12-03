@@ -9,8 +9,10 @@
     =loop.index
 
 -macro edit_button(url):
-  %a.fa.btn.btn-success.btn-sm.fa-pencil href="{{url}}" title="Edytuj"
+  %a.fa.btn.btn-sm.btn-success.fa-pencil href="{{url}}" title="Edytuj"
 
 -macro delete_button(url):
-  %a.fa.btn.btn-danger.btn-sm.fa-trash-o href="{{url}}" title="Usuń"
+  %a.fa.btn.btn-sm.btn-danger.fa-trash-o href="{{url}}" title="Usuń"
 
+-macro play_button(url):
+  %a.fa.btn.btn-sm.btn-info.fa-play  href={{url}} title="Mecze"
