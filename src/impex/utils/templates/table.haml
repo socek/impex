@@ -1,5 +1,5 @@
 -macro add_button(url):
-  %a.btn.btn-small.btn-success.fa.fa-plus href="{{url}}"
+  %a.btn.btn-small.btn-success.fa.fa-plus href="{{url}}" title="Stwórz"
 
 -macro index_header():
   %th.col-lg-1.text-center -> #
@@ -9,8 +9,8 @@
     =loop.index
 
 -macro edit_button(url):
-  %a.fa.btn.btn-success.btn-sm.fa-pencil href="{{url}}"
+  %a.fa.btn.btn-success.btn-sm.fa-pencil href="{{url}}" title="Edytuj"
 
 -macro delete_button(url):
-  %a.fa.btn.btn-danger.btn-sm.fa-trash-o href="{{url}}"
+  %a.fa.btn.btn-danger.btn-sm.fa-trash-o href="{{url}}" title="Usuń"
 
