@@ -12,3 +12,7 @@ td i.fa.fa-times {
 tr.withactions td {
     line-height: 25px;
 }
+.jumbotron.jumbotron2 {
+    margin-top: 0;
+    padding-top: 1px;
+}

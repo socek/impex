@@ -37,6 +37,11 @@ class TestTeamListController(ControllerCase):
                     self.mroute_path().return_value,
                 ),
                 call(
+                    'Panel Administracyjny',
+                    None,
+                    True,
+                ),
+                call(
                     'Drużyny',
                     None,
                     True,
@@ -82,6 +87,11 @@ class TestTeamCreateController(ControllerCase):
                 call(
                     'Główna',
                     self.mroute_path().return_value,
+                ),
+                call(
+                    'Panel Administracyjny',
+                    None,
+                    True,
                 ),
                 call(
                     'Drużyny',
@@ -154,6 +164,11 @@ class TestTeamEditController(ControllerCase):
                 call(
                     'Główna',
                     self.mroute_path().return_value,
+                ),
+                call(
+                    'Panel Administracyjny',
+                    None,
+                    True,
                 ),
                 call(
                     'Drużyny',

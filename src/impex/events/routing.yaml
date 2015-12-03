@@ -1,4 +1,4 @@
-impex.events.controllers:
+impex.events.admin_controllers:
     -
         controller: EventListController
         route: events:admin:list
@@ -11,3 +11,12 @@ impex.events.controllers:
         controller: EventEditController
         route: events:admin:edit
         url: /event/{event_id:\d+}/
+impex.events.controllers:
+    -
+        controller: EventListController
+        route: events:list
+        url: /
+    -
+        controller: EventListController
+        route: home
+        url: /

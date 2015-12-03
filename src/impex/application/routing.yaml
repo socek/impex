@@ -1,5 +1,0 @@
-impex.home.controller:
-    -
-        controller: HomeController
-        route: home
-        url: /
