@@ -1,0 +1,16 @@
+-macro add_button(url):
+  %a.btn.btn-small.btn-success.fa.fa-plus href="{{url}}"
+
+-macro index_header():
+  %th.col-lg-1.text-center -> #
+
+-macro index_row(loop):
+  %td.text-center
+    =loop.index
+
+-macro edit_button(url):
+  %a.fa.btn.btn-success.btn-sm.fa-pencil href="{{url}}"
+
+-macro delete_button(url):
+  %a.fa.btn.btn-danger.btn-sm.fa-trash-o href="{{url}}"
+

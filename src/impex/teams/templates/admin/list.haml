@@ -1,30 +1,29 @@
 -extends "impex.application:templates/authencitated.haml"
+-import 'impex.utils:templates/table.haml' as table
 -block content
     %div.col-lg-12
       %div.bs-component
         %div.jumbotron
           %h1
             Lista drużyn&nbsp;
-            %a.btn.btn-small.btn-success.fa.fa-plus href="{{route_path('teams:admin:create')}}"
+            =table.add_button(route_path('teams:admin:create'))
 
           %table.table.table-striped.table-hover
             %thead
               %tr
-                %th -> #
+                =table.index_header()
                 %th -> Nazwa
                 %th -> Miejscowość
                 %th -> Akcje
 
             %tbody
               -for team in teams:
-                %tr
-                  %td
-                    =loop.index
+                %tr.withactions
+                  =table.index_row(loop)
                   %td
                     =team.name
                   %td
                     =team.hometown
                   %td
-                    %a.fa.btn.btn-success.btn-sm.fa-pencil href="{{route_path('teams:admin:edit', team_id=team.id)}}"
-                    %a.fa.btn.btn-danger.btn-sm.fa-trash-o href="#"
+                    =table.edit_button(route_path('teams:admin:edit', team_id=team.id))
 
