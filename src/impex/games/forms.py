@@ -53,3 +53,22 @@ class CreateGameForm(PostForm):
             event_id=self.matchdict['event_id'],
         )
         self.database().commit()
+
+
+class EditGameForm(CreateGameForm):
+
+    def on_success(self):
+        data = self.get_data_dict(True)
+        self.instance.plaing_at = data['plaing_at']
+        self.instance.priority = data['priority']
+        self.instance.left_id = data['left_id']
+        self.instance.right_id = data['right_id']
+        self.drivers.games.update(self.instance)
+        self.database().commit()
+
+    def read_from(self, game):
+        self.set_value('plaing_at', game.plaing_at)
+        self.set_value('priority', game.priority)
+        self.set_value('left_id', game.left_id)
+        self.set_value('right_id', game.right_id)
+        self.instance = game

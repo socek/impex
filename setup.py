@@ -23,6 +23,7 @@ install_requires = [
     'bael.project==0.2',
     # 'css.fontawesome',
     'formskit==0.5.4.10',
+    'freezegun',
 ]
 
 

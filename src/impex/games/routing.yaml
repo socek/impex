@@ -2,8 +2,12 @@ impex.games.admin_controllers:
     -
         controller: GameListController
         route: games:admin:list
-        url: /event/{event_id:\d+}/games/
+        url: /admin/event/{event_id:\d+}/games/
     -
         controller: GameCreateController
         route: games:admin:create
-        url: /event/{event_id:\d+}/games/create/
+        url: /admin/event/{event_id:\d+}/game/create/
+    -
+        controller: GameEditController
+        route: games:admin:edit
+        url: /admin/event/{event_id:\d+}/game/{game_id:\d+}/edit

@@ -37,11 +37,6 @@ class TestEditEventForm(PostFormCase):
     _object_cls = EditEventForm
 
     @cache
-    def minstance(self):
-        self.object().instance = MagicMock()
-        return self.object().instance
-
-    @cache
     def object(self):
         obj = super().object()
         obj.fields['start_date']._init_convert(None)

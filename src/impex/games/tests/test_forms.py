@@ -1,17 +1,15 @@
+from datetime import datetime
+from freezegun import freeze_time
+from mock import MagicMock
 from mock import sentinel
 
-from impaf.testing import cache
-
 from ..forms import CreateGameForm
+from ..forms import EditGameForm
 from impex.application.testing import PostFormCase
 
 
 class TestCreateEventForm(PostFormCase):
     _object_cls = CreateGameForm
-
-    @cache
-    def mset_value(self):
-        return self.pobject(self.object(), 'set_value')
 
     def test_on_success(self):
         self.mdatabase()
@@ -55,3 +53,50 @@ class TestCreateEventForm(PostFormCase):
         self.mdrivers()
 
         assert self.object()._get_teams() == self.mdrivers().teams.list.return_value
+
+
+class TestEditGameForm(PostFormCase):
+    _object_cls = EditGameForm
+
+    def test_on_success(self):
+        self.mdatabase()
+        self.mdrivers()
+        self.mdata().return_value = {
+            'plaing_at': sentinel.plaing_at,
+            'priority': sentinel.priority,
+            'left_id': sentinel.left_id,
+            'right_id': sentinel.right_id,
+        }
+        self.minstance()
+
+        self.object().on_success()
+
+        self.mdata().assert_called_once_with(True)
+        assert self.minstance().plaing_at == sentinel.plaing_at
+        assert self.minstance().priority == sentinel.priority
+        assert self.minstance().left_id == sentinel.left_id
+        assert self.minstance().right_id == sentinel.right_id
+        self.mdrivers().games.update.assert_called_once_with(
+            self.minstance()
+        )
+
+    @freeze_time("2012-01-14 15:15")
+    def test_read_from(self):
+        instance = MagicMock()
+
+        instance.plaing_at = datetime.now()
+        instance.priority = 3
+        instance.left_id = sentinel.left_id
+        instance.right_id = sentinel.right_id
+
+        self.object().read_from(instance)
+
+        assert self.object().get_data_dict(True) == {
+            'csrf_token': self.mget_csrf_token().return_value,
+            'plaing_at': datetime.now(),
+            'priority': 3,
+            'left_id': sentinel.left_id,
+            'right_id': sentinel.right_id,
+        }
+
+        assert self.object().instance is instance

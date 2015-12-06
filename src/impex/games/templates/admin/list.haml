@@ -27,3 +27,5 @@
                     %td -> =game.plaing_at.strftime('%Y-%m-%d %H:%M')
                   -else:
                     %td
+                  %td
+                    =table.edit_button(route_path('games:admin:edit', event_id=request.matchdict['event_id'], game_id=game.id))

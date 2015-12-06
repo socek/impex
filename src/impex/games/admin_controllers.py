@@ -1,6 +1,7 @@
 from impex.application.controller import Controller
 
 from .widgets import CreateGameFormWidget
+from .widgets import EditGameFormWidget
 
 
 class GameListController(Controller):
@@ -47,6 +48,40 @@ class GameCreateController(Controller):
 
         if form.validate():
             self.add_flashmsg('Dodano mecz.', 'info')
+            self.redirect(
+                'games:admin:list',
+                event_id=self.matchdict['event_id'],
+            )
+
+
+class GameEditController(Controller):
+
+    renderer = 'impex.games:templates/admin/edit.haml'
+    permission = 'admin'
+
+    def set_crumbs(self, widget):
+        route = self.route_path('home')
+        widget.add_breadcrumb('Główna', route)
+        widget.add_breadcrumb('Panel Administracyjny', None, True)
+        widget.add_breadcrumb(
+            'Wydarzenia', self.route_path('events:admin:list'))
+        widget.add_breadcrumb(
+            'Mecze',
+            self.route_path(
+                'games:admin:list',
+                event_id=self.matchdict['event_id'],
+            ),
+        )
+        widget.add_breadcrumb('Edycja', None, True)
+
+    def make(self):
+        game_id = self.matchdict['game_id']
+        game = self.drivers.games.get_by_id(game_id)
+        form = self.add_form_widget(EditGameFormWidget)
+        form.read_from(game)
+
+        if form.validate():
+            self.add_flashmsg('Zapisano zmiany w meczu.', 'info')
             self.redirect(
                 'games:admin:list',
                 event_id=self.matchdict['event_id'],

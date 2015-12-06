@@ -10,7 +10,7 @@ impex.events.admin_controllers:
     -
         controller: EventEditController
         route: events:admin:edit
-        url: /event/{event_id:\d+}/
+        url: /admin/event/{event_id:\d+}/edit
 impex.events.controllers:
     -
         controller: EventListController

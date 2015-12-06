@@ -6,8 +6,8 @@
     -include templates['field_error']
   %div.col-lg-10
     -if value:
-      %input.form-control value="{{value.strftime('%Y-%m-%d')}}" name="{{name}}" placeholder="Data" id="{{id}}"{%- if disabled %} disabled=disabled{% endif %}
-      %input.form-control value="{{value.strftime('%H:%M')}}" name="{{name}}" placeholder="Godzina" id="{{id}}"{%- if disabled %} disabled=disabled{% endif %}
+      %input.form-control value="{{value.strftime('%Y-%m-%d')}}" name="{{name}}" placeholder="Data" id="{{id}}_date"{%- if disabled %} disabled=disabled{% endif %}
+      %input.form-control value="{{value.strftime('%H:%M')}}" name="{{name}}" placeholder="Godzina" id="{{id}}_time"{%- if disabled %} disabled=disabled{% endif %}
     -else:
       %input.form-control value="" name="{{name}}" placeholder="Data" id="{{id}}_date"{%- if disabled %} disabled=disabled{% endif %}
       %input.form-control value="" name="{{name}}" placeholder="Godzina" id="{{id}}_time"{%- if disabled %} disabled=disabled{% endif %}

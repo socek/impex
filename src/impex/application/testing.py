@@ -1,3 +1,5 @@
+from mock import MagicMock
+
 from impaf.testing import cache
 from impaf.testing.case import PyTestCase
 from implugin.flashmsg.testing import FlashMessageCase
@@ -37,6 +39,15 @@ class PostFormCase(RequestCase):
     @cache
     def mget_csrf_token(self):
         return self.mrequest().session.get_csrf_token
+
+    @cache
+    def mset_value(self):
+        return self.pobject(self.object(), 'set_value')
+
+    @cache
+    def minstance(self):
+        self.object().instance = MagicMock()
+        return self.object().instance
 
 
 class DriverCase(BaseDriverCase):
