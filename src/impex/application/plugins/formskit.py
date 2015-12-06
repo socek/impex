@@ -14,6 +14,7 @@ class FormWidget(BaseFormWidget):
     class Templates(BaseFormWidget.Templates):
         text = 'impex.application:templates/formskit/text.haml'
         date = 'impex.application:templates/formskit/date.haml'
+        datetime = 'impex.application:templates/formskit/datetime.haml'
         checkbox = 'impex.application:templates/formskit/checkbox.haml'
         select = 'impex.application:templates/formskit/select.haml'
 
@@ -28,3 +29,6 @@ class FormWidget(BaseFormWidget):
 
     def checkbox(self, name, disabled=False, autofocus=False):
         return self._input('checkbox', name, disabled, autofocus)
+
+    def datetime(self, name, disabled=False, autofocus=False):
+        return self._input('datetime', name, disabled, autofocus)

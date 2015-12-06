@@ -41,6 +41,18 @@ datepicker = Resource(
         datepicker_locale_pl,
     ]
 )
+timepicker_js = Resource(
+    library,
+    'bootstrap/js/bootstrap-timepicker.min.js',
+    bottom=True,
+)
+timepicker = Resource(
+    library,
+    'bootstrap/css/bootstrap-timepicker.min.css',
+    depends=[
+        timepicker_js,
+    ]
+)
 
 fontawesome = Resource(
     library,
@@ -68,4 +80,8 @@ class Resources(BaseResources):
         self.add_resource(
             'fontawesome',
             'impex.application.resources:fontawesome',
+        )
+        self.add_resource(
+            'timepicker',
+            'impex.application.resources:timepicker',
         )

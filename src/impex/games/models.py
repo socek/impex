@@ -17,7 +17,7 @@ class Game(Base):
     STATUS_ENDED = 2
 
     id = Column(Integer, primary_key=True)
-    plaing_at = DateTime()
+    plaing_at = Column(DateTime())
     priority = Column(Integer, nullable=False)
     status = Column(Integer, nullable=False, default=STATUS_NOT_STARTED)
     event_id = Column(Integer, ForeignKey('events.id'), nullable=False)

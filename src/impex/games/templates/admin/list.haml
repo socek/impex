@@ -14,6 +14,8 @@
                 =table.index_header()
                 %th -> Drużyna
                 %th -> Drużyna
+                %th -> Data
+                %th -> Akcje
 
             %tbody
               -for game in games:
@@ -21,3 +23,7 @@
                   =table.index_row(loop)
                   %td -> =game.left.name
                   %td -> =game.right.name
+                  -if game.plaing_at:
+                    %td -> =game.plaing_at.strftime('%Y-%m-%d %H:%M')
+                  -else:
+                    %td

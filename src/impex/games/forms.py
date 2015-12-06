@@ -52,5 +52,4 @@ class CreateGameForm(PostForm):
             right_id=data['right_id'],
             event_id=self.matchdict['event_id'],
         )
-
         self.database().commit()
