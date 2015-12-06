@@ -44,6 +44,7 @@ class CreateGameForm(PostForm):
 
     def on_success(self):
         data = self.get_data_dict(True)
+        self._fix_priorities(data['priority'])
 
         self.drivers.games.create(
             plaing_at=data['plaing_at'],
@@ -54,11 +55,25 @@ class CreateGameForm(PostForm):
         )
         self.database().commit()
 
+    def _fix_priorities(self, priority):
+        games = list(
+            self.drivers.games.find_by_priority(
+                self.matchdict['event_id'],
+                priority,
+            )
+        )
+        if games:
+            for game in reversed(games):
+                game.priority += 1
+                self.drivers.games.update(game)
+
 
 class EditGameForm(CreateGameForm):
 
     def on_success(self):
         data = self.get_data_dict(True)
+        self._fix_priorities(data['priority'])
+
         self.instance.plaing_at = data['plaing_at']
         self.instance.priority = data['priority']
         self.instance.left_id = data['left_id']

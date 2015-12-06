@@ -6,6 +6,7 @@ from mock import sentinel
 from ..forms import CreateGameForm
 from ..forms import EditGameForm
 from impex.application.testing import PostFormCase
+from impex.application.testing import cache
 
 
 class TestCreateEventForm(PostFormCase):
@@ -100,3 +101,38 @@ class TestEditGameForm(PostFormCase):
         }
 
         assert self.object().instance is instance
+
+    @cache
+    def mpriorities(self):
+        elements = []
+        self.mdrivers().games.find_by_priority.return_value = elements
+
+        for loop in range(5):
+            obj = MagicMock()
+            obj.priority = loop + 3
+            elements.append(obj)
+        return elements
+
+    def test_fix_priorities_on_new_priority(self):
+        del self.mpriorities()[:]
+        self.matchdict()['event_id'] = sentinel.event_id
+
+        self.object()._fix_priorities(sentinel.priority)
+        self.mdrivers().games.find_by_priority.assert_called_once_with(
+            sentinel.event_id,
+            sentinel.priority,
+        )
+
+    def test_fix_priorities(self):
+        self.mdrivers()
+        elements = self.mpriorities()
+        self.matchdict()['event_id'] = sentinel.event_id
+
+        self.object()._fix_priorities(sentinel.priority)
+        self.mdrivers().games.find_by_priority.assert_called_once_with(
+            sentinel.event_id,
+            sentinel.priority,
+        )
+        prorities = [element.priority for element in elements]
+        assert prorities == [4, 5, 6, 7, 8]
+        assert self.mdrivers().games.update.called

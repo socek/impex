@@ -67,3 +67,13 @@ class TestDriverGame(DriverCase):
         data = self.setUp()
         result = self.object().get_next_avalible_priority(data['events'][0].id)
         assert result == 4
+
+    def test_find_by_priority(self):
+        data = self.setUp()
+        elements = self.object().find_by_priority(data['events'][0].id, 2)
+        elements_id = [element.id for element in elements]
+
+        assert [
+            data['games'][0].id,
+            data['games'][1].id
+        ] == elements_id

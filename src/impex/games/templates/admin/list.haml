@@ -12,6 +12,7 @@
             %thead
               %tr
                 =table.index_header()
+                %th -> Priorytet
                 %th -> Drużyna
                 %th -> Drużyna
                 %th -> Data
@@ -21,6 +22,7 @@
               -for game in games:
                 %tr.withactions
                   =table.index_row(loop)
+                  %td -> =game.priority
                   %td -> =game.left.name
                   %td -> =game.right.name
                   -if game.plaing_at:
