@@ -15,6 +15,7 @@ class FormWidget(BaseFormWidget):
         text = 'impex.application:templates/formskit/text.haml'
         date = 'impex.application:templates/formskit/date.haml'
         checkbox = 'impex.application:templates/formskit/checkbox.haml'
+        select = 'impex.application:templates/formskit/select.haml'
 
     def _base_input(self, name):
         data = super()._base_input(name)

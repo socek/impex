@@ -1,0 +1,10 @@
+%div.form-group
+  %label.col-lg-2.control-label for="{{id}}"
+    =label
+    -include templates['field_error']
+  %div.col-lg-10
+    %select.form-control name="{{name}}"
+      -for value in field.avalible_values
+        %option value="{{value.id}}"
+          =value.name
+

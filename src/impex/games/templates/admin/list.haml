@@ -6,15 +6,18 @@
         %div.jumbotron.jumbotron2
           %h1
             Lista meczy&nbsp;
+            =table.add_button(route_path('games:admin:create', event_id=request.matchdict['event_id']))
 
           %table.table.table-striped.table-hover
             %thead
               %tr
                 =table.index_header()
-                %th -> status
+                %th -> Drużyna
+                %th -> Drużyna
 
             %tbody
               -for game in games:
                 %tr.withactions
                   =table.index_row(loop)
-                  %td -> =game.status
+                  %td -> =game.left.name
+                  %td -> =game.right.name

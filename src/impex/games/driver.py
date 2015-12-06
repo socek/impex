@@ -12,3 +12,6 @@ class GameDriver(ModelDriver):
             .filter(self.model.event_id == event_id)
             .order_by(self.model.priority)
         )
+
+    def get_next_avalible_priority(self, event_id):
+        return self.list(event_id).count() + 1
