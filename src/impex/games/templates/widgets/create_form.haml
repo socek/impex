@@ -1,5 +1,6 @@
 =widget.begin(htmlcls='form-horizontal')
   %fieldset
+    =widget.form_error()
     =widget.datetime("plaing_at")
     =widget.text("priority")
     =widget.select('left_id')

@@ -5,5 +5,5 @@
   %div.col-lg-10
     %select.form-control name="{{name}}"
       -for element in field.avalible_values
-        %option value="{{element.id}}"{% if element.id == value %} selected=selected{% endif %}
+        %option value="{{element.id}}"{% if str(element.id) == value %} selected=selected{% endif %}
           =element.name

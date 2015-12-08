@@ -1,3 +1,6 @@
+from sqlalchemy import and_
+from sqlalchemy import or_
+
 from implugin.sqlalchemy.driver import ModelDriver
 
 from .models import Game
@@ -21,3 +24,32 @@ class GameDriver(ModelDriver):
             self.list(event_id)
             .filter(self.model.priority >= priority)
         )
+
+    def increment_priorities_by(self, event_id, priority, game):
+        elements = self.list(event_id).all()
+        elements.remove(game)
+        elements.insert(priority - 1, game)
+        for index, game in enumerate(elements):
+            game.priority = index + 1
+        self.database().flush()
+
+    def is_doubled(self, event_id, left_id, right_id, except_id=None):
+        query = (
+            self.find_all()
+            .filter(self.model.event_id == event_id)
+            .filter(
+                or_(
+                    and_(
+                        self.model.left_id == left_id,
+                        self.model.right_id == right_id,
+                    ),
+                    and_(
+                        self.model.left_id == right_id,
+                        self.model.right_id == left_id,
+                    )
+                )
+            )
+        )
+        if except_id:
+            query = query.filter(self.model.id != except_id)
+        return query.count() > 0

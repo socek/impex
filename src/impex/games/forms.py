@@ -1,8 +1,28 @@
 from formskit.converters import ToDatetime
 from formskit.converters import ToInt
+from formskit.formvalidators import FormValidator
 from formskit.validators import NotEmpty
 
 from impex.application.plugins.formskit import PostForm
+
+
+class GameValidator(FormValidator):
+    message = 'That game already exists in this event!'
+
+    def validate(self):
+        left_id = self.form.get_value('left_id')
+        right_id = self.form.get_value('right_id')
+        if getattr(self.form, 'instance', None):
+            except_id = self.form.instance.id
+        else:
+            except_id = None
+
+        return not self.form.drivers.games.is_doubled(
+            self.form.matchdict['event_id'],
+            left_id,
+            right_id,
+            except_id,
+        )
 
 
 class CreateGameForm(PostForm):
@@ -31,6 +51,8 @@ class CreateGameForm(PostForm):
             label='Druga drużyna',
         ).set_avalible_values(self._get_teams)
 
+        self.add_form_validator(GameValidator())
+
     def fill(self):
         self.set_value(
             'priority',
@@ -44,9 +66,8 @@ class CreateGameForm(PostForm):
 
     def on_success(self):
         data = self.get_data_dict(True)
-        self._fix_priorities(data['priority'])
 
-        self.drivers.games.create(
+        game = self.drivers.games.create(
             plaing_at=data['plaing_at'],
             priority=data['priority'],
             left_id=data['left_id'],
@@ -54,25 +75,21 @@ class CreateGameForm(PostForm):
             event_id=self.matchdict['event_id'],
         )
         self.database().commit()
+        self._fix_priorities(data['priority'], game)
 
-    def _fix_priorities(self, priority):
-        games = list(
-            self.drivers.games.find_by_priority(
-                self.matchdict['event_id'],
-                priority,
-            )
+    def _fix_priorities(self, priority, game):
+        self.drivers.games.increment_priorities_by(
+            self.matchdict['event_id'],
+            priority,
+            game,
         )
-        if games:
-            for game in reversed(games):
-                game.priority += 1
-                self.drivers.games.update(game)
+        self.database().commit()
 
 
 class EditGameForm(CreateGameForm):
 
     def on_success(self):
         data = self.get_data_dict(True)
-        self._fix_priorities(data['priority'])
 
         self.instance.plaing_at = data['plaing_at']
         self.instance.priority = data['priority']
@@ -80,10 +97,11 @@ class EditGameForm(CreateGameForm):
         self.instance.right_id = data['right_id']
         self.drivers.games.update(self.instance)
         self.database().commit()
+        self._fix_priorities(data['priority'], self.instance)
 
     def read_from(self, game):
         self.set_value('plaing_at', game.plaing_at)
         self.set_value('priority', game.priority)
-        self.set_value('left_id', game.left_id)
-        self.set_value('right_id', game.right_id)
+        self.set_value('left_id', str(game.left_id))
+        self.set_value('right_id', str(game.right_id))
         self.instance = game

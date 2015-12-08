@@ -5,12 +5,18 @@ from mock import sentinel
 
 from ..forms import CreateGameForm
 from ..forms import EditGameForm
+from ..forms import GameValidator
 from impex.application.testing import PostFormCase
+from impex.application.testing import RequestCase
 from impex.application.testing import cache
 
 
 class TestCreateEventForm(PostFormCase):
     _object_cls = CreateGameForm
+
+    @cache
+    def mfix_fix_priorities(self):
+        return self.pobject(self.object(), '_fix_priorities')
 
     def test_on_success(self):
         self.mdatabase()
@@ -22,6 +28,7 @@ class TestCreateEventForm(PostFormCase):
             'right_id': sentinel.right_id,
         }
         self.matchdict()['event_id'] = sentinel.event_id
+        self.mfix_fix_priorities()
 
         self.object().on_success()
 
@@ -34,6 +41,10 @@ class TestCreateEventForm(PostFormCase):
             event_id=sentinel.event_id,
         )
         self.mdatabase().commit.assert_called_once_with()
+        self.mfix_fix_priorities().assert_called_once_with(
+            sentinel.priority,
+            self.mdrivers().games.create.return_value,
+        )
 
     def test_fill(self):
         self.mdrivers()
@@ -96,43 +107,57 @@ class TestEditGameForm(PostFormCase):
             'csrf_token': self.mget_csrf_token().return_value,
             'plaing_at': datetime.now(),
             'priority': 3,
-            'left_id': sentinel.left_id,
-            'right_id': sentinel.right_id,
+            'left_id': str(sentinel.left_id),
+            'right_id': str(sentinel.right_id),
         }
 
         assert self.object().instance is instance
 
-    @cache
-    def mpriorities(self):
-        elements = []
-        self.mdrivers().games.find_by_priority.return_value = elements
-
-        for loop in range(5):
-            obj = MagicMock()
-            obj.priority = loop + 3
-            elements.append(obj)
-        return elements
-
-    def test_fix_priorities_on_new_priority(self):
-        del self.mpriorities()[:]
-        self.matchdict()['event_id'] = sentinel.event_id
-
-        self.object()._fix_priorities(sentinel.priority)
-        self.mdrivers().games.find_by_priority.assert_called_once_with(
-            sentinel.event_id,
-            sentinel.priority,
-        )
-
     def test_fix_priorities(self):
         self.mdrivers()
-        elements = self.mpriorities()
         self.matchdict()['event_id'] = sentinel.event_id
+        self.mdatabase()
 
-        self.object()._fix_priorities(sentinel.priority)
-        self.mdrivers().games.find_by_priority.assert_called_once_with(
+        self.object()._fix_priorities(sentinel.priority, sentinel.game)
+        self.mdrivers().games.increment_priorities_by.assert_called_once_with(
             sentinel.event_id,
             sentinel.priority,
+            sentinel.game,
         )
-        prorities = [element.priority for element in elements]
-        assert prorities == [4, 5, 6, 7, 8]
-        assert self.mdrivers().games.update.called
+        self.mdatabase().commit.assert_called_once_with()
+
+
+class TestGameValidator(RequestCase):
+
+    @cache
+    def mform(self):
+        return MagicMock()
+
+    @cache
+    def object(self):
+        validator = GameValidator()
+        validator.set_form(self.mform())
+        return validator
+
+    def test_when_instance_is_present(self):
+        self.mform().drivers.games.is_doubled.return_value = False
+        self.mform().matchdict = {'event_id': sentinel.event_id}
+        assert self.object().validate() is True
+        self.mform().drivers.games.is_doubled.assert_called_once_with(
+            sentinel.event_id,
+            self.mform().get_value.return_value,
+            self.mform().get_value.return_value,
+            self.mform().instance.id,
+        )
+
+    def test_when_instance_is_not_present(self):
+        self.mform().drivers.games.is_doubled.return_value = True
+        self.mform().matchdict = {'event_id': sentinel.event_id}
+        self.mform().instance = None
+        assert self.object().validate() is False
+        self.mform().drivers.games.is_doubled.assert_called_once_with(
+            sentinel.event_id,
+            self.mform().get_value.return_value,
+            self.mform().get_value.return_value,
+            None,
+        )
