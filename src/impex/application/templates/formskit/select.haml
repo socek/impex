@@ -1,9 +1,14 @@
+=need('select2')
 %div.form-group
   %label.col-lg-2.control-label for="{{id}}"
     =label
     -include templates['field_error']
   %div.col-lg-10
-    %select.form-control name="{{name}}"
+    %select.form-control name="{{name}}" id="{{id}}"
       -for element in field.avalible_values
         %option value="{{element.id}}"{% if str(element.id) == value %} selected=selected{% endif %}
           =element.name
+%script
+  $(function(){
+    $('#{{id}}').select2();
+  });

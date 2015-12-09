@@ -59,6 +59,27 @@ fontawesome = Resource(
     'fontawesome/css/font-awesome.min.css',
 )
 
+select2_js = Resource(
+    library,
+    'select2/js/select2.min.js',
+    bottom=True,
+)
+
+select2_locale_pl = Resource(
+    library,
+    'select2/js/i18n/pl.js',
+    bottom=True,
+)
+
+select2 = Resource(
+    library,
+    'select2/css/select2.min.css',
+    depends=[
+        select2_js,
+        select2_locale_pl,
+    ]
+)
+
 
 class Resources(BaseResources):
 
@@ -84,4 +105,8 @@ class Resources(BaseResources):
         self.add_resource(
             'timepicker',
             'impex.application.resources:timepicker',
+        )
+        self.add_resource(
+            'select2',
+            'impex.application.resources:select2',
         )
