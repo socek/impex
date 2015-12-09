@@ -16,3 +16,6 @@ tr.withactions td {
     margin-top: 0;
     padding-top: 1px;
 }
+.btn-left-margin {
+    margin-left: 5px;
+}
