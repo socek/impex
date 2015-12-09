@@ -25,6 +25,15 @@ class GameValidator(FormValidator):
         )
 
 
+class TeamsMustDifferValidator(FormValidator):
+    message = 'Teams can not be the same.'
+
+    def validate(self):
+        left_id = self.form.get_value('left_id')
+        right_id = self.form.get_value('right_id')
+        return left_id != right_id
+
+
 class CreateGameForm(PostForm):
 
     def create_form(self):
@@ -52,6 +61,7 @@ class CreateGameForm(PostForm):
         ).set_avalible_values(self._get_teams)
 
         self.add_form_validator(GameValidator())
+        self.add_form_validator(TeamsMustDifferValidator())
 
     def fill(self):
         self.set_value(

@@ -52,3 +52,16 @@ class PostFormCase(RequestCase):
 
 class DriverCase(BaseDriverCase):
     _application_cls = ImpexApplication
+
+
+class ValidatorCase(RequestCase):
+
+    @cache
+    def mform(self):
+        return MagicMock()
+
+    @cache
+    def object(self):
+        validator = self._object_cls()
+        validator.set_form(self.mform())
+        return validator

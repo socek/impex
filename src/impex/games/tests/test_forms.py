@@ -3,12 +3,14 @@ from freezegun import freeze_time
 from mock import MagicMock
 from mock import sentinel
 
+from impex.application.testing import PostFormCase
+from impex.application.testing import ValidatorCase
+from impex.application.testing import cache
+
 from ..forms import CreateGameForm
 from ..forms import EditGameForm
 from ..forms import GameValidator
-from impex.application.testing import PostFormCase
-from impex.application.testing import RequestCase
-from impex.application.testing import cache
+from ..forms import TeamsMustDifferValidator
 
 
 class TestCreateEventForm(PostFormCase):
@@ -127,17 +129,8 @@ class TestEditGameForm(PostFormCase):
         self.mdatabase().commit.assert_called_once_with()
 
 
-class TestGameValidator(RequestCase):
-
-    @cache
-    def mform(self):
-        return MagicMock()
-
-    @cache
-    def object(self):
-        validator = GameValidator()
-        validator.set_form(self.mform())
-        return validator
+class TestGameValidator(ValidatorCase):
+    _object_cls = GameValidator
 
     def test_when_instance_is_present(self):
         self.mform().drivers.games.is_doubled.return_value = False
@@ -161,3 +154,19 @@ class TestGameValidator(RequestCase):
             self.mform().get_value.return_value,
             None,
         )
+
+
+class TestTeamsMustDifferValidator(ValidatorCase):
+    _object_cls = TeamsMustDifferValidator
+
+    def test_positive(self):
+        def get_value_mock(name):
+            if name == 'left_id':
+                return sentinel.left_id
+            else:
+                return sentinel.right_id
+        self.mform().get_value = get_value_mock
+        assert self.object().validate() is True
+
+    def test_negative(self):
+        assert self.object().validate() is False
