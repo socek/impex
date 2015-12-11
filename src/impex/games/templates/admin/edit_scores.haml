@@ -1,0 +1,60 @@
+-extends "impex.application:templates/authencitated.haml"
+-import 'impex.utils:templates/table.haml' as table
+-block content
+  =need('scoretable')
+    %div.col-lg-12
+      %div.bs-component
+        %div.jumbotron.jumbotron2
+          %h1
+            Tabela Wyników&nbsp;
+
+          %table.table.table-striped.table-hover
+            %thead
+              %tr
+                %th -> Drużyna
+                %th -> Kwarta 1
+                %th -> Kwarta 2
+                %th -> Kwarta 3
+                %th -> Kwarta 4
+
+            %tbody
+              %tr
+                %td rowspan="2"
+                  Lewa
+                %td
+                  %input.quart type="text" name="left_quart_1"
+                %td
+                  %input.sum type="text" name="left_quart_2_sum"
+                %td
+                  %input.sum type="text" name="left_quart_3_sum"
+                %td
+                  %input.sum type="text" name="left_quart_4_sum"
+              %tr
+                %td
+                  Szczątkowa →
+                %td
+                  %input.quart type="text" name="left_quart_2"
+                %td
+                  %input.quart type="text" name="left_quart_3"
+                %td
+                  %input.quart type="text" name="left_quart_4"
+              %tr
+                %td rowspan="2"
+                  Prawa
+                %td
+                  %input.quart type="text" name="right_quart_1"
+                %td
+                  %input.sum type="text" name="right_quart_2_sum"
+                %td
+                  %input.sum type="text" name="right_quart_3_sum"
+                %td
+                  %input.sum type="text" name="right_quart_4_sum"
+              %tr
+                %td
+                  Szczątkowa →
+                %td
+                  %input.quart type="text" name="right_quart_2"
+                %td
+                  %input.quart type="text" name="right_quart_3"
+                %td
+                  %input.quart type="text" name="right_quart_4"

@@ -11,3 +11,7 @@ impex.games.admin_controllers:
         controller: GameEditController
         route: games:admin:edit
         url: /admin/event/{event_id:\d+}/game/{game_id:\d+}/edit
+    -
+        controller: GameEditScoresController
+        route: games:admin:edit_scores
+        url: /admin/event/{event_id:\d+}/game/{game_id:\d+}/edit/scores

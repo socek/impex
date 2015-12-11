@@ -81,6 +81,13 @@ select2 = Resource(
 )
 
 
+scoretable = Resource(
+    library,
+    'js/scoretable.js',
+    bottom=True,
+)
+
+
 class Resources(BaseResources):
 
     def __init__(self, *args, **kwargs):
@@ -109,4 +116,8 @@ class Resources(BaseResources):
         self.add_resource(
             'select2',
             'impex.application.resources:select2',
+        )
+        self.add_resource(
+            'scoretable',
+            'impex.application.resources:scoretable',
         )

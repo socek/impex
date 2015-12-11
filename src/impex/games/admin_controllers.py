@@ -86,3 +86,11 @@ class GameEditController(Controller):
                 'games:admin:list',
                 event_id=self.matchdict['event_id'],
             )
+
+
+class GameEditScoresController(Controller):
+    renderer = 'impex.games:templates/admin/edit_scores.haml'
+    permission = 'admin'
+
+    def make(self):
+        pass
