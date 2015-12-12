@@ -1,6 +1,7 @@
 -extends "impex.application:templates/authencitated.haml"
 -import 'impex.utils:templates/table.haml' as table
 -block content
+  -set with_diff=True
   =need('scoretable')
     %div.col-lg-12
       %div.bs-component
@@ -11,50 +12,52 @@
           %table.table.table-striped.table-hover
             %thead
               %tr
-                %th -> Drużyna
-                %th -> Kwarta 1
-                %th -> Kwarta 2
-                %th -> Kwarta 3
-                %th -> Kwarta 4
+                %th -> Kwarta
+                %th -> Lewa
+                -if with_diff:
+                  %th -> (Różnica)
+                %th -> Prawa
+                -if with_diff:
+                  %th -> (Różnica)
 
             %tbody
               %tr
-                %td rowspan="2"
-                  Lewa
                 %td
-                  %input.quart type="text" name="left_quart_1"
+                  1
+                %td {% if with_diff %}colspan="2"{% endif %}
+                  %input.sum type="text" name="left_quart_1"
+                %td {% if with_diff %}colspan="2"{% endif %}
+                  %input.sum type="text" name="right_quart_1"
+              %tr
+                %td
+                  2
                 %td
                   %input.sum type="text" name="left_quart_2_sum"
-                %td
-                  %input.sum type="text" name="left_quart_3_sum"
-                %td
-                  %input.sum type="text" name="left_quart_4_sum"
-              %tr
-                %td
-                  Szczątkowa →
-                %td
+                %td {% if not with_diff %}class="hide"{% endif %}
                   %input.quart type="text" name="left_quart_2" disabled
                 %td
+                  %input.sum type="text" name="right_quart_2_sum"
+                %td {% if not with_diff %}class="hide"{% endif %}
+                  %input.quart type="text" name="right_quart_2" disabled
+              %tr
+                %td
+                  3
+                %td
+                  %input.sum type="text" name="left_quart_3_sum"
+                %td {% if not with_diff %}class="hide"{% endif %}
                   %input.quart type="text" name="left_quart_3" disabled
                 %td
-                  %input.quart type="text" name="left_quart_4"  disabled
-              %tr
-                %td rowspan="2"
-                  Prawa
-                %td
-                  %input.quart type="text" name="right_quart_1"
-                %td
-                  %input.sum type="text" name="right_quart_2_sum"
-                %td
                   %input.sum type="text" name="right_quart_3_sum"
+                %td {% if not with_diff %}class="hide"{% endif %}
+                  %input.quart type="text" name="right_quart_3" disabled
+              %tr
+                %td
+                  4
+                %td
+                  %input.sum type="text" name="left_quart_4_sum"
+                %td {% if not with_diff %}class="hide"{% endif %}
+                  %input.quart type="text" name="left_quart_4"  disabled
                 %td
                   %input.sum type="text" name="right_quart_4_sum"
-              %tr
-                %td
-                  Szczątkowa →
-                %td
-                  %input.quart type="text" name="right_quart_2" disabled
-                %td
-                  %input.quart type="text" name="right_quart_3" disabled
-                %td
+                %td {% if not with_diff %}class="hide"{% endif %}
                   %input.quart type="text" name="right_quart_4" disabled
