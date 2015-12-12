@@ -19,3 +19,6 @@ tr.withactions td {
 .btn-left-margin {
     margin-left: 5px;
 }
+button[disabled], html input[disabled] {
+    background-color: #c0c0c0;
+}
