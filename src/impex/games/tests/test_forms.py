@@ -9,6 +9,7 @@ from impex.application.testing import cache
 
 from ..forms import CreateGameForm
 from ..forms import EditGameForm
+from ..forms import EditScoreGameForm
 from ..forms import GameValidator
 from ..forms import TeamsMustDifferValidator
 
@@ -170,3 +171,67 @@ class TestTeamsMustDifferValidator(ValidatorCase):
 
     def test_negative(self):
         assert self.object().validate() is False
+
+
+class TestEditScoreGameForm(PostFormCase):
+    _object_cls = EditScoreGameForm
+
+    def test_on_success(self):
+        self.mdatabase()
+        self.mdrivers()
+        self.mdata().return_value = {
+            'status': 2,
+            'left_quart_1': 5,
+            'left_quart_2': 10,
+            'left_quart_3': 15,
+            'left_quart_4': 0,
+            'right_quart_1': 10,
+            'right_quart_2': 15,
+            'right_quart_3': 20,
+            'right_quart_4': '',
+        }
+        self.minstance()
+
+        self.object().on_success()
+
+        self.mdata().assert_called_once_with(True)
+        assert self.minstance().status == 2
+        assert self.minstance().scores == {
+            'left': [5, 10, 15, 0],
+            'right': [10, 15, 20, 0],
+        }
+        self.mdrivers().games.update.assert_called_once_with(
+            self.minstance()
+        )
+
+    def test_read_from(self):
+        instance = MagicMock()
+
+        instance.status = 1
+        instance.scores = {
+            'left': [5, 10, 15, 20],
+            'right': [10, 15, 20, 25],
+        }
+
+        self.object().read_from(instance)
+
+        assert self.object().get_data_dict(True) == {
+            'csrf_token': self.mget_csrf_token().return_value,
+            'status': 1,
+            'left_quart_1': 5,
+            'left_quart_2': 10,
+            'left_quart_3': 15,
+            'left_quart_4': 20,
+            'right_quart_1': 10,
+            'right_quart_2': 15,
+            'right_quart_3': 20,
+            'right_quart_4': 25,
+        }
+
+        assert self.object().instance is instance
+
+    def test_get_statuses(self):
+        self.minstance().STATUSES = {0: 'something'}
+        data = list(self.object()._get_statuses())
+        assert data[0].id == 0
+        assert data[0].name == 'something'
