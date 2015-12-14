@@ -25,6 +25,7 @@ $(function(){
         set_value('right_quart_3_sum', count_for_quart('right', 3));
         set_value('right_quart_4_sum', count_for_quart('right', 4));
     });
+    $('input[type=text].quart').change();
     $('input[type=text].sum').change(function(){
         var get_value_for = function(key) {
             return parseInt($('input[name='+ key + ']').val());

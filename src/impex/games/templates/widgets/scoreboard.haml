@@ -1,0 +1,72 @@
+-import 'impex.utils:templates/table.haml' as table
+-set with_diff=False
+-macro normal(name, bottom=False)
+  %td class="text-center row left{% if bottom %} bottom{% endif %}{% if not with_diff %} right{% endif %}"
+    %input.sum type="text" name="{{name}}"
+-macro text(name, bottom=False)
+  %td class="text-center row right{% if not with_diff %} hide{% endif %}{% if bottom %} bottom{% endif %}"
+    %input.quart type="text" name="{{name}}" value={{widget.form.get_value(name)}}
+
+=widget.begin(htmlcls='form-horizontal')
+  %table.table.table-striped.table-hover.scoreboard
+    %thead
+      %tr
+        %th -> &nbsp;
+        %th.text-center.head_one {% if with_diff %}colspan="2"{% endif %} -> =widget.form.left.name
+        %th.text-center.head_one {% if with_diff %}colspan="2"{% endif %} -> =widget.form.right.name
+      %tr
+        %th.text-center -> Kwarta
+        -if with_diff:
+          %th.row.left.text-center -> Suma
+          %th.row.right.text-center -> (Różnica)
+        -else:
+          %th.row.left.right.text-center -> Suma
+        -if with_diff:
+          %th.row.left.text-center -> Suma
+          %th.row.right.text-center -> (Różnica)
+        -else:
+          %th.row.left.right.text-center -> Suma
+
+    %tbody
+      %tr
+        %td.text-center
+          1
+        -if with_diff:
+          %td.row.left.text-center
+            %input.sum type="text" name="left_quart_1" value="{{widget.form.get_value('left_quart_1')}}"
+          %td.row.right -> &nbsp;
+          %td.row.left.text-center
+            %input.sum type="text" name="right_quart_1" value="{{widget.form.get_value('right_quart_1')}}"
+          %td.row.right -> &nbsp;
+        -else:
+          %td.row.left.text-center.right
+            %input.sum type="text" name="left_quart_1" value="{{widget.form.get_value('left_quart_1')}}"
+          %td.row.left.text-center.right
+            %input.sum type="text" name="right_quart_1" value="{{widget.form.get_value('right_quart_1')}}"
+      %tr
+        %td.text-center
+          2
+        =normal('left_quart_2_sum')
+        =text('left_quart_2')
+        =normal('right_quart_2_sum')
+        =text('right_quart_2')
+      %tr
+        %td.text-center
+          3
+        =normal('left_quart_3_sum')
+        =text('left_quart_3')
+        =normal('right_quart_3_sum')
+        =text('right_quart_3')
+      %tr
+        %td.text-center
+          4
+        =normal('left_quart_4_sum', bottom=True)
+        =text('left_quart_4', bottom=True)
+        =normal('right_quart_4_sum', bottom=True)
+        =text('right_quart_4', bottom=True)
+
+  %fieldset
+    =widget.select('status')
+
+-block submit
+  =widget.submit("Zapisz")

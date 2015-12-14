@@ -1,63 +1,11 @@
 -extends "impex.application:templates/authencitated.haml"
--import 'impex.utils:templates/table.haml' as table
+
+
 -block content
-  -set with_diff=True
   =need('scoretable')
-    %div.col-lg-12
-      %div.bs-component
-        %div.jumbotron.jumbotron2
-          %h1
-            Tabela Wyników&nbsp;
-
-          %table.table.table-striped.table-hover
-            %thead
-              %tr
-                %th -> Kwarta
-                %th -> Lewa
-                -if with_diff:
-                  %th -> (Różnica)
-                %th -> Prawa
-                -if with_diff:
-                  %th -> (Różnica)
-
-            %tbody
-              %tr
-                %td
-                  1
-                %td {% if with_diff %}colspan="2"{% endif %}
-                  %input.sum type="text" name="left_quart_1"
-                %td {% if with_diff %}colspan="2"{% endif %}
-                  %input.sum type="text" name="right_quart_1"
-              %tr
-                %td
-                  2
-                %td
-                  %input.sum type="text" name="left_quart_2_sum"
-                %td {% if not with_diff %}class="hide"{% endif %}
-                  %input.quart type="text" name="left_quart_2" disabled
-                %td
-                  %input.sum type="text" name="right_quart_2_sum"
-                %td {% if not with_diff %}class="hide"{% endif %}
-                  %input.quart type="text" name="right_quart_2" disabled
-              %tr
-                %td
-                  3
-                %td
-                  %input.sum type="text" name="left_quart_3_sum"
-                %td {% if not with_diff %}class="hide"{% endif %}
-                  %input.quart type="text" name="left_quart_3" disabled
-                %td
-                  %input.sum type="text" name="right_quart_3_sum"
-                %td {% if not with_diff %}class="hide"{% endif %}
-                  %input.quart type="text" name="right_quart_3" disabled
-              %tr
-                %td
-                  4
-                %td
-                  %input.sum type="text" name="left_quart_4_sum"
-                %td {% if not with_diff %}class="hide"{% endif %}
-                  %input.quart type="text" name="left_quart_4"  disabled
-                %td
-                  %input.sum type="text" name="right_quart_4_sum"
-                %td {% if not with_diff %}class="hide"{% endif %}
-                  %input.quart type="text" name="right_quart_4" disabled
+  %div.col-lg-12
+    %div.bs-component
+      %div.jumbotron.jumbotron2
+        %h1
+          Tabela Wyników&nbsp;
+        =form()

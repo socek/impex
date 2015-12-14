@@ -22,3 +22,24 @@ tr.withactions td {
 button[disabled], html input[disabled] {
     background-color: #c0c0c0;
 }
+table.scoreboard th.head_one {
+    border-left: solid 1px white;
+    border-right: solid 1px white;
+    border-top: solid 1px white !important;
+}
+
+table.scoreboard .row.left {
+    border-left: solid 1px white;
+}
+table.scoreboard .row.right {
+    border-right: solid 1px white;
+}
+table.scoreboard .bottom {
+    border-bottom: solid 1px white;
+}
+table.scoreboard > tbody > tr:nth-of-type(2n+1) {
+    background-color: #48554d;
+}
+table.scoreboard > td {
+    vertical-align: middle;
+}

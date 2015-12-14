@@ -1,9 +1,13 @@
+from collections import namedtuple
+
 from formskit.converters import ToDatetime
 from formskit.converters import ToInt
 from formskit.formvalidators import FormValidator
 from formskit.validators import NotEmpty
 
 from impex.application.plugins.formskit import PostForm
+
+Status = namedtuple('status', ['id', 'name'])
 
 
 class GameValidator(FormValidator):
@@ -115,3 +119,59 @@ class EditGameForm(CreateGameForm):
         self.set_value('left_id', str(game.left_id))
         self.set_value('right_id', str(game.right_id))
         self.instance = game
+
+
+class EditScoreGameForm(PostForm):
+
+    def read_from(self, game):
+        self.instance = game
+        self.left = game.left
+        self.right = game.right
+
+        for team, scores in self.instance.scores.items():
+            for index, quart in enumerate(scores):
+                key = '%s_quart_%d' % (
+                    team,
+                    index + 1,
+                )
+                self.set_value(key, quart)
+
+        self.set_value('status', self.instance.status)
+
+    def _get_statuses(self):
+        for key, value in self.instance.STATUSES.items():
+            yield Status(id=key, name=value)
+
+    def _quarts(self):
+        for team in ['left', 'right']:
+            for quart in range(4):
+                yield team, quart + 1, '%s_quart_%d' % (team, quart + 1),
+
+    def create_form(self):
+        for _, _, key in self._quarts():
+            self.add_field(
+                key,
+                convert=ToInt(),
+            )
+            self.add_field(
+                key + '_sum',
+            )
+
+        self.add_field(
+            'status',
+            label='Status',
+            convert=ToInt(),
+        ).set_avalible_values(self._get_statuses)
+
+    def on_success(self):
+        data = self.get_data_dict(True)
+        self.instance.status = data['status']
+        self.instance.scores = {'left': [], 'right': []}
+        for team, quart, key in self._quarts():
+            if data[key]:
+                self.instance.scores[team].append(data[key])
+            else:
+                self.instance.scores[team].append(0)
+
+        self.drivers.games.update(self.instance)
+        self.database().commit()

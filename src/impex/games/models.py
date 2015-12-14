@@ -16,6 +16,12 @@ class Game(Base):
     STATUS_RUNNING = 1
     STATUS_ENDED = 2
 
+    STATUSES = {
+        STATUS_NOT_STARTED: 'Nie rozpoczęto',
+        STATUS_RUNNING: 'W trakcie gry',
+        STATUS_ENDED: 'Zakończono',
+    }
+
     id = Column(Integer, primary_key=True)
     plaing_at = Column(DateTime())
     priority = Column(Integer, nullable=False)

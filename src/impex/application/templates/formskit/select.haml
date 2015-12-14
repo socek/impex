@@ -6,7 +6,7 @@
   %div.col-lg-10
     %select.form-control name="{{name}}" id="{{id}}"
       -for element in field.avalible_values
-        %option value="{{element.id}}"{% if str(element.id) == value %} selected=selected{% endif %}
+        %option value="{{element.id}}"{% if str(element.id) == str(value) %} selected=selected{% endif %}
           =element.name
 %script
   $(function(){
