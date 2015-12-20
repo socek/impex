@@ -1,0 +1,54 @@
+-macro quart(team, index):
+  -set other_team = 'left' if team == 'right' else 'right'
+  -set team_score = game.get_sum_for_quart(team, index)
+  -set other_score = game.get_sum_for_quart(other_team, index)
+  %td class="{% if team_score > other_score %}danger{% endif %}"
+    =team_score
+
+%div.well.game
+  -if game.status == game.STATUS_NOT_STARTED:
+    %div.state.label-primary.btn.col-md-2
+      Nie rozpoczęto
+  -elif game.status == game.STATUS_RUNNING:
+    %div.state.label-success.btn.col-md-2
+      W trakcie gry
+  -else:
+    %div.state.label-info.btn.col-md-2
+      Zakończono
+
+  %div.group.col-md-1.col-md-offset-3.label-warning.btn
+    Grupa A
+  %div.right.col-md-3.col-md-offset-3.label-info.btn
+    %div.place
+      Hala Sportowa Tarnowskie Góry
+    %div.when
+      05.03.2015 19:00
+
+  %table.table.table-striped.table-hover
+    %thead
+      %tr
+        %td
+          Drużyna
+        %td
+          Kwarta 1
+        %td
+          Kwarta 2
+        %td
+          Kwarta 3
+        %td
+          Kwarta 4
+    %tbody
+      %tr
+        %td.success.name
+          =game.left.name
+        =quart('left', 0)
+        =quart('left', 1)
+        =quart('left', 2)
+        =quart('left', 3)
+      %tr
+        %td.success.name
+          =game.right.name
+        =quart('right', 0)
+        =quart('right', 1)
+        =quart('right', 2)
+        =quart('right', 3)

@@ -9,6 +9,6 @@
           %ul
             -for event in events:
               %li
-                %a href="#"
+                %a href="{{route_path('games:list', event_id=event.id)}}"
                   =event.name
 

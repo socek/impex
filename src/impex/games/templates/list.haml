@@ -1,0 +1,12 @@
+-extends "impex.application:templates/authencitated.haml"
+-block content
+    %div.col-lg-12
+      %div.bs-component
+        %div
+          %h1
+            Lista meczy&nbsp;
+          -for game in games:
+            =game()
+
+
+

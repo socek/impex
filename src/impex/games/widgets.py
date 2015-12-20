@@ -1,4 +1,7 @@
+from implugin.jinja2.widget import SingleWidget
+
 from impex.application.plugins.formskit import FormWidget
+from impex.application.requestable import Requestable
 
 from .forms import CreateGameForm
 from .forms import EditGameForm
@@ -18,3 +21,13 @@ class EditGameFormWidget(FormWidget):
 class ScoreBoardWidget(FormWidget):
     template = 'impex.games:templates/widgets/scoreboard.haml'
     form = EditScoreGameForm
+
+
+class GameWidget(SingleWidget, Requestable):
+    template = 'impex.games:templates/widgets/game.haml'
+
+    def __init__(self, game):
+        self.game = game
+
+    def make(self):
+        self.context['game'] = self.game
