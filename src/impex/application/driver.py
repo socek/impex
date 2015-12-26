@@ -5,6 +5,7 @@ from impex.teams.driver import TeamDriver
 from impex.auth.drivers import AuthDriver
 from impex.events.driver import EventDriver
 from impex.games.driver import GameDriver
+from impex.groups.driver import GroupDriver
 
 
 class ImpexDriverHolder(AuthDriverHolder):
@@ -28,3 +29,7 @@ class ImpexDriverHolder(AuthDriverHolder):
     @property
     def games(self):
         return self.feeded_driver(GameDriver())
+
+    @property
+    def groups(self):
+        return self.feeded_driver(GroupDriver())

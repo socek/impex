@@ -7,6 +7,7 @@ from sqlalchemy.dialects.postgresql import JSON
 
 from impex.application.models import Base
 from impex.teams.models import Team
+from impex.groups.models import Group
 
 
 class Game(Base):
@@ -40,6 +41,9 @@ class Game(Base):
     event = relationship("Event")
     left = relationship(Team, primaryjoin=(left_id == Team.id))
     right = relationship(Team, primaryjoin=(right_id == Team.id))
+
+    group_id = Column(Integer, ForeignKey('groups.id'), nullable=False)
+    group = relationship(Group)
 
     def get_sum_for_quart(self, team, quart):
         return sum(self.scores[team][:(quart)])

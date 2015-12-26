@@ -5,6 +5,8 @@ from impex.events.driver import Event
 from impex.events.driver import EventDriver
 from impex.teams.driver import Team
 from impex.teams.driver import TeamDriver
+from impex.groups.driver import Group
+from impex.groups.driver import GroupDriver
 
 from ..driver import Game
 from ..driver import GameDriver
@@ -25,9 +27,17 @@ class TestDriverGame(DriverCase):
         driver.feed_database(self.database)
         return driver
 
+    @cache
+    def groups(self):
+        driver = GroupDriver()
+        driver.feed_database(self.database)
+        return driver
+
     @cache('module')
     def setUp(self):
-        self.flush_table_from_object(Game, Event, Team)
+        self.flush_table_from_object(Game, Event, Team, Group)
+
+        group = self.groups().create(name='Group A')
 
         teams = []
         teams.append(self.teams().create(name='first'))
@@ -47,24 +57,29 @@ class TestDriverGame(DriverCase):
             left_id=teams[0].id,
             right_id=teams[1].id,
             priority=2,
+            group_id=group.id,
         )
+        self.database().commit()
         self.game_2 = self.object().create(
             event_id=self.first_event.id,
             left_id=teams[2].id,
             right_id=teams[1].id,
             priority=3,
+            group_id=group.id,
         )
         self.game_3 = self.object().create(
             event_id=self.first_event.id,
             left_id=teams[2].id,
             right_id=teams[0].id,
             priority=1,
+            group_id=group.id,
         )
         self.game_4 = self.object().create(
             event_id=self.second_event.id,
             left_id=teams[0].id,
             right_id=teams[1].id,
             priority=1,
+            group_id=group.id,
         )
 
         self.database().commit()
