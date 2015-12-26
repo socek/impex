@@ -43,7 +43,7 @@ class Game(Base):
     right = relationship(Team, primaryjoin=(right_id == Team.id))
 
     group_id = Column(Integer, ForeignKey('groups.id'), nullable=False)
-    group = relationship(Group)
+    group = relationship(Group, backref="games")
 
     def get_sum_for_quart(self, team, quart):
         return sum(self.scores[team][:(quart)])

@@ -14,6 +14,9 @@
             %li
               %a href="{{route_path('events:admin:list')}}"
                 Wydarzenia
+            %li
+              %a href="{{route_path('groups:admin:list')}}"
+                Grupy
         %ul.nav.navbar-nav.navbar-right
           -if request.has_permission('guest')
             %li

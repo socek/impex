@@ -10,3 +10,6 @@ class Group(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+
+    def games_len(self):
+        return len(self.games)

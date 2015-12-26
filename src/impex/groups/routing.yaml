@@ -1,0 +1,13 @@
+impex.groups.admin_controllers:
+    -
+        controller: GroupListController
+        route: groups:admin:list
+        url: /admin/groups
+    -
+        controller: GroupCreateController
+        route: groups:admin:create
+        url: /admin/groups/create
+    -
+        controller: GroupEditController
+        route: groups:admin:edit
+        url: /groups/{group_id:\d+}/
