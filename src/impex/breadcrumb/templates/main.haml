@@ -1,7 +1,7 @@
--if crumbs:
+-if name:
   %ul.breadcrumb.col-lg-10.col-lg-offset-1
     -for crumb in crumbs:
-      -if crumb.is_active:
+      -if loop.last or not crumb.url:
         %li.active -> =crumb.label
       -else:
-        %li -> %a href="{{crumb.url}}" -> {{crumb.label}}
+        %li -> %a href="{{crumb.get_url(request)}}" -> =crumb.label

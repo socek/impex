@@ -1,5 +1,4 @@
 from mock import MagicMock
-from mock import call
 
 from impex.application.testing import ControllerCase
 from impex.application.testing import cache
@@ -26,25 +25,6 @@ class TestGameListController(ControllerCase):
         assert self.context() == {
             'games': self.mget_games().return_value,
         }
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Mecze',
-                    None,
-                    True,
-                ),
-            ]
-        )
 
     def test_get_games(self):
         obj = MagicMock()

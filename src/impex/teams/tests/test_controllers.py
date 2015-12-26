@@ -1,5 +1,3 @@
-from mock import MagicMock
-from mock import call
 from mock import sentinel
 
 from impaf.testing import cache
@@ -24,30 +22,6 @@ class TestTeamListController(ControllerCase):
         assert self.context() == {
             'teams': self.mdrivers().teams.list.return_value,
         }
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Drużyny',
-                    None,
-                    True,
-                ),
-            ]
-        )
 
 
 class TestTeamCreateController(ControllerCase):
@@ -76,34 +50,6 @@ class TestTeamCreateController(ControllerCase):
         self.madd_form_widget().return_value.validate.assert_called_once_with()
         assert not self.madd_flashmsg().called
         assert not self.mredirect().called
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Drużyny',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Dodawanie',
-                    None,
-                    True,
-                ),
-            ]
-        )
 
 
 class TestTeamEditController(ControllerCase):
@@ -153,31 +99,3 @@ class TestTeamEditController(ControllerCase):
 
         assert not self.madd_flashmsg().called
         assert not self.mredirect().called
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Drużyny',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Edycja',
-                    None,
-                    True,
-                ),
-            ]
-        )

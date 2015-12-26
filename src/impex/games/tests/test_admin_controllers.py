@@ -1,5 +1,3 @@
-from mock import MagicMock
-from mock import call
 from mock import sentinel
 
 from impex.application.testing import ControllerCase
@@ -25,69 +23,9 @@ class TestGameListController(ControllerCase):
             'games': self.mdrivers().games.list.return_value,
         }
 
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Wydarzenia',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Mecze',
-                    None,
-                    True,
-                )
-            ]
-        )
-
 
 class TestGameCreateController(ControllerCase):
     _object_cls = GameCreateController
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Wydarzenia',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Mecze',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Dodawanie',
-                    None,
-                    True,
-                )
-            ]
-        )
 
     def test_make_on_success(self):
         self.matchdict()['event_id'] = sentinel.event_id
@@ -121,38 +59,6 @@ class TestGameCreateController(ControllerCase):
 
 class TestGameEditController(ControllerCase):
     _object_cls = GameEditController
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Wydarzenia',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Mecze',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Edycja',
-                    None,
-                    True,
-                )
-            ]
-        )
 
     def test_make_on_success(self):
         self.matchdict()['event_id'] = sentinel.event_id
@@ -196,38 +102,6 @@ class TestGameEditController(ControllerCase):
 
 class TestGameEditScoresController(ControllerCase):
     _object_cls = GameEditScoresController
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Wydarzenia',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Mecze',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Tabela wyników',
-                    None,
-                    True,
-                )
-            ]
-        )
 
     def test_make_on_success(self):
         self.matchdict()['event_id'] = sentinel.event_id

@@ -9,14 +9,7 @@ class GameListController(Controller):
 
     renderer = 'impex.games:templates/admin/list.haml'
     permission = 'admin'
-
-    def set_crumbs(self, widget):
-        route = self.route_path('home')
-        widget.add_breadcrumb('Główna', route)
-        widget.add_breadcrumb('Panel Administracyjny', None, True)
-        widget.add_breadcrumb(
-            'Wydarzenia', self.route_path('events:admin:list'))
-        widget.add_breadcrumb('Mecze', None, True)
+    crumbs = 'games:admin:list'
 
     def make(self):
         self.context['games'] = self.drivers.games.list(
@@ -27,21 +20,7 @@ class GameCreateController(Controller):
 
     renderer = 'impex.games:templates/admin/create.haml'
     permission = 'admin'
-
-    def set_crumbs(self, widget):
-        route = self.route_path('home')
-        widget.add_breadcrumb('Główna', route)
-        widget.add_breadcrumb('Panel Administracyjny', None, True)
-        widget.add_breadcrumb(
-            'Wydarzenia', self.route_path('events:admin:list'))
-        widget.add_breadcrumb(
-            'Mecze',
-            self.route_path(
-                'games:admin:list',
-                event_id=self.matchdict['event_id'],
-            ),
-        )
-        widget.add_breadcrumb('Dodawanie', None, True)
+    crumbs = 'games:admin:create'
 
     def make(self):
         form = self.add_form_widget(CreateGameFormWidget)
@@ -59,21 +38,7 @@ class GameEditController(Controller):
 
     renderer = 'impex.games:templates/admin/edit.haml'
     permission = 'admin'
-
-    def set_crumbs(self, widget):
-        route = self.route_path('home')
-        widget.add_breadcrumb('Główna', route)
-        widget.add_breadcrumb('Panel Administracyjny', None, True)
-        widget.add_breadcrumb(
-            'Wydarzenia', self.route_path('events:admin:list'))
-        widget.add_breadcrumb(
-            'Mecze',
-            self.route_path(
-                'games:admin:list',
-                event_id=self.matchdict['event_id'],
-            ),
-        )
-        widget.add_breadcrumb('Edycja', None, True)
+    crumbs = 'games:admin:edit'
 
     def make(self):
         game_id = self.matchdict['game_id']
@@ -92,21 +57,7 @@ class GameEditController(Controller):
 class GameEditScoresController(Controller):
     renderer = 'impex.games:templates/admin/edit_scores.haml'
     permission = 'admin'
-
-    def set_crumbs(self, widget):
-        route = self.route_path('home')
-        widget.add_breadcrumb('Główna', route)
-        widget.add_breadcrumb('Panel Administracyjny', None, True)
-        widget.add_breadcrumb(
-            'Wydarzenia', self.route_path('events:admin:list'))
-        widget.add_breadcrumb(
-            'Mecze',
-            self.route_path(
-                'games:admin:list',
-                event_id=self.matchdict['event_id'],
-            ),
-        )
-        widget.add_breadcrumb('Tabela wyników', None, True)
+    crumbs = 'games:admin:edit_scores'
 
     def make(self):
         game_id = self.matchdict['game_id']

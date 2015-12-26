@@ -6,11 +6,7 @@ from .widgets import GameWidget
 class GameListController(Controller):
 
     renderer = 'impex.games:templates/list.haml'
-
-    def set_crumbs(self, widget):
-        route = self.route_path('home')
-        widget.add_breadcrumb('Główna', route)
-        widget.add_breadcrumb('Mecze', None, True)
+    crumbs = 'games:list'
 
     def make(self):
         self.context['games'] = self._get_games()

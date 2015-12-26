@@ -2,7 +2,7 @@ from implugin.jinja2.widget import SingleWidget
 
 from impex.application.requestable import Requestable
 
-from .models import BreadCrumbElement
+from .models import BreadCrumb
 
 
 class BreadCrumbsWidget(SingleWidget, Requestable):
@@ -11,10 +11,10 @@ class BreadCrumbsWidget(SingleWidget, Requestable):
     def __init__(self, controller):
         self.controller = controller
 
-    def add_breadcrumb(self, *args, **kwargs):
-        self.context['crumbs'].append(BreadCrumbElement(*args, **kwargs))
-
     def make(self):
-        self.context['crumbs'] = []
-        method = getattr(self.controller, 'set_crumbs', lambda _: None)
-        method(self)
+        bread = BreadCrumb()
+        name = getattr(self.controller, 'crumbs', None)
+
+        self.context['bread'] = bread
+        self.context['name'] = name
+        self.context['crumbs'] = bread.get_crumbs_for(name)

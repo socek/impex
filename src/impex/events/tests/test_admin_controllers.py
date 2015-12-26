@@ -1,5 +1,3 @@
-from mock import MagicMock
-from mock import call
 from mock import sentinel
 
 from impaf.testing import cache
@@ -24,30 +22,6 @@ class TestEventListController(ControllerCase):
         assert self.context() == {
             'events': self.mdrivers().events.list_for_admin.return_value,
         }
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Wydarzenia',
-                    None,
-                    True,
-                ),
-            ]
-        )
 
 
 class TestEventCreateController(ControllerCase):
@@ -76,34 +50,6 @@ class TestEventCreateController(ControllerCase):
         self.madd_form_widget().return_value.validate.assert_called_once_with()
         assert not self.madd_flashmsg().called
         assert not self.mredirect().called
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Wydarzenia',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Dodawanie',
-                    None,
-                    True,
-                ),
-            ]
-        )
 
 
 class TestEventEditController(ControllerCase):
@@ -153,31 +99,3 @@ class TestEventEditController(ControllerCase):
 
         assert not self.madd_flashmsg().called
         assert not self.mredirect().called
-
-    def test_set_breadcrumb(self):
-        self.mroute_path()
-        mock = MagicMock()
-        self.object().set_crumbs(mock)
-
-        mock.add_breadcrumb.assert_has_calls(
-            [
-                call(
-                    'Główna',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Panel Administracyjny',
-                    None,
-                    True,
-                ),
-                call(
-                    'Wydarzenia',
-                    self.mroute_path().return_value,
-                ),
-                call(
-                    'Edycja',
-                    None,
-                    True,
-                ),
-            ]
-        )

@@ -8,12 +8,7 @@ class EventListController(Controller):
 
     renderer = 'impex.events:templates/admin/list.haml'
     permission = 'admin'
-
-    def set_crumbs(self, widget):
-        route = self.route_path('home')
-        widget.add_breadcrumb('Główna', route)
-        widget.add_breadcrumb('Panel Administracyjny', None, True)
-        widget.add_breadcrumb('Wydarzenia', None, True)
+    crumbs = 'events:admin:list'
 
     def make(self):
         self.context['events'] = self.drivers.events.list_for_admin()
@@ -23,12 +18,7 @@ class EventCreateController(Controller):
 
     renderer = 'impex.events:templates/admin/create.haml'
     permission = 'admin'
-
-    def set_crumbs(self, widget):
-        widget.add_breadcrumb('Główna', self.route_path('home'))
-        widget.add_breadcrumb('Panel Administracyjny', None, True)
-        widget.add_breadcrumb('Wydarzenia', self.route_path('events:admin:list'))
-        widget.add_breadcrumb('Dodawanie', None, True)
+    crumbs = 'events:admin:create'
 
     def make(self):
         form = self.add_form_widget(CreateEventFormWidget)
@@ -42,12 +32,7 @@ class EventEditController(Controller):
 
     renderer = 'impex.events:templates/admin/edit.haml'
     permission = 'admin'
-
-    def set_crumbs(self, widget):
-        widget.add_breadcrumb('Główna', self.route_path('home'))
-        widget.add_breadcrumb('Panel Administracyjny', None, True)
-        widget.add_breadcrumb('Wydarzenia', self.route_path('events:admin:list'))
-        widget.add_breadcrumb('Edycja', None, True)
+    crumbs = 'events:admin:edit'
 
     def make(self):
         event_id = self.matchdict['event_id']
