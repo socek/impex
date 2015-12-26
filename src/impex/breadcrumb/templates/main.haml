@@ -4,4 +4,4 @@
       -if loop.last or not crumb.url:
         %li.active -> =crumb.label
       -else:
-        %li -> %a href="{{crumb.get_url(request)}}" -> =crumb.label
+        %li -> %a href="{{crumb.get_url()}}" -> =crumb.label

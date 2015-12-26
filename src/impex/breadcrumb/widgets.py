@@ -13,6 +13,7 @@ class BreadCrumbsWidget(SingleWidget, Requestable):
 
     def make(self):
         bread = BreadCrumb()
+        bread.feed_request(self.request)
         name = getattr(self.controller, 'crumbs', None)
 
         self.context['bread'] = bread

@@ -26,6 +26,7 @@ class TestBreadCrumbsWidget(RequestCase):
         self.controller().crumbs = sentinel.name
         self.mbreadcrumb()
         self.object().context = {}
+        self.object().feed_request(self.mrequest())
         self.object().make()
 
         assert self.object().context == {
@@ -34,6 +35,8 @@ class TestBreadCrumbsWidget(RequestCase):
             'crumbs': (
                 self.mbreadcrumb().return_value.get_crumbs_for.return_value
             ),
+            'request': self.mrequest(),
+            'widget': self.object(),
         }
         self.mbreadcrumb().return_value.get_crumbs_for.assert_called_once_with(
             sentinel.name

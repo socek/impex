@@ -3,7 +3,10 @@ from mock import sentinel
 
 from impaf.testing import cache
 
+from impex.application.testing import RequestCase
+
 from ..models import BreadCrumb
+from ..models import EventElement
 from ..models import BreadCrumbElement
 
 
@@ -22,13 +25,15 @@ class TestBreadCrumbElement(object):
 
     def test_get_url_on_empty(self):
         element = BreadCrumbElement('label', None)
+        element.feed_request(None)
 
-        assert element.get_url(None) is None
+        assert element.get_url() is None
 
     def test_get_url(self):
         element = BreadCrumbElement('label', lambda reg: reg)
+        element.feed_request(sentinel.request)
 
-        assert element.get_url(sentinel.request) == sentinel.request
+        assert element.get_url() == sentinel.request
 
 
 class TestBreadCrumb(object):
@@ -51,4 +56,32 @@ class TestBreadCrumb(object):
     def test_urls_sanity_check(self):
         for key, value in self.bread().data.items():
             request = MagicMock()
-            value.get_url(request) == request.route_path.return_value
+            value.feed_request(request)
+            value.get_url() == request.route_path.return_value
+
+    def test_breadcrumb(self):
+        request = MagicMock()
+        obj = MagicMock()
+        self.bread().data = {'key': obj}
+        self.bread().feed_request(request)
+        obj.feed_request.assert_called_once_with(request)
+
+
+class TestEventElement(RequestCase):
+
+    @cache
+    def object(self):
+        return EventElement()
+
+    def test_simple(self):
+        self.matchdict()['event_id'] = sentinel.event_id
+        self.object().feed_request(self.mrequest())
+        self.mdrivers()
+
+        assert (
+            self.object().label
+            == self.mdrivers().events.get_by_id.return_value.name
+        )
+        self.mdrivers().events.get_by_id.assert_called_once_with(
+            sentinel.event_id,
+        )

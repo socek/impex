@@ -1,16 +1,40 @@
-class BreadCrumbElement(object):
+from impex.application.requestable import Requestable
+
+
+class BreadCrumbElement(Requestable):
 
     def __init__(self, label, url=None, parent=None):
-        self.label = label
+        self._label = label
         self.url = url
         self.parent = parent
 
-    def get_url(self, request):
+    def get_url(self):
         if self.url:
-            return self.url(request)
+            return self.url(self.request)
+
+    @property
+    def label(self):
+        return self._label
 
 
-class BreadCrumb(object):
+class EventElement(BreadCrumbElement):
+
+    def __init__(self):
+        super().__init__(None, parent='home')
+
+    @property
+    def label(self):
+        event_id = self.matchdict['event_id']
+        event = self.drivers.events.get_by_id(event_id)
+        return event.name
+
+
+class BreadCrumb(Requestable):
+
+    def feed_request(self, request):
+        super().feed_request(request)
+        for key, crumb in self.data.items():
+            crumb.feed_request(request)
 
     def add(self, key, *args, **kwargs):
         self.data[key] = BreadCrumbElement(*args, **kwargs)
@@ -109,7 +133,7 @@ class BreadCrumb(object):
                 'games:list',
                 event_id=req.matchdict['event_id'],
             ),
-            parent='home',
+            parent='empty:event',
         )
         self.add(
             'teams:admin:list',
@@ -132,3 +156,4 @@ class BreadCrumb(object):
             parent='teams:admin:list',
 
         )
+        self.data['empty:event'] = EventElement()
