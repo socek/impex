@@ -42,4 +42,4 @@ class Game(Base):
     right = relationship(Team, primaryjoin=(right_id == Team.id))
 
     def get_sum_for_quart(self, team, quart):
-        return sum(self.scores[team][:(quart + 1)])
+        return sum(self.scores[team][:(quart)])
