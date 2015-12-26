@@ -63,6 +63,10 @@ class CreateGameForm(PostForm):
             'right_id',
             label='Druga drużyna',
         ).set_avalible_values(self._get_teams)
+        self.add_field(
+            'group_id',
+            label='Grupa',
+        ).set_avalible_values(self._get_groups)
 
         self.add_form_validator(GameValidator())
         self.add_form_validator(TeamsMustDifferValidator())
@@ -78,12 +82,16 @@ class CreateGameForm(PostForm):
     def _get_teams(self):
         return self.drivers.teams.list()
 
+    def _get_groups(self):
+        return self.drivers.groups.list()
+
     def on_success(self):
         data = self.get_data_dict(True)
 
         game = self.drivers.games.create(
             plaing_at=data['plaing_at'],
             priority=data['priority'],
+            group_id=data['group_id'],
             left_id=data['left_id'],
             right_id=data['right_id'],
             event_id=self.matchdict['event_id'],
@@ -109,6 +117,7 @@ class EditGameForm(CreateGameForm):
         self.instance.priority = data['priority']
         self.instance.left_id = data['left_id']
         self.instance.right_id = data['right_id']
+        self.instance.group_id = data['group_id']
         self.drivers.games.update(self.instance)
         self.database().commit()
         self._fix_priorities(data['priority'], self.instance)
@@ -118,6 +127,7 @@ class EditGameForm(CreateGameForm):
         self.set_value('priority', game.priority)
         self.set_value('left_id', str(game.left_id))
         self.set_value('right_id', str(game.right_id))
+        self.set_value('group_id', str(game.group_id))
         self.instance = game
 
 

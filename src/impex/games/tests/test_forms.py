@@ -29,6 +29,7 @@ class TestCreateEventForm(PostFormCase):
             'priority': sentinel.priority,
             'left_id': sentinel.left_id,
             'right_id': sentinel.right_id,
+            'group_id': sentinel.group_id,
         }
         self.matchdict()['event_id'] = sentinel.event_id
         self.mfix_fix_priorities()
@@ -42,6 +43,7 @@ class TestCreateEventForm(PostFormCase):
             left_id=sentinel.left_id,
             right_id=sentinel.right_id,
             event_id=sentinel.event_id,
+            group_id=sentinel.group_id,
         )
         self.mdatabase().commit.assert_called_once_with()
         self.mfix_fix_priorities().assert_called_once_with(
@@ -69,6 +71,11 @@ class TestCreateEventForm(PostFormCase):
 
         assert self.object()._get_teams() == self.mdrivers().teams.list.return_value
 
+    def test_get_groups(self):
+        self.mdrivers()
+
+        assert self.object()._get_groups() == self.mdrivers().groups.list.return_value
+
 
 class TestEditGameForm(PostFormCase):
     _object_cls = EditGameForm
@@ -81,6 +88,7 @@ class TestEditGameForm(PostFormCase):
             'priority': sentinel.priority,
             'left_id': sentinel.left_id,
             'right_id': sentinel.right_id,
+            'group_id': sentinel.group_id,
         }
         self.minstance()
 
@@ -91,6 +99,7 @@ class TestEditGameForm(PostFormCase):
         assert self.minstance().priority == sentinel.priority
         assert self.minstance().left_id == sentinel.left_id
         assert self.minstance().right_id == sentinel.right_id
+        assert self.minstance().group_id == sentinel.group_id
         self.mdrivers().games.update.assert_called_once_with(
             self.minstance()
         )
@@ -103,6 +112,7 @@ class TestEditGameForm(PostFormCase):
         instance.priority = 3
         instance.left_id = sentinel.left_id
         instance.right_id = sentinel.right_id
+        instance.group_id = sentinel.group_id
 
         self.object().read_from(instance)
 
@@ -112,6 +122,7 @@ class TestEditGameForm(PostFormCase):
             'priority': 3,
             'left_id': str(sentinel.left_id),
             'right_id': str(sentinel.right_id),
+            'group_id': str(sentinel.group_id),
         }
 
         assert self.object().instance is instance
