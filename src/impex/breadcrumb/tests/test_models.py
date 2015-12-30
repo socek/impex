@@ -6,8 +6,9 @@ from impaf.testing import cache
 from impex.application.testing import RequestCase
 
 from ..models import BreadCrumb
-from ..models import EventElement
 from ..models import BreadCrumbElement
+from ..models import EventElement
+from ..models import GameListElement
 
 
 class TestBreadCrumbElement(object):
@@ -84,4 +85,51 @@ class TestEventElement(RequestCase):
         )
         self.mdrivers().events.get_by_id.assert_called_once_with(
             sentinel.event_id,
+        )
+
+
+class TestGameListElement(RequestCase):
+
+    @cache
+    def object(self):
+        obj = GameListElement()
+        obj.feed_request(self.mrequest())
+        return obj
+
+    def test_label(self):
+        self.matchdict()
+
+        assert self.object().label == 'Mecze'
+
+    def test_label_for_group(self):
+        self.matchdict()['group_id'] = sentinel.group_id
+        self.mdrivers()
+
+        assert (
+            self.object().label
+            == self.mdrivers().groups.get_by_id.return_value.name
+        )
+
+    def test_url(self):
+        self.matchdict()['event_id'] = sentinel.event_id
+        assert (
+            self.object().get_url()
+            == self.mrequest().route_path.return_value
+        )
+        self.mrequest().route_path.assert_called_once_with(
+            'games:list',
+            event_id=sentinel.event_id,
+        )
+
+    def test_url_for_group(self):
+        self.matchdict()['event_id'] = sentinel.event_id
+        self.matchdict()['group_id'] = sentinel.group_id
+        assert (
+            self.object().get_url()
+            == self.mrequest().route_path.return_value
+        )
+        self.mrequest().route_path.assert_called_once_with(
+            'games:group_list',
+            event_id=sentinel.event_id,
+            group_id=sentinel.group_id,
         )

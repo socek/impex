@@ -29,6 +29,39 @@ class EventElement(BreadCrumbElement):
         return event.name
 
 
+class GameListElement(BreadCrumbElement):
+
+    def __init__(self):
+        super().__init__(
+            'Mecze',
+            parent='empty:event',
+        )
+
+    def get_url(self):
+        event_id = self.matchdict['event_id']
+        group_id = self.matchdict.get('group_id', None)
+        if group_id:
+            return self.route_path(
+                'games:group_list',
+                event_id=event_id,
+                group_id=group_id
+            )
+        else:
+            return self.route_path(
+                'games:list',
+                event_id=event_id,
+            )
+
+    @property
+    def label(self):
+        group_id = self.matchdict.get('group_id', None)
+        if group_id:
+            group = self.drivers.groups.get_by_id(group_id)
+            return group.name
+        else:
+            return self._label
+
+
 class BreadCrumb(Requestable):
 
     def feed_request(self, request):
@@ -127,15 +160,6 @@ class BreadCrumb(Requestable):
             parent='games:admin:list',
         )
         self.add(
-            'games:list',
-            'Mecze',
-            url=lambda req: req.route_path(
-                'games:list',
-                event_id=req.matchdict['event_id'],
-            ),
-            parent='empty:event',
-        )
-        self.add(
             'teams:admin:list',
             'Drużyny',
             url=lambda req: req.route_path(
@@ -157,3 +181,4 @@ class BreadCrumb(Requestable):
 
         )
         self.data['empty:event'] = EventElement()
+        self.data['games:list'] = GameListElement()
