@@ -37,7 +37,8 @@ class TestDriverGame(DriverCase):
     def setUp(self):
         self.flush_table_from_object(Game, Event, Team, Group)
 
-        group = self.groups().create(name='Group A')
+        group_a = self.groups().create(name='Group A')
+        group_b = self.groups().create(name='Group B')
 
         teams = []
         teams.append(self.teams().create(name='first'))
@@ -57,29 +58,28 @@ class TestDriverGame(DriverCase):
             left_id=teams[0].id,
             right_id=teams[1].id,
             priority=2,
-            group_id=group.id,
+            group_id=group_a.id,
         )
-        self.database().commit()
         self.game_2 = self.object().create(
             event_id=self.first_event.id,
             left_id=teams[2].id,
             right_id=teams[1].id,
             priority=3,
-            group_id=group.id,
+            group_id=group_a.id,
         )
         self.game_3 = self.object().create(
             event_id=self.first_event.id,
             left_id=teams[2].id,
             right_id=teams[0].id,
             priority=1,
-            group_id=group.id,
+            group_id=group_b.id,
         )
         self.game_4 = self.object().create(
             event_id=self.second_event.id,
             left_id=teams[0].id,
             right_id=teams[1].id,
             priority=1,
-            group_id=group.id,
+            group_id=group_b.id,
         )
 
         self.database().commit()
@@ -87,6 +87,7 @@ class TestDriverGame(DriverCase):
             'events': [self.first_event, self.second_event],
             'games': [self.game_1, self.game_2, self.game_3, self.game_4],
             'teams': teams,
+            'groups': [group_a, group_b]
         }
 
     def test_list(self):
@@ -172,3 +173,18 @@ class TestDriverGame(DriverCase):
             ] == elements_id
         finally:
             del globals()['_module_cache']['setUp[]']
+
+    def test_list_for_group(self):
+        data = self.setUp()
+
+        data = self.setUp()
+        elements = self.object().list_for_group(
+            data['events'][0].id,
+            data['groups'][0].id,
+        )
+        elements_id = [element.id for element in elements]
+
+        assert [
+            data['games'][0].id,
+            data['games'][1].id
+        ] == elements_id

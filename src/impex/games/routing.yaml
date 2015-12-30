@@ -20,3 +20,7 @@ impex.games.controllers:
         controller: GameListController
         route: games:list
         url: /event/{event_id:\d+}/games/
+    -
+        controller: GameListController
+        route: games:group_list
+        url: /event/{event_id:\d+}/games/{group_id:\d+}

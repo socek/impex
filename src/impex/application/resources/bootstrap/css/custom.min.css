@@ -65,3 +65,6 @@ div.game table tbody tr {
 div.game table tbody tr td.name {
     width: 250px;
 }
+div.buttons a.label {
+    margin-left: 10px;
+}

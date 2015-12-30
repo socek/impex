@@ -13,7 +13,8 @@ class GameListController(Controller):
 
     def make(self):
         self.context['games'] = self.drivers.games.list(
-            self.matchdict['event_id'])
+            self.matchdict['event_id']
+        )
 
 
 class GameCreateController(Controller):

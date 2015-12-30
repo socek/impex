@@ -12,5 +12,7 @@
                 =event.name
                 %div.buttons
                   %a.label.label-primary href="{{route_path('games:list', event_id=event.id)}}"
-                    Mecze
-
+                    Wszystkie mecze
+                  -for group in groups:
+                    %a.label.label-warning href="{{route_path('games:group_list', event_id=event.id, group_id=group.id)}}"
+                      =group.name
