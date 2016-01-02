@@ -188,3 +188,16 @@ class TestDriverGame(DriverCase):
             data['games'][0].id,
             data['games'][1].id
         ] == elements_id
+
+    def test_list_teams_for_group(self):
+        data = self.setUp()
+
+        second_event = data['events'][1]
+        group_b = data['groups'][1]
+
+        elements = self.teams().list_for(second_event.id, group_b.id)
+        elements_id = [element.id for element in elements]
+        assert [
+            data['teams'][0].id,
+            data['teams'][1].id
+        ] == elements_id
