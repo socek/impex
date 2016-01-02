@@ -24,6 +24,7 @@ install_requires = [
     # 'css.fontawesome',
     'formskit==0.5.4.10',
     'freezegun',
+    'fanstatic==1.0a5',
 ]
 
 
@@ -37,20 +38,20 @@ def create_link(name, version):
     return template % data
 
 dependency_links = [
-    create_link('impaf', '0.1'),
-    create_link('impaf-jinja2', '0.1'),
-    create_link('impaf-haml', '0.1'),
-    create_link('impaf-beaker', '0.1'),
-    create_link('impaf-sqlalchemy', '0.1'),
-    create_link('impaf-alembic', '0.1'),
-    create_link('impaf-fanstatic', '0.1.1'),
-    create_link('impaf-formskit', '0.1.2'),
-    create_link('impaf-flashmsg', '0.1'),
-    create_link('impaf-auth', '0.1'),
+    # create_link('impaf', '0.1'),
+    # create_link('impaf-jinja2', '0.1'),
+    # create_link('impaf-haml', '0.1'),
+    # create_link('impaf-beaker', '0.1'),
+    # create_link('impaf-sqlalchemy', '0.1'),
+    # create_link('impaf-alembic', '0.1'),
+    # create_link('impaf-fanstatic', '0.1.1'),
+    # create_link('impaf-formskit', '0.1.2'),
+    # create_link('impaf-flashmsg', '0.1'),
+    # create_link('impaf-auth', '0.1'),
 
-    create_link('bael.project', '0.2'),
-    create_link('baelfire', '0.3.1'),
-    create_link('formskit', '0.5.4.10'),
+    # create_link('bael.project', '0.2'),
+    # create_link('baelfire', '0.3.1'),
+    # create_link('formskit', '0.5.4.10'),
 ]
 
 if __name__ == '__main__':
