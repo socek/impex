@@ -22,9 +22,16 @@ class TestGameListController(ControllerCase):
     def mgame_widget(self):
         return self.patch('impex.games.controllers.GameWidget')
 
+    @cache
+    def mgrouphighscorewidget(self):
+        return self.patch('impex.games.controllers.GroupHighScoreWidget')
+
     def test_make(self):
         self.mget_games()
         self.mmake_widgets()
+        self.madd_widget()
+        self.mgrouphighscorewidget()
+        self.mdrivers()
 
         self.object().make()
 
@@ -34,6 +41,34 @@ class TestGameListController(ControllerCase):
         self.mmake_widgets().assert_called_once_with(
             self.mget_games().return_value
         )
+        self.madd_widget().assert_called_once_with(
+            'highscore',
+            self.mgrouphighscorewidget().return_value,
+        )
+        self.mgrouphighscorewidget().assert_called_once_with(
+            self.mdrivers().events.get_by_id.return_value,
+            self.mdrivers().groups.get_by_id.return_value,
+        )
+
+    def test_make_without_group(self):
+        self.matchdict()
+        self.mget_games()
+        self.mmake_widgets()
+        self.madd_widget()
+        self.mgrouphighscorewidget()
+        self.mdrivers()
+
+        self.object().make()
+
+        assert self.context() == {
+            'games': self.mmake_widgets().return_value,
+            'highscore': None,
+        }
+        self.mmake_widgets().assert_called_once_with(
+            self.mget_games().return_value
+        )
+        assert self.madd_widget().called is False
+        self.mgrouphighscorewidget().called is False
 
     def test_get_games(self):
         self.matchdict()['event_id'] = sentinel.event_id

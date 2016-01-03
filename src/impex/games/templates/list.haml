@@ -2,9 +2,13 @@
 -block content
     %div.col-lg-12
       %div.bs-component
+        %h1
+          Lista meczy&nbsp;
+    -if highscore:
+      =highscore()
+    %div.col-lg-12
+      %div.bs-component
         %div
-          %h1
-            Lista meczy&nbsp;
           -for game in games:
             =game()
 

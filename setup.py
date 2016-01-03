@@ -9,9 +9,9 @@ install_requires = [
     'impaf-sqlalchemy',
     'impaf-alembic',
     'impaf-fanstatic==0.1.1',
-    'impaf-formskit==0.1.2',
+    'impaf-formskit==0.1.3',
     'impaf-flashmsg',
-    'impaf-auth',
+    'impaf-auth==0.1.1',
 
     'js.jquery',
 
