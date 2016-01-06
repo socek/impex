@@ -1,5 +1,5 @@
 from formskit.converters import ToBool
-from formskit.converters import ToDatetime
+from formskit.converters import ToDate
 from formskit.validators import NotEmpty
 
 from impex.application.plugins.formskit import PostForm
@@ -10,9 +10,9 @@ class CreateEventForm(PostForm):
     def create_form(self):
         self.add_field('name', label='Nazwa', validators=[NotEmpty()])
         self.add_field('start_date', label='Data rozpoczęcia',
-                       convert=ToDatetime())
+                       convert=ToDate())
         self.add_field('end_date', label='Data zakończenia',
-                       convert=ToDatetime())
+                       convert=ToDate())
         self.add_field('is_visible', label='Opublikowane', convert=ToBool())
 
     def on_success(self):

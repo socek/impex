@@ -32,7 +32,7 @@ class TestGroupHighScoreWidget(RequestCase):
         game.status = game.STATUS_RUNNING
         self.mdrivers().games.list_for_group.return_value = [game]
 
-        assert list(self.object().make_scores()) == [
+        assert sorted(list(self.object().make_scores()), key=lambda x: x['name']) == [
             {'games': 0, 'name': 'left', 'points': 0, 'smallpoints': 0, 'wins': 0},
             {'games': 0, 'name': 'right', 'points': 0, 'smallpoints': 0, 'wins': 0},
         ]
