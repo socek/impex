@@ -14,6 +14,7 @@
                 =table.index_header()
                 %th.text-center -> Priorytet
                 %th.text-center -> Status
+                %th.text-center -> Grupa
                 %th -> Drużyna
                 %th -> Drużyna
                 %th -> Data
@@ -31,6 +32,7 @@
                       %div.fa.btn.btn-sm.btn-left-margin.btn-success.fa-play
                     -else:
                       %div.fa.btn.btn-sm.btn-left-margin.btn-danger.fa-stop
+                  %td.text-center -> =game.group.name
                   %td -> =game.left.name
                   %td -> =game.right.name
                   -if game.plaing_at:
