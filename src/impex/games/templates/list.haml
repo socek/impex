@@ -1,16 +1,24 @@
 -extends "impex.application:templates/authencitated.haml"
 -block content
-    %div.col-lg-12
-      %div.bs-component
-        %h1
-          Lista meczy&nbsp;
-    -if highscore:
-      =highscore()
-    %div.col-lg-12
-      %div.bs-component
-        %div
-          -for game in games:
-            =game()
+  =need('gamelist')
+  %div.col-lg-12
+    %div.bs-component
+      %h1.filters
+        Lista meczy&nbsp;
+        %button.btn.btn-warning.btn-xs.all data-class="btn-warning" data-type="all" -> Wszystkie
+        &nbsp;
+        %button.btn.btn-primary.btn-xs data-class="btn-primary" data-type="not_started" -> Nie rozpoczęte
+        &nbsp;
+        %button.btn.btn-success.btn-xs data-class="btn-success" data-type="running" -> W trakcie
+        &nbsp;
+        %button.btn.btn-info.btn-xs data-class="btn-info" data-type="ended" -> Zakończone
+  -if highscore:
+    =highscore()
+  %div.col-lg-12
+    %div.bs-component
+      %div
+        -for game in games:
+          =game()
 
 
 

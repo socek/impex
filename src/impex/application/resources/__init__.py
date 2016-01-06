@@ -80,10 +80,15 @@ select2 = Resource(
     ]
 )
 
-
 scoretable = Resource(
     library,
     'js/scoretable.js',
+    bottom=True,
+)
+
+gamelist = Resource(
+    library,
+    'js/gamelist.js',
     bottom=True,
 )
 
@@ -120,4 +125,8 @@ class Resources(BaseResources):
         self.add_resource(
             'scoretable',
             'impex.application.resources:scoretable',
+        )
+        self.add_resource(
+            'gamelist',
+            'impex.application.resources:gamelist',
         )

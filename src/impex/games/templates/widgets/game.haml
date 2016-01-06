@@ -5,7 +5,14 @@
   %td class="{% if team_score > other_score %}danger{% endif %}"
     =team_score
 
-%div.well.game
+-if game.status == game.STATUS_NOT_STARTED:
+  -set cls = 'not_started'
+-elif game.status == game.STATUS_RUNNING:
+  -set cls = 'running'
+-else:
+  -set cls = 'ended'
+
+%div class="well game {{cls}}"
   -if game.status == game.STATUS_NOT_STARTED:
     %div.state.label-primary.btn.col-md-2
       Nie rozpoczęto
