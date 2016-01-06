@@ -44,10 +44,10 @@ class TestBreadCrumb(object):
         return BreadCrumb()
 
     def test_simple(self):
-        generator = list(self.bread().get_crumbs_for('empty:admin'))
+        generator = list(self.bread().get_crumbs_for('admin:home'))
 
         assert generator[0] == self.bread().data['home']
-        assert generator[1] == self.bread().data['empty:admin']
+        assert generator[1] == self.bread().data['admin:home']
 
     def test_on_empty_key(self):
         for element in self.bread().get_crumbs_for(None):

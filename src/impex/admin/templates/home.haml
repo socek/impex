@@ -1,0 +1,31 @@
+-extends "impex.application:templates/authencitated.haml"
+-import 'impex.utils:templates/table.haml' as table
+-block content
+    %div.col-lg-12
+      %div.bs-component
+        %div.jumbotron.jumbotron2
+          %h1
+            Admin
+
+          %table.table.table-striped.table-hover
+            %thead
+              %tr
+                =table.index_header()
+                %th -> Nazwa
+
+            %tbody
+              %tr
+                =table.index_row_raw(1)
+                %td
+                  %a href="{{route_path('teams:admin:list')}}"
+                    Drużyny
+              %tr
+                =table.index_row_raw(2)
+                %td
+                  %a href="{{route_path('events:admin:list')}}"
+                    Wydarzenia
+              %tr
+                =table.index_row_raw(3)
+                %td
+                  %a href="{{route_path('groups:admin:list')}}"
+                    Grupy

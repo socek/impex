@@ -4,9 +4,12 @@
 -macro index_header():
   %th.col-lg-1.text-center -> #
 
--macro index_row(loop):
+-macro index_row_raw(number):
   %td.text-center
-    =loop.index
+    =number
+
+-macro index_row(loop):
+  =index_row_raw(loop.index)
 
 -macro edit_button(url):
   %a.fa.btn.btn-sm.btn-left-margin.btn-success.fa-pencil href="{{url}}" title="Edytuj"

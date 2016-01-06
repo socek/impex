@@ -1,0 +1,5 @@
+impex.admin.controllers:
+    -
+        controller: AdminController
+        route: admin:home
+        url: /admin

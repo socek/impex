@@ -91,15 +91,16 @@ class BreadCrumb(Requestable):
         self.add('home', 'Główna', lambda req: req.route_path('home'))
 
         self.add(
-            'empty:admin',
+            'admin:home',
             'Panel Administracyjny',
+            url=lambda req: req.route_path('admin:home'),
             parent='home',
         )
         self.add(
             'events:admin:list',
             'Wydarzenia',
             url=lambda req: req.route_path('events:admin:list'),
-            parent='empty:admin',
+            parent='admin:home',
         )
 
         self.add(
@@ -118,7 +119,7 @@ class BreadCrumb(Requestable):
             'groups:admin:list',
             'Grupy',
             url=lambda req: req.route_path('groups:admin:list'),
-            parent='empty:admin',
+            parent='admin:home',
         )
         self.add(
             'groups:admin:create',
@@ -165,7 +166,7 @@ class BreadCrumb(Requestable):
             url=lambda req: req.route_path(
                 'teams:admin:list',
             ),
-            parent='empty:admin',
+            parent='admin:home',
         )
         self.add(
             'teams:admin:create',
