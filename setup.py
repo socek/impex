@@ -14,6 +14,7 @@ install_requires = [
     'impaf-auth==0.1.1',
 
     'js.jquery',
+    'js.bootstrap',
 
     'waitress',
     'pyramid_debugtoolbar',
@@ -25,6 +26,7 @@ install_requires = [
     'formskit==0.5.4.10',
     'freezegun',
     'fanstatic==1.0a5',
+    'uwsgi',
 ]
 
 

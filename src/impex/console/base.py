@@ -39,6 +39,11 @@ class Project(ProjectBase):
         self.paths.set_path('data', 'cwd', 'data')
         self.paths.set_path('report', 'data', 'report.yml')
 
+        self.paths.set_path('uwsgi:pidfile', 'data', 'uwsgi.pid')
+        self.paths.set_path('uwsgi:logto', 'data', 'uwsgi.log')
+        self.paths.set_path('uwsgi:daemonize2', 'data', 'uwsgi.daemonize.log')
+        self.paths.set_path('uwsgi:socket', 'data', 'uwsgi.socket')
+
     def create_dependecies(self):
         super().create_dependecies()
         self.add_dependency(RunBefore(Develop()))

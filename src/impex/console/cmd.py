@@ -13,6 +13,9 @@ class WeWalletApplication(Application):
         'serve': 'impex.console.serve:Serve',
         'alembic-upgrade': 'impex.console.alembic:AlembicUpgrade',
         'alembic-revision': 'impex.console.alembic:AlembicRevision',
+        'uwsgi_start': 'impex.console.uwsgi:StartUwsgi',
+        'uwsgi_stop': 'impex.console.uwsgi:StopUwsgi',
+        'uwsgi_restart': 'impex.console.uwsgi:RestartUwsgi',
     }
 
     def create_parser(self):
@@ -58,6 +61,30 @@ class WeWalletApplication(Application):
             help='Create migration.',
             action='store_const',
             const='alembic-revision',
+        )
+        group.add_argument(
+            '-w',
+            '--uwsgi-start',
+            dest='task',
+            help='Start uwsgi',
+            action='store_const',
+            const='uwsgi_start',
+        )
+        group.add_argument(
+            '-n',
+            '--uwsgi-stop',
+            dest='task',
+            help='Stop uwsgi',
+            action='store_const',
+            const='uwsgi_stop',
+        )
+        group.add_argument(
+            '-e',
+            '--uwsgi-restart',
+            dest='task',
+            help='Restart uwsgi',
+            action='store_const',
+            const='uwsgi_restart',
         )
 
         tasks.add_argument(
