@@ -8,6 +8,8 @@ from formskit.validators import NotEmpty
 from impex.application.plugins.formskit import PostForm
 
 Status = namedtuple('status', ['id', 'name'])
+Game = namedtuple('game', ['id', 'name'])
+Team = namedtuple('team', ['id', 'name'])
 
 
 class GameValidator(FormValidator):
@@ -15,7 +17,9 @@ class GameValidator(FormValidator):
 
     def validate(self):
         left_id = self.form.get_value('left_id')
+        left_id = left_id if left_id else None
         right_id = self.form.get_value('right_id')
+        right_id = right_id if right_id else None
         if getattr(self.form, 'instance', None):
             except_id = self.form.instance.id
         else:
@@ -35,10 +39,14 @@ class TeamsMustDifferValidator(FormValidator):
     def validate(self):
         left_id = self.form.get_value('left_id')
         right_id = self.form.get_value('right_id')
-        return left_id != right_id
+        return left_id == '' or right_id == '' or left_id != right_id
 
 
 class CreateGameForm(PostForm):
+
+    def __init__(self, *args, event=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.event = event
 
     def create_form(self):
         self.add_field(
@@ -67,6 +75,10 @@ class CreateGameForm(PostForm):
             'group_id',
             label='Grupa',
         ).set_avalible_values(self._get_groups)
+        self.add_field(
+            'child_id',
+            label='Następny mecz',
+        ).set_avalible_values(self._get_games)
 
         self.add_form_validator(GameValidator())
         self.add_form_validator(TeamsMustDifferValidator())
@@ -80,21 +92,46 @@ class CreateGameForm(PostForm):
         )
 
     def _get_teams(self):
-        return self.drivers.teams.list()
+        yield Team(id='', name='(brak)')
+        for team in self.drivers.teams.list():
+            yield team
 
     def _get_groups(self):
         return self.drivers.groups.list()
 
+    def _get_games(self):
+        if getattr(self, 'instance', None):
+            query = self.drivers.games.list_except(
+                self.event.id,
+                self.instance.id,
+                self.instance.group_id,
+            )
+        else:
+            query = self.drivers.games.list(self.event.id)
+        yield Game(id='', name='(brak)')
+        for game in query:
+            name = '%d: %s %s' % (
+                game.priority,
+                getattr(game.left, 'name', ''),
+                getattr(game.right, 'name', ''),
+            )
+            yield Game(id=game.id, name=name)
+
     def on_success(self):
         data = self.get_data_dict(True)
+
+        left_id = data['left_id'] if data['left_id'] else None
+        right_id = data['right_id'] if data['right_id'] else None
+        child_id = data['child_id'] if data['child_id'] else None
 
         game = self.drivers.games.create(
             plaing_at=data['plaing_at'],
             priority=data['priority'],
             group_id=data['group_id'],
-            left_id=data['left_id'],
-            right_id=data['right_id'],
+            left_id=left_id,
+            right_id=right_id,
             event_id=self.matchdict['event_id'],
+            child_id=child_id,
         )
         self.database().commit()
         self._fix_priorities(data['priority'], game)
@@ -113,10 +150,15 @@ class EditGameForm(CreateGameForm):
     def on_success(self):
         data = self.get_data_dict(True)
 
+        left_id = data['left_id'] if data['left_id'] else None
+        right_id = data['right_id'] if data['right_id'] else None
+        child_id = data['child_id'] if data['child_id'] else None
+
         self.instance.plaing_at = data['plaing_at']
         self.instance.priority = data['priority']
-        self.instance.left_id = data['left_id']
-        self.instance.right_id = data['right_id']
+        self.instance.left_id = left_id
+        self.instance.right_id = right_id
+        self.instance.child_id = child_id
         self.instance.group_id = data['group_id']
         self.drivers.games.update(self.instance)
         self.database().commit()
@@ -128,6 +170,7 @@ class EditGameForm(CreateGameForm):
         self.set_value('left_id', str(game.left_id))
         self.set_value('right_id', str(game.right_id))
         self.set_value('group_id', str(game.group_id))
+        self.set_value('child_id', str(game.child_id))
         self.instance = game
 
 

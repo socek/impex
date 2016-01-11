@@ -5,7 +5,13 @@ from .widgets import EditGameFormWidget
 from .widgets import ScoreBoardWidget
 
 
-class GameListController(Controller):
+class BaseController(Controller):
+
+    def get_event(self):
+        return self.drivers.events.get_by_id(self.matchdict['event_id'])
+
+
+class GameListController(BaseController):
 
     renderer = 'impex.games:templates/admin/list.haml'
     permission = 'admin'
@@ -17,14 +23,17 @@ class GameListController(Controller):
         )
 
 
-class GameCreateController(Controller):
+class GameCreateController(BaseController):
 
     renderer = 'impex.games:templates/admin/create.haml'
     permission = 'admin'
     crumbs = 'games:admin:create'
 
     def make(self):
-        form = self.add_form_widget(CreateGameFormWidget)
+        form = self.add_form_widget(
+            CreateGameFormWidget,
+            event=self.get_event(),
+        )
         form.fill()
 
         if form.validate():
@@ -35,7 +44,7 @@ class GameCreateController(Controller):
             )
 
 
-class GameEditController(Controller):
+class GameEditController(BaseController):
 
     renderer = 'impex.games:templates/admin/edit.haml'
     permission = 'admin'
@@ -44,7 +53,10 @@ class GameEditController(Controller):
     def make(self):
         game_id = self.matchdict['game_id']
         game = self.drivers.games.get_by_id(game_id)
-        form = self.add_form_widget(EditGameFormWidget)
+        form = self.add_form_widget(
+            EditGameFormWidget,
+            event=self.get_event(),
+        )
         form.read_from(game)
 
         if form.validate():
@@ -55,7 +67,7 @@ class GameEditController(Controller):
             )
 
 
-class GameEditScoresController(Controller):
+class GameEditScoresController(BaseController):
     renderer = 'impex.games:templates/admin/edit_scores.haml'
     permission = 'admin'
     crumbs = 'games:admin:edit_scores'

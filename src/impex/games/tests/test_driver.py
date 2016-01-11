@@ -176,8 +176,6 @@ class TestDriverGame(DriverCase):
 
     def test_list_for_group(self):
         data = self.setUp()
-
-        data = self.setUp()
         elements = self.object().list_for_group(
             data['events'][0].id,
             data['groups'][0].id,
@@ -200,4 +198,17 @@ class TestDriverGame(DriverCase):
         assert [
             data['teams'][0].id,
             data['teams'][1].id
+        ] == elements_id
+
+    def test_list_except(self):
+        data = self.setUp()
+        elements = self.object().list_except(
+            data['events'][0].id,
+            data['games'][0].id,
+            data['groups'][0].id,
+        )
+        elements_id = [element.id for element in elements]
+
+        assert [
+            data['games'][1].id
         ] == elements_id

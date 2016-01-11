@@ -16,6 +16,12 @@ class GameDriver(ModelDriver):
             .order_by(self.model.priority)
         )
 
+    def list_except(self, event_id, game_id, group_id):
+        return (
+            self.list_for_group(event_id, group_id)
+            .filter(self.model.id != game_id)
+        )
+
     def list_for_group(self, event_id, group_id):
         return self.list(event_id).filter(self.model.group_id == group_id)
 

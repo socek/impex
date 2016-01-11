@@ -14,7 +14,7 @@ from ..forms import GameValidator
 from ..forms import TeamsMustDifferValidator
 
 
-class TestCreateEventForm(PostFormCase):
+class TestCreateGameForm(PostFormCase):
     _object_cls = CreateGameForm
 
     @cache
@@ -30,6 +30,7 @@ class TestCreateEventForm(PostFormCase):
             'left_id': sentinel.left_id,
             'right_id': sentinel.right_id,
             'group_id': sentinel.group_id,
+            'child_id': sentinel.child_id,
         }
         self.matchdict()['event_id'] = sentinel.event_id
         self.mfix_fix_priorities()
@@ -44,6 +45,7 @@ class TestCreateEventForm(PostFormCase):
             right_id=sentinel.right_id,
             event_id=sentinel.event_id,
             group_id=sentinel.group_id,
+            child_id=sentinel.child_id,
         )
         self.mdatabase().commit.assert_called_once_with()
         self.mfix_fix_priorities().assert_called_once_with(
@@ -67,14 +69,56 @@ class TestCreateEventForm(PostFormCase):
         )
 
     def test_get_teams(self):
-        self.mdrivers()
+        team = MagicMock()
+        self.mdrivers().teams.list.return_value = [team]
 
-        assert self.object()._get_teams() == self.mdrivers().teams.list.return_value
+        data = list(self.object()._get_teams())
+        assert data[0].id == ''
+        assert data[0].name == '(brak)'
+        assert data[1].id == team.id
+        assert data[1].name == team.name
 
     def test_get_groups(self):
         self.mdrivers()
 
         assert self.object()._get_groups() == self.mdrivers().groups.list.return_value
+
+    def test_get_games(self):
+        game = MagicMock()
+        game.priority = 1
+        game.left.name = 'myname'
+        game.right = None
+        self.mdrivers().games.list.return_value = [game]
+        self.object().event = MagicMock()
+
+        data = list(self.object()._get_games())
+        assert data[0].id == ''
+        assert data[0].name == '(brak)'
+        assert data[1].id == game.id
+        assert data[1].name == '1: myname '
+
+    def test_get_games_with_instance(self):
+        game = MagicMock()
+        game.priority = 1
+        game.left.name = 'myname'
+        game.right = None
+        instance = MagicMock()
+        event = MagicMock()
+        self.mdrivers().games.list_except.return_value = [game]
+        self.object().event = event
+        self.object().instance = instance
+
+        data = list(self.object()._get_games())
+        assert data[0].id == ''
+        assert data[0].name == '(brak)'
+        assert data[1].id == game.id
+        assert data[1].name == '1: myname '
+
+        self.mdrivers().games.list_except.assert_called_once_with(
+            event.id,
+            instance.id,
+            instance.group_id,
+        )
 
 
 class TestEditGameForm(PostFormCase):
@@ -89,6 +133,7 @@ class TestEditGameForm(PostFormCase):
             'left_id': sentinel.left_id,
             'right_id': sentinel.right_id,
             'group_id': sentinel.group_id,
+            'child_id': sentinel.child_id,
         }
         self.minstance()
 
@@ -100,6 +145,7 @@ class TestEditGameForm(PostFormCase):
         assert self.minstance().left_id == sentinel.left_id
         assert self.minstance().right_id == sentinel.right_id
         assert self.minstance().group_id == sentinel.group_id
+        assert self.minstance().child_id == sentinel.child_id
         self.mdrivers().games.update.assert_called_once_with(
             self.minstance()
         )
@@ -113,6 +159,7 @@ class TestEditGameForm(PostFormCase):
         instance.left_id = sentinel.left_id
         instance.right_id = sentinel.right_id
         instance.group_id = sentinel.group_id
+        instance.child_id = sentinel.child_id
 
         self.object().read_from(instance)
 
@@ -123,6 +170,7 @@ class TestEditGameForm(PostFormCase):
             'left_id': str(sentinel.left_id),
             'right_id': str(sentinel.right_id),
             'group_id': str(sentinel.group_id),
+            'child_id': str(sentinel.child_id),
         }
 
         assert self.object().instance is instance
@@ -182,6 +230,24 @@ class TestTeamsMustDifferValidator(ValidatorCase):
 
     def test_negative(self):
         assert self.object().validate() is False
+
+    def test_when_left_is_empty(self):
+        def get_value_mock(name):
+            if name == 'left_id':
+                return ''
+            else:
+                return sentinel.right_id
+        self.mform().get_value = get_value_mock
+        assert self.object().validate() is True
+
+    def test_when_right_is_empty(self):
+        def get_value_mock(name):
+            if name == 'left_id':
+                return sentinel.left_id
+            else:
+                return ''
+        self.mform().get_value = get_value_mock
+        assert self.object().validate() is True
 
 
 class TestEditScoreGameForm(PostFormCase):
