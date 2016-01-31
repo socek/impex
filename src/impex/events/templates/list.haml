@@ -6,13 +6,18 @@
         %div.jumbotron.jumbotron2
           %h1
             Wybierz rok&nbsp;
-          %ul
-            -for event in events:
-              %li
-                =event.name
-                %div.buttons
+          -for event in events:
+            %table.table.table-striped.table-nonfluid
+              %tr
+                %td.label-success.text-center colspan="4"
+                    =event.name
+              %tr
+                %td
                   %a.label.label-primary href="{{route_path('games:list', event_id=event.id)}}"
                     Wszystkie mecze
-                  -for group in groups:
+                -for group in groups:
+                  %td
                     %a.label.label-warning href="{{route_path('games:group_list', event_id=event.id, group_id=group.id)}}"
                       =group.name
+
+

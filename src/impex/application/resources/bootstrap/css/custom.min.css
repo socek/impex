@@ -43,8 +43,6 @@ table.scoreboard > tbody > tr:nth-of-type(2n+1) {
 table.scoreboard > td {
     vertical-align: middle;
 }
-
-
 div.game {
     width: 100%;
 }
@@ -67,4 +65,10 @@ div.game table tbody tr td.name {
 }
 div.buttons a.label {
     margin-left: 10px;
+}
+table a:not(.btn), .table a:not(.btn) {
+    text-decoration: none;
+}
+table.table-nonfluid {
+    width: auto !important;
 }
