@@ -12,6 +12,10 @@
 -else:
   -set cls = 'ended'
 
+-if request.has_permission('admin')
+  %a.btn.btn-success.btn-xs href="{{edit_url}}"
+    Zmień wynik
+
 %div class="well game {{cls}}"
   -if game.status == game.STATUS_NOT_STARTED:
     %div.state.label-primary.btn.col-md-2

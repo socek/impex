@@ -31,3 +31,8 @@ class GameWidget(SingleWidget, Requestable):
 
     def make(self):
         self.context['game'] = self.game
+        self.context['edit_url'] = self.route_path(
+            'games:admin:edit_scores',
+            event_id=self.matchdict['event_id'],
+            game_id=self.game.id,
+        )
