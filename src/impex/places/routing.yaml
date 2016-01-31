@@ -1,0 +1,13 @@
+impex.places.admin_controllers:
+    -
+        controller: PlaceListController
+        route: places:admin:list
+        url: /admin/places
+    -
+        controller: PlaceCreateController
+        route: places:admin:create
+        url: /admin/places/create
+    -
+        controller: PlaceEditController
+        route: places:admin:edit
+        url: /admin/places/{place_id:\d+}/

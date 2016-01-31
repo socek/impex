@@ -1,0 +1,26 @@
+-extends "impex.application:templates/authencitated.haml"
+-import 'impex.utils:templates/table.haml' as table
+-block content
+    %div.col-lg-12
+      %div.bs-component
+        %div.jumbotron.jumbotron2
+          %h1
+            Lista miejsc&nbsp;
+            =table.add_button(route_path('places:admin:create'))
+
+          %table.table.table-striped.table-hover
+            %thead
+              %tr
+                =table.index_header()
+                %th -> Nazwa
+                %th -> Akcje
+
+            %tbody
+              -for place in places:
+                %tr.withactions
+                  =table.index_row(loop)
+                  %td
+                    =place.name
+                  %td
+                    =table.edit_button(route_path('places:admin:edit', place_id=place.id))
+

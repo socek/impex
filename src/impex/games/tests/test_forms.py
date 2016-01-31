@@ -31,6 +31,7 @@ class TestCreateGameForm(PostFormCase):
             'right_id': sentinel.right_id,
             'group_id': sentinel.group_id,
             'child_id': sentinel.child_id,
+            'place_id': sentinel.place_id,
         }
         self.matchdict()['event_id'] = sentinel.event_id
         self.mfix_fix_priorities()
@@ -46,6 +47,7 @@ class TestCreateGameForm(PostFormCase):
             event_id=sentinel.event_id,
             group_id=sentinel.group_id,
             child_id=sentinel.child_id,
+            place_id=sentinel.place_id,
         )
         self.mdatabase().commit.assert_called_once_with()
         self.mfix_fix_priorities().assert_called_once_with(
@@ -77,6 +79,16 @@ class TestCreateGameForm(PostFormCase):
         assert data[0].name == '(brak)'
         assert data[1].id == team.id
         assert data[1].name == team.name
+
+    def test_get_places(self):
+        place = MagicMock()
+        self.mdrivers().places.list.return_value = [place]
+
+        data = list(self.object()._get_places())
+        assert data[0].id == ''
+        assert data[0].name == '(brak)'
+        assert data[1].id == place.id
+        assert data[1].name == place.name
 
     def test_get_groups(self):
         self.mdrivers()
@@ -134,6 +146,7 @@ class TestEditGameForm(PostFormCase):
             'right_id': sentinel.right_id,
             'group_id': sentinel.group_id,
             'child_id': sentinel.child_id,
+            'place_id': sentinel.place_id,
         }
         self.minstance()
 
@@ -146,6 +159,7 @@ class TestEditGameForm(PostFormCase):
         assert self.minstance().right_id == sentinel.right_id
         assert self.minstance().group_id == sentinel.group_id
         assert self.minstance().child_id == sentinel.child_id
+        assert self.minstance().place_id == sentinel.place_id
         self.mdrivers().games.update.assert_called_once_with(
             self.minstance()
         )
@@ -160,6 +174,7 @@ class TestEditGameForm(PostFormCase):
         instance.right_id = sentinel.right_id
         instance.group_id = sentinel.group_id
         instance.child_id = sentinel.child_id
+        instance.place_id = sentinel.place_id
 
         self.object().read_from(instance)
 
@@ -171,6 +186,7 @@ class TestEditGameForm(PostFormCase):
             'right_id': str(sentinel.right_id),
             'group_id': str(sentinel.group_id),
             'child_id': str(sentinel.child_id),
+            'place_id': str(sentinel.place_id),
         }
 
         assert self.object().instance is instance

@@ -17,6 +17,9 @@
             %li
               %a href="{{route_path('groups:admin:list')}}"
                 Grupy
+            %li
+              %a href="{{route_path('places:admin:list')}}"
+                Miejsca
         %ul.nav.navbar-nav.navbar-right
           -if request.has_permission('guest')
             %li

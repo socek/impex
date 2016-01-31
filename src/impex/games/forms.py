@@ -10,6 +10,7 @@ from impex.application.plugins.formskit import PostForm
 Status = namedtuple('status', ['id', 'name'])
 Game = namedtuple('game', ['id', 'name'])
 Team = namedtuple('team', ['id', 'name'])
+Place = namedtuple('place', ['id', 'name'])
 
 
 class GameValidator(FormValidator):
@@ -79,6 +80,10 @@ class CreateGameForm(PostForm):
             'child_id',
             label='Następny mecz',
         ).set_avalible_values(self._get_games)
+        self.add_field(
+            'place_id',
+            label='Miejsce',
+        ).set_avalible_values(self._get_places)
 
         self.add_form_validator(GameValidator())
         self.add_form_validator(TeamsMustDifferValidator())
@@ -98,6 +103,11 @@ class CreateGameForm(PostForm):
 
     def _get_groups(self):
         return self.drivers.groups.list()
+
+    def _get_places(self):
+        yield Place(id='', name='(brak)')
+        for place in self.drivers.places.list():
+            yield place
 
     def _get_games(self):
         if getattr(self, 'instance', None):
@@ -123,6 +133,7 @@ class CreateGameForm(PostForm):
         left_id = data['left_id'] if data['left_id'] else None
         right_id = data['right_id'] if data['right_id'] else None
         child_id = data['child_id'] if data['child_id'] else None
+        place_id = data['place_id'] if data['place_id'] else None
 
         game = self.drivers.games.create(
             plaing_at=data['plaing_at'],
@@ -132,6 +143,7 @@ class CreateGameForm(PostForm):
             right_id=right_id,
             event_id=self.matchdict['event_id'],
             child_id=child_id,
+            place_id=place_id,
         )
         self.database().commit()
         self._fix_priorities(data['priority'], game)
@@ -153,6 +165,7 @@ class EditGameForm(CreateGameForm):
         left_id = data['left_id'] if data['left_id'] else None
         right_id = data['right_id'] if data['right_id'] else None
         child_id = data['child_id'] if data['child_id'] else None
+        place_id = data['place_id'] if data['place_id'] else None
 
         self.instance.plaing_at = data['plaing_at']
         self.instance.priority = data['priority']
@@ -160,6 +173,7 @@ class EditGameForm(CreateGameForm):
         self.instance.right_id = right_id
         self.instance.child_id = child_id
         self.instance.group_id = data['group_id']
+        self.instance.place_id = place_id
         self.drivers.games.update(self.instance)
         self.database().commit()
         self._fix_priorities(data['priority'], self.instance)
@@ -171,6 +185,7 @@ class EditGameForm(CreateGameForm):
         self.set_value('right_id', str(game.right_id))
         self.set_value('group_id', str(game.group_id))
         self.set_value('child_id', str(game.child_id))
+        self.set_value('place_id', str(game.place_id))
         self.instance = game
 
 

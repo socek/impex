@@ -6,6 +6,7 @@ from impex.auth.drivers import AuthDriver
 from impex.events.driver import EventDriver
 from impex.games.driver import GameDriver
 from impex.groups.driver import GroupDriver
+from impex.places.driver import PlaceDriver
 
 
 class ImpexDriverHolder(AuthDriverHolder):
@@ -33,3 +34,7 @@ class ImpexDriverHolder(AuthDriverHolder):
     @property
     def groups(self):
         return self.feeded_driver(GroupDriver())
+
+    @property
+    def places(self):
+        return self.feeded_driver(PlaceDriver())

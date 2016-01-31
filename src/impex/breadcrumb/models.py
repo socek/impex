@@ -179,7 +179,25 @@ class BreadCrumb(Requestable):
             'Dodawanie',
             url=None,
             parent='teams:admin:list',
-
         )
         self.data['empty:event'] = EventElement()
         self.data['games:list'] = GameListElement()
+
+        self.add(
+            'places:admin:list',
+            'Miejsca',
+            url=lambda req: req.route_path('places:admin:list'),
+            parent='admin:home',
+        )
+        self.add(
+            'places:admin:create',
+            'Miejsca',
+            url=lambda req: req.route_path('places:admin:list'),
+            parent='places:admin:list',
+        )
+        self.add(
+            'places:admin:edit',
+            'Dodawanie',
+            url=None,
+            parent='places:admin:list',
+        )
