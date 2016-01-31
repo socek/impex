@@ -43,10 +43,22 @@ class Game(Base):
     right = relationship(Team, primaryjoin=(right_id == Team.id))
 
     group_id = Column(Integer, ForeignKey('groups.id'), nullable=False)
-    group = relationship(Group, backref="games")
+    group = relationship(Group)
 
     child_id = Column(Integer, ForeignKey('games.id'))
     child = relationship("Game")
 
     def get_sum_for_quart(self, team, quart):
         return sum(self.scores[team][:(quart)])
+
+    @property
+    def is_not_started(self):
+        return self.status == self.STATUS_NOT_STARTED
+
+    @property
+    def is_running(self):
+        return self.status == self.STATUS_RUNNING
+
+    @property
+    def is_ended(self):
+        return self.status == self.STATUS_ENDED

@@ -5,13 +5,40 @@ from impaf.testing.cache import cache
 from impex.application.testing import RequestCase
 
 from ..widgets import GroupHighScoreWidget
+from ..widgets import LadderWidget
 
 
-class TestGroupHighScoreWidget(RequestCase):
+class ScoreCase(RequestCase):
 
     @cache
     def mgroup(self):
         return MagicMock()
+
+    def _create_game(self, left_id, left_score, right_id, right_score):
+        def get_sum_for_quart(side, _):
+            if side == 'left':
+                return left_score
+            else:
+                return right_score
+        game = MagicMock()
+        left = game.left
+        left.id = left_id
+        left.name = str(left_id)
+
+        if right_id:
+            right = game.right
+            right.id = right_id
+            right.name = str(right_id)
+        else:
+            game.right = None
+
+        game.status = game.STATUS_ENDED
+        game.is_ended = True
+        game.get_sum_for_quart.side_effect = get_sum_for_quart
+        return game
+
+
+class TestGroupHighScoreWidget(ScoreCase):
 
     @cache
     def mevent(self):
@@ -42,34 +69,16 @@ class TestGroupHighScoreWidget(RequestCase):
             self._create_game(1, 5, 2, 10),
             self._create_game(2, 10, 3, 5),
             self._create_game(1, 15, 3, 10),
-            self._create_game(4, 5, 2, 5)
+            self._create_game(4, 5, 2, 5),
+            self._create_game(4, 5, None, None),
         ]
 
         assert list(self.object().make_scores()) == [
             {'games': 3, 'name': '2', 'points': 5, 'smallpoints': 25, 'wins': 2},
             {'games': 2, 'name': '1', 'points': 2, 'smallpoints': 20, 'wins': 1},
             {'games': 1, 'name': '4', 'points': 1, 'smallpoints': 5, 'wins': 0},
-            {'games': 2, 'name': '3', 'points': 0, 'smallpoints': 15, 'wins': 0}
+            {'games': 2, 'name': '3', 'points': 0, 'smallpoints': 15, 'wins': 0},
         ]
-
-    def _create_game(self, left_id, left_score, right_id, right_score):
-        def get_sum_for_quart(side, _):
-            if side == 'left':
-                return left_score
-            else:
-                return right_score
-        game = MagicMock()
-        left = game.left
-        left.id = left_id
-        left.name = str(left_id)
-
-        right = game.right
-        right.id = right_id
-        right.name = str(right_id)
-
-        game.status = game.STATUS_ENDED
-        game.get_sum_for_quart.side_effect = get_sum_for_quart
-        return game
 
     def test_make(self):
         self.mmake_scores()
@@ -80,3 +89,35 @@ class TestGroupHighScoreWidget(RequestCase):
         assert self.object().context == {
             'teams': self.mmake_scores().return_value,
         }
+
+
+class TestLadderWidget(ScoreCase):
+
+    @cache
+    def object(self):
+        obj = LadderWidget(self.mgroup())
+        obj.feed_request(self.mrequest())
+        return obj
+
+    @cache
+    def mdumps(self):
+        return self.patch('impex.groups.widgets.dumps')
+
+    def test_data(self):
+        self.mdumps()
+        self.mgroup().games = [
+            self._create_game(1, 2, 2, 4),
+            self._create_game(3, 8, 4, 16),
+            self._create_game(1, 32, 4, 64),
+            self._create_game(2, 128, 3, 256),
+        ]
+        self.mgroup().games[3].is_ended = False
+
+        assert self.object().data() == self.mdumps().return_value
+        self.mdumps().assert_called_once_with({
+            'teams': [('1', '2'), ('3', '4')],
+            'results': [
+                [[2, 4], [8, 16]],
+                [None, [32, 64]],
+            ]
+        })

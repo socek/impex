@@ -27,6 +27,7 @@ install_requires = [
     'freezegun',
     'fanstatic==1.0a5',
     'uwsgi',
+    'fixdep',
 ]
 
 

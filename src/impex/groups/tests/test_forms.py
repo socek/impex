@@ -16,6 +16,7 @@ class TestCreateGroupForm(PostFormCase):
         self.mdrivers()
         self.mdata().return_value = {
             'name': sentinel.name,
+            'ladder': sentinel.ladder,
         }
 
         self.object().on_success()
@@ -23,6 +24,7 @@ class TestCreateGroupForm(PostFormCase):
         self.mdata().assert_called_once_with(True)
         self.mdrivers().groups.create.assert_called_once_with(
             name=sentinel.name,
+            ladder=sentinel.ladder,
         )
         self.mdatabase().commit.assert_called_once_with()
 
@@ -41,11 +43,13 @@ class TestEditGroupForm(PostFormCase):
         self.minstance()
         self.mdata().return_value = {
             'name': sentinel.name,
+            'ladder': sentinel.ladder,
         }
 
         self.object().on_success()
 
         assert self.minstance().name == sentinel.name
+        assert self.minstance().ladder == sentinel.ladder
         self.mdrivers().groups.update.assert_called_once_with(
             self.minstance()
         )
@@ -53,12 +57,14 @@ class TestEditGroupForm(PostFormCase):
     def test_read_from(self):
         instance = MagicMock()
         instance.name = sentinel.name
+        instance.ladder = False
 
         self.object().read_from(instance)
 
         assert self.object().get_data_dict(True) == {
             'csrf_token': self.mget_csrf_token().return_value,
             'name': sentinel.name,
+            'ladder': False,
         }
 
         assert self.object().instance is instance

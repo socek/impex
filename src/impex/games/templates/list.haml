@@ -1,6 +1,7 @@
 -extends "impex.application:templates/authencitated.haml"
 -block content
   =need('gamelist')
+  =need('bracket')
   %div.col-lg-12
     %div.bs-component
       %h1.filters
@@ -14,6 +15,9 @@
         %button.btn.btn-info.btn-xs data-class="btn-info" data-type="ended" -> Zakończone
   -if highscore:
     =highscore()
+  -if ladder:
+    =ladder()
+
   %div.col-lg-12
     %div.bs-component
       %div

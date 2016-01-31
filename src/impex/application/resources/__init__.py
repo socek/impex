@@ -53,6 +53,10 @@ timepicker = Resource(
         timepicker_js,
     ]
 )
+bracket_css = Resource(
+    library,
+    'bracket/jquery.bracket.min.css',
+)
 
 fontawesome = Resource(
     library,
@@ -89,6 +93,15 @@ scoretable = Resource(
 gamelist = Resource(
     library,
     'js/gamelist.js',
+    bottom=True,
+)
+
+bracket = Resource(
+    library,
+    'bracket/jquery.bracket.min.js',
+    depends=[
+        bracket_css,
+    ],
     bottom=True,
 )
 
@@ -129,4 +142,8 @@ class Resources(BaseResources):
         self.add_resource(
             'gamelist',
             'impex.application.resources:gamelist',
+        )
+        self.add_resource(
+            'bracket',
+            'impex.application.resources:bracket',
         )

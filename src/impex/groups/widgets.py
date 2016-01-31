@@ -1,4 +1,5 @@
 from collections import defaultdict
+from json import dumps
 
 from implugin.jinja2.widget import SingleWidget
 
@@ -43,9 +44,10 @@ class GroupHighScoreWidget(SingleWidget, Requestable):
         )
         for game in games:
             for team, side in [(game.left, 'left'), (game.right, 'right')]:
-                self.scores[team.id]['name'] = team.name
-                if game.status == game.STATUS_ENDED:
-                    self.recalculate(game, team, side)
+                if team:
+                    self.scores[team.id]['name'] = team.name
+                    if game.status == game.STATUS_ENDED:
+                        self.recalculate(game, team, side)
 
         return reversed(sorted(
             self.scores.values(),
@@ -57,11 +59,46 @@ class GroupHighScoreWidget(SingleWidget, Requestable):
         data = self.scores[team.id]
         score = game.get_sum_for_quart(side, 4)
         other = game.get_sum_for_quart(otherside, 4)
-        if score > other:
-            data['wins'] += 1
-            data['points'] += 2
-        elif score == other:
-            data['points'] += 1
+        if score and other:
+            if score > other:
+                data['wins'] += 1
+                data['points'] += 2
+            elif score == other:
+                data['points'] += 1
 
-        data['smallpoints'] += score
-        data['games'] += 1
+            data['smallpoints'] += score
+            data['games'] += 1
+
+
+class LadderWidget(SingleWidget, Requestable):
+    template = 'impex.groups:templates/widgets/ladder.haml'
+
+    def __init__(self, group):
+        self.group = group
+
+    def data(self):
+        games = self.group.games
+
+        return dumps({
+            "teams": [
+                (game.left.name, game.right.name) for game in games[0:2]
+            ],
+            "results": [
+                [
+                    self._get_game_score(0),
+                    self._get_game_score(1),
+                ],
+                [
+                    self._get_game_score(3),
+                    self._get_game_score(2),
+                ],
+            ]
+        })
+
+    def _get_game_score(self, game_number):
+        game = self.group.games[game_number]
+        if game.is_ended:
+            return [
+                game.get_sum_for_quart('left', 4),
+                game.get_sum_for_quart('right', 4),
+            ]

@@ -19,6 +19,10 @@ class TestGameListController(ControllerCase):
         return self.pobject(self.object(), '_make_widgets')
 
     @cache
+    def mgroup(self):
+        return self.mdrivers().groups.get_by_id.return_value
+
+    @cache
     def mgame_widget(self):
         return self.patch('impex.games.controllers.GameWidget')
 
@@ -26,12 +30,17 @@ class TestGameListController(ControllerCase):
     def mgrouphighscorewidget(self):
         return self.patch('impex.games.controllers.GroupHighScoreWidget')
 
+    @cache
+    def mladderwidget(self):
+        return self.patch('impex.games.controllers.LadderWidget')
+
     def test_make(self):
         self.mget_games()
         self.mmake_widgets()
         self.madd_widget()
         self.mgrouphighscorewidget()
         self.mdrivers()
+        self.mgroup().ladder = False
 
         self.object().make()
 
@@ -48,6 +57,30 @@ class TestGameListController(ControllerCase):
         self.mgrouphighscorewidget().assert_called_once_with(
             self.mdrivers().events.get_by_id.return_value,
             self.mdrivers().groups.get_by_id.return_value,
+        )
+
+    def test_make_with_ladder(self):
+        self.mget_games()
+        self.mmake_widgets()
+        self.madd_widget()
+        self.mladderwidget()
+        self.mdrivers()
+        self.mgroup().ladder = True
+
+        self.object().make()
+
+        assert self.context() == {
+            'games': self.mmake_widgets().return_value,
+        }
+        self.mmake_widgets().assert_called_once_with(
+            self.mget_games().return_value
+        )
+        self.madd_widget().assert_called_once_with(
+            'ladder',
+            self.mladderwidget().return_value,
+        )
+        self.mladderwidget().assert_called_once_with(
+            self.mgroup(),
         )
 
     def test_make_without_group(self):

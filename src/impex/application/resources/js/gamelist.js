@@ -38,12 +38,10 @@ $(function(){
         };
         var filter = function() {
             if(is_all()) {
-                console.log('show');
                 $('.well.scoreboard').show();
                 $('.well.game').show();
             }
             else {
-                console.log('hide');
                 $('.well.scoreboard').hide();
                 $('.well.game').hide();
             }
@@ -51,16 +49,21 @@ $(function(){
                 var item = $(item);
                 var type = item.data('type');
                 var cls = item.data('class');
-                console.log('a',item);
                 if(item.hasClass(cls)) {
-                    console.log('.well.game.'+type);
                     $('.well.game.'+type).show();
                 }
             });
-
         };
 
         switch_buttons();
         filter();
     });
+
+    var ladder = function() {
+        var data = $.parseJSON($('div.hide.data').html());
+        $('.ladder').bracket({
+            init: data /* data to initialize the bracket with */
+        });
+    };
+    ladder();
 });

@@ -2,6 +2,7 @@ from impex.application.controller import Controller
 from impex.application.testing import cache
 
 from impex.groups.widgets import GroupHighScoreWidget
+from impex.groups.widgets import LadderWidget
 
 from .widgets import GameWidget
 
@@ -36,13 +37,21 @@ class GameListController(Controller):
         self.context['games'] = self._make_widgets(query)
 
         if self.group_id:
-            self.add_widget(
-                'highscore',
-                GroupHighScoreWidget(
-                    self.event,
-                    self.group,
-                ),
-            )
+            if self.group.ladder:
+                self.add_widget(
+                    'ladder',
+                    LadderWidget(
+                        self.group,
+                    ),
+                )
+            else:
+                self.add_widget(
+                    'highscore',
+                    GroupHighScoreWidget(
+                        self.event,
+                        self.group,
+                    ),
+                )
         else:
             self.context['highscore'] = None
 
