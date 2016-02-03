@@ -22,4 +22,5 @@ class Controller(
     def _create_context(self):
         super()._create_context()
         self.context['user'] = self.get_user()
+        self.context['ga'] = self.settings['ga']
         self.add_widget('crumbs', BreadCrumbsWidget(self))

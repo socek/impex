@@ -44,6 +44,7 @@ def project(settings, paths):
 
     paths.set_path('application', 'project', 'application')
     paths.set_path('routing', 'application', 'routing.yaml')
+    settings['ga'] = 'UA-15178164-3'
 
 
 def alembic(settings, paths):
