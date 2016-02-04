@@ -89,6 +89,11 @@ class CreateGameForm(PostForm):
         self.add_form_validator(TeamsMustDifferValidator())
 
     def fill(self):
+        event = self.drivers.events.get_by_id(self.matchdict['event_id'])
+        self.set_value(
+            'plaing_at',
+            event.start_date,
+        )
         self.set_value(
             'priority',
             self.drivers.games.get_next_avalible_priority(

@@ -1,6 +1,7 @@
 from datetime import datetime
 from freezegun import freeze_time
 from mock import MagicMock
+from mock import call
 from mock import sentinel
 
 from impex.application.testing import PostFormCase
@@ -62,10 +63,16 @@ class TestCreateGameForm(PostFormCase):
 
         self.object().fill()
 
-        self.mset_value().assert_called_once_with(
-            'priority',
-            self.mdrivers().games.get_next_avalible_priority.return_value,
-        )
+        assert self.mset_value().call_args_list == [
+            call(
+                'plaing_at',
+                self.mdrivers().events.get_by_id.return_value.start_date,
+            ),
+            call(
+                'priority',
+                self.mdrivers().games.get_next_avalible_priority.return_value,
+            )
+        ]
         self.mdrivers().games.get_next_avalible_priority.assert_called_once_with(
             3
         )
