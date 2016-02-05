@@ -28,7 +28,8 @@ class TestDriverGroup(DriverCase):
     def setUp(self):
         self.flush_table_from_object(Game, Group, Event)
 
-        event = self.events().create(name='event')
+        event1 = self.events().create(name='event')
+        event2 = self.events().create(name='event2')
 
         one = self.object().create(name='one')
         two = self.object().create(name='two')
@@ -37,16 +38,16 @@ class TestDriverGroup(DriverCase):
         self.database().commit()
 
         game = self.games().create(
-            event_id=event.id,
+            event_id=event1.id,
             priority=1,
             group_id=one.id,
         )
         self.database().commit()
 
         return {
-            'games': [one, two, three, four],
-            'event': event,
-            'games': game,
+            'groups': [one, two, three, four],
+            'events': [event1, event2],
+            'games': [game],
         }
 
     def test_list(self):
@@ -59,6 +60,13 @@ class TestDriverGroup(DriverCase):
     def test_list_not_empty(self):
         data = self.setUp()
 
-        data = [obj.name for obj in self.object().list_not_empty()]
+        result = [obj.name for obj in self.object().list_not_empty(data['events'][0].id)]
 
-        assert data == ['one']
+        assert result == ['one']
+
+    def test_list_not_empty_for_empty_event(self):
+        data = self.setUp()
+
+        result = [obj.name for obj in self.object().list_not_empty(data['events'][1].id)]
+
+        assert result == []
