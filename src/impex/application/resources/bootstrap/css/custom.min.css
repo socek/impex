@@ -72,3 +72,6 @@ table a:not(.btn), .table a:not(.btn) {
 table.table-nonfluid {
     width: auto !important;
 }
+.fa.btn {
+    font-family: FontAwesome !important;
+}
