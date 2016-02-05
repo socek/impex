@@ -85,7 +85,7 @@ class CreateGameForm(PostForm):
             label='Miejsce',
         ).set_avalible_values(self._get_places)
 
-        self.add_form_validator(GameValidator())
+        # self.add_form_validator(GameValidator()) # TODO: Change this to be uniqe on group, not event!
         self.add_form_validator(TeamsMustDifferValidator())
 
     def fill(self):
