@@ -41,6 +41,7 @@ class GameListController(Controller):
                 self.add_widget(
                     'ladder',
                     LadderWidget(
+                        self.event,
                         self.group,
                     ),
                 )

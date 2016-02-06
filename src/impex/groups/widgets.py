@@ -73,15 +73,16 @@ class GroupHighScoreWidget(SingleWidget, Requestable):
 class LadderWidget(SingleWidget, Requestable):
     template = 'impex.groups:templates/widgets/ladder.haml'
 
-    def __init__(self, group):
+    def __init__(self, event, group):
+        self.event = event
         self.group = group
 
     def data(self):
-        games = self.group.games
+        self.games = self.drivers.games.list_for_group(self.event.id, self.group.id)
 
         return dumps({
             "teams": [
-                self._get_team_names(game) for game in games[0:2]
+                self._get_team_names(game) for game in self.games[0:2]
             ],
             "results": [
                 [
@@ -101,7 +102,7 @@ class LadderWidget(SingleWidget, Requestable):
         return (left_name, right_name)
 
     def _get_game_score(self, game_number):
-        game = self.group.games[game_number]
+        game = self.games[game_number]
         if game.is_ended:
             return [
                 game.get_sum_for_quart('left', 4),

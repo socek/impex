@@ -80,6 +80,7 @@ class TestGameListController(ControllerCase):
             self.mladderwidget().return_value,
         )
         self.mladderwidget().assert_called_once_with(
+            self.mdrivers().events.get_by_id.return_value,
             self.mgroup(),
         )
 

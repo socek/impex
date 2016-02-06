@@ -11,6 +11,10 @@ from ..widgets import LadderWidget
 class ScoreCase(RequestCase):
 
     @cache
+    def mevent(self):
+        return MagicMock()
+
+    @cache
     def mgroup(self):
         return MagicMock()
 
@@ -39,10 +43,6 @@ class ScoreCase(RequestCase):
 
 
 class TestGroupHighScoreWidget(ScoreCase):
-
-    @cache
-    def mevent(self):
-        return MagicMock()
 
     @cache
     def object(self):
@@ -95,7 +95,7 @@ class TestLadderWidget(ScoreCase):
 
     @cache
     def object(self):
-        obj = LadderWidget(self.mgroup())
+        obj = LadderWidget(self.mevent(), self.mgroup())
         obj.feed_request(self.mrequest())
         return obj
 
@@ -105,13 +105,14 @@ class TestLadderWidget(ScoreCase):
 
     def test_data(self):
         self.mdumps()
-        self.mgroup().games = [
+        games = [
             self._create_game(1, 2, 2, 4),
             self._create_game(3, 8, 4, 16),
             self._create_game(1, 32, 4, 64),
             self._create_game(2, 128, 3, 256),
         ]
-        self.mgroup().games[3].is_ended = False
+        games[3].is_ended = False
+        self.mdrivers().games.list_for_group.return_value = games
 
         assert self.object().data() == self.mdumps().return_value
         self.mdumps().assert_called_once_with({
