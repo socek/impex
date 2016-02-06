@@ -21,10 +21,6 @@
               %a href="{{route_path('places:admin:list')}}"
                 Miejsca
         %ul.nav.navbar-nav.navbar-right
-          -if request.has_permission('guest')
-            %li
-              %a href="{{route_path('auth:login')}}"
-                Login
           -if request.has_permission('auth')
             %li
               %a href="{{route_path('auth:logout')}}"

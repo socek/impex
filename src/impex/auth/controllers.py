@@ -17,7 +17,8 @@ class ImpexBaseAuthController(BaseAuthController, Controller):
 
 class ImpexLoginController(LoginController, ImpexBaseAuthController):
     form = ImpexLoginForm
-    header_text = 'Wyniki - Zaloguj się'
+    header_text = 'Wyniki Turnieju'
+    enable_register_link = False
 
 
 class ImpexLogoutController(LogoutController, ImpexBaseAuthController):
@@ -30,3 +31,4 @@ class ImpexForbiddenController(ForbiddenController, ImpexBaseAuthController):
 
 class ImpexRegisterController(RegisterController, ImpexBaseAuthController):
     header_text = 'Wyniki - Rejestracja'
+    permission = 'admin'
