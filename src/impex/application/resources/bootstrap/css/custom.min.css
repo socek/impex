@@ -75,3 +75,6 @@ table.table-nonfluid {
 .fa.btn {
     font-family: FontAwesome !important;
 }
+div.jQBracket .team div.label {
+    line-height: 22px;
+}

@@ -81,7 +81,7 @@ class LadderWidget(SingleWidget, Requestable):
 
         return dumps({
             "teams": [
-                (game.left.name, game.right.name) for game in games[0:2]
+                self._get_team_names(game) for game in games[0:2]
             ],
             "results": [
                 [
@@ -94,6 +94,11 @@ class LadderWidget(SingleWidget, Requestable):
                 ],
             ]
         })
+
+    def _get_team_names(self, game):
+        left_name = game.left.name if game.left else ''
+        right_name = game.right.name if game.right else ''
+        return (left_name, right_name)
 
     def _get_game_score(self, game_number):
         game = self.group.games[game_number]
