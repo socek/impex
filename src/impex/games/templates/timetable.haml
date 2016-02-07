@@ -1,0 +1,44 @@
+-extends "impex.application:templates/authencitated.haml"
+-import 'impex.utils:templates/table.haml' as table
+-block content
+  %div.col-lg-12
+    %div.bs-component
+      =event(False)
+
+  %div.col-lg-12
+    %div.bs-component
+      %table.table.table-striped.table-hover
+        %thead
+          %tr
+            =table.index_header()
+            %th -> Grupa
+            %th -> Miejsce
+            %th -> Czas
+            %th -> Drużyna
+            %th -> Drużyna
+
+        %tbody
+        -for game in games:
+          %tr
+            %td -> =game.priority
+            %td -> =game.group.name
+            %td
+              -if game.place:
+                =game.place.name
+              -else:
+                &nbsp;
+            %td
+              -if game.plaing_at:
+                =game.plaing_at.strftime("%d.%m.%Y %H:%M")
+              -else:
+                &nbsp;
+            %td
+              -if game.left:
+                =game.left.name
+              -else:
+                &nbsp;
+            %td
+              -if game.right:
+                =game.right.name
+              -else:
+                &nbsp;

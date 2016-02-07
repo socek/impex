@@ -6,9 +6,22 @@ from impex.application.testing import ControllerCase
 from impex.application.testing import cache
 
 from ..controllers import GameListController
+from ..controllers import TimetableController
 
 
-class TestGameListController(ControllerCase):
+class GameListControllerCase(ControllerCase):
+
+    @cache
+    def meventwidget(self):
+        return self.patch('impex.games.controllers.EventWidget')
+
+    @cache
+    def mevent(self):
+        self.matchdict()['event_id'] = sentinel.event_id
+        return self.mdrivers().events.get_by_id.return_value
+
+
+class TestGameListController(GameListControllerCase):
     _object_cls = GameListController
 
     @cache
@@ -34,15 +47,6 @@ class TestGameListController(ControllerCase):
     @cache
     def mladderwidget(self):
         return self.patch('impex.games.controllers.LadderWidget')
-
-    @cache
-    def meventwidget(self):
-        return self.patch('impex.games.controllers.EventWidget')
-
-    @cache
-    def mevent(self):
-        self.matchdict()['event_id'] = sentinel.event_id
-        return self.mdrivers().events.get_by_id.return_value
 
     def test_make(self):
         self.matchdict()['group_id'] = sentinel.group_id
@@ -171,3 +175,26 @@ class TestGameListController(ControllerCase):
         self.mgame_widget().return_value.feed_request.assert_called_once_with(
             self.mrequest(),
         )
+
+
+class TestTimetableController(GameListControllerCase):
+    _object_cls = TimetableController
+
+    def test_make(self):
+        self.meventwidget()
+        self.mdrivers()
+        self.madd_widget()
+        self.mevent()
+
+        self.object().make()
+
+        self.madd_widget().assert_called_once_with(
+            'event',
+            self.meventwidget().return_value,
+        )
+        self.meventwidget().assert_called_once_with(self.mevent())
+
+        assert self.object().context == {
+            'games': self.mdrivers().games.list.return_value,
+        }
+        self.mdrivers().games.list.assert_called_once_with(sentinel.event_id)

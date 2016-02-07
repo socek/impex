@@ -7,7 +7,7 @@ from impex.application.testing import RequestCase
 from ..widgets import EventWidget
 
 
-class TestBreadCrumbsWidget(RequestCase):
+class TestEventWidget(RequestCase):
 
     @cache
     def mevent(self):
@@ -30,6 +30,7 @@ class TestBreadCrumbsWidget(RequestCase):
             'groups': self.mdrivers().groups.list_not_empty.return_value,
             'route_path': self.mrequest().route_path,
             'with_top': True,
+            'colspan': 2 + self.mdrivers().groups.list_not_empty.return_value.count.return_value,
         }
         self.mdrivers().groups.list_not_empty.assert_called_once_with(
             self.mevent().id,

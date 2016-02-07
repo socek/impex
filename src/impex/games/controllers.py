@@ -1,17 +1,14 @@
 from impex.application.controller import Controller
 from impex.application.testing import cache
 
+from impex.events.widgets import EventWidget
 from impex.groups.widgets import GroupHighScoreWidget
 from impex.groups.widgets import LadderWidget
-from impex.events.widgets import EventWidget
 
 from .widgets import GameWidget
 
 
-class GameListController(Controller):
-
-    renderer = 'impex.games:templates/list.haml'
-    crumbs = 'games:list'
+class BaseGameList(Controller):
 
     @property
     @cache
@@ -33,6 +30,12 @@ class GameListController(Controller):
     def event(self):
         return self.drivers.events.get_by_id(self.event_id)
 
+
+class GameListController(BaseGameList):
+
+    renderer = 'impex.games:templates/list.haml'
+    crumbs = 'games:list'
+
     def make(self):
         query = self._get_games()
         self.context['games'] = self._make_widgets(query)
@@ -40,23 +43,29 @@ class GameListController(Controller):
 
         if self.group_id:
             if self.group.ladder:
-                self.add_widget(
-                    'ladder',
-                    LadderWidget(
-                        self.event,
-                        self.group,
-                    ),
-                )
+                self._on_ladder()
             else:
-                self.add_widget(
-                    'highscore',
-                    GroupHighScoreWidget(
-                        self.event,
-                        self.group,
-                    ),
-                )
+                self._on_highscore()
         else:
             self.context['highscore'] = None
+
+    def _on_ladder(self):
+        self.add_widget(
+            'ladder',
+            LadderWidget(
+                self.event,
+                self.group,
+            ),
+        )
+
+    def _on_highscore(self):
+        self.add_widget(
+            'highscore',
+            GroupHighScoreWidget(
+                self.event,
+                self.group,
+            ),
+        )
 
     def _make_widgets(self, query):
         for game in query:
@@ -69,3 +78,16 @@ class GameListController(Controller):
             return self.drivers.games.list_for_group(self.event_id, self.group_id)
         else:
             return self.drivers.games.list(self.event_id)
+
+
+class TimetableController(BaseGameList):
+
+    renderer = 'impex.games:templates/timetable.haml'
+    crumbs = 'games:list'
+
+    def make(self):
+        self.add_widget('event', EventWidget(self.event))
+        self.context['games'] = self._get_games()
+
+    def _get_games(self):
+        return self.drivers.games.list(self.event_id)

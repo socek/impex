@@ -30,3 +30,4 @@ class EventWidget(SingleWidget, Requestable):
         )
         self.context['route_path'] = self.request.route_path
         self.context['with_top'] = with_top
+        self.context['colspan'] = 2 + self.context['groups'].count()
