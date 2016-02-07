@@ -23,9 +23,10 @@ class EventWidget(SingleWidget, Requestable):
     def __init__(self, event):
         self.event = event
 
-    def make(self):
+    def make(self, with_top=True):
         self.context['event'] = self.event
         self.context['groups'] = self.drivers.groups.list_not_empty(
             self.event.id
         )
         self.context['route_path'] = self.request.route_path
+        self.context['with_top'] = with_top

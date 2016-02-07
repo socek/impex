@@ -28,7 +28,8 @@ class TestBreadCrumbsWidget(RequestCase):
         assert self.object().context == {
             'event': self.mevent(),
             'groups': self.mdrivers().groups.list_not_empty.return_value,
-            'route_path': self.mrequest().route_path
+            'route_path': self.mrequest().route_path,
+            'with_top': True,
         }
         self.mdrivers().groups.list_not_empty.assert_called_once_with(
             self.mevent().id,

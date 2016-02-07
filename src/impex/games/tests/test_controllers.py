@@ -1,4 +1,5 @@
 from mock import MagicMock
+from mock import call
 from mock import sentinel
 
 from impex.application.testing import ControllerCase
@@ -34,13 +35,25 @@ class TestGameListController(ControllerCase):
     def mladderwidget(self):
         return self.patch('impex.games.controllers.LadderWidget')
 
+    @cache
+    def meventwidget(self):
+        return self.patch('impex.games.controllers.EventWidget')
+
+    @cache
+    def mevent(self):
+        self.matchdict()['event_id'] = sentinel.event_id
+        return self.mdrivers().events.get_by_id.return_value
+
     def test_make(self):
+        self.matchdict()['group_id'] = sentinel.group_id
         self.mget_games()
         self.mmake_widgets()
         self.madd_widget()
         self.mgrouphighscorewidget()
         self.mdrivers()
         self.mgroup().ladder = False
+        self.mevent()
+        self.meventwidget()
 
         self.object().make()
 
@@ -50,22 +63,31 @@ class TestGameListController(ControllerCase):
         self.mmake_widgets().assert_called_once_with(
             self.mget_games().return_value
         )
-        self.madd_widget().assert_called_once_with(
-            'highscore',
-            self.mgrouphighscorewidget().return_value,
-        )
+        assert self.madd_widget().call_args_list == [
+            call(
+                'event',
+                self.meventwidget().return_value
+            ),
+            call(
+                'highscore',
+                self.mgrouphighscorewidget().return_value,
+            )
+        ]
         self.mgrouphighscorewidget().assert_called_once_with(
             self.mdrivers().events.get_by_id.return_value,
             self.mdrivers().groups.get_by_id.return_value,
         )
 
     def test_make_with_ladder(self):
+        self.matchdict()['group_id'] = sentinel.group_id
         self.mget_games()
         self.mmake_widgets()
         self.madd_widget()
         self.mladderwidget()
         self.mdrivers()
         self.mgroup().ladder = True
+        self.mevent()
+        self.meventwidget()
 
         self.object().make()
 
@@ -75,10 +97,16 @@ class TestGameListController(ControllerCase):
         self.mmake_widgets().assert_called_once_with(
             self.mget_games().return_value
         )
-        self.madd_widget().assert_called_once_with(
-            'ladder',
-            self.mladderwidget().return_value,
-        )
+        assert self.madd_widget().call_args_list == [
+            call(
+                'event',
+                self.meventwidget().return_value
+            ),
+            call(
+                'ladder',
+                self.mladderwidget().return_value,
+            )
+        ]
         self.mladderwidget().assert_called_once_with(
             self.mdrivers().events.get_by_id.return_value,
             self.mgroup(),
@@ -91,6 +119,8 @@ class TestGameListController(ControllerCase):
         self.madd_widget()
         self.mgrouphighscorewidget()
         self.mdrivers()
+        self.mevent()
+        self.meventwidget()
 
         self.object().make()
 
@@ -101,8 +131,12 @@ class TestGameListController(ControllerCase):
         self.mmake_widgets().assert_called_once_with(
             self.mget_games().return_value
         )
-        assert self.madd_widget().called is False
+        self.madd_widget().assert_called_once_with(
+            'event',
+            self.meventwidget().return_value
+        )
         self.mgrouphighscorewidget().called is False
+        self.meventwidget().assert_called_once_with(self.mevent())
 
     def test_get_games(self):
         self.matchdict()['event_id'] = sentinel.event_id
