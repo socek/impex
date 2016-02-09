@@ -12,3 +12,4 @@ class ImpexRouting(
         self.read_from_dotted('impex.groups:routing.yaml')
         self.read_from_dotted('impex.admin:routing.yaml')
         self.read_from_dotted('impex.places:routing.yaml')
+        self.read_from_dotted('impex.sliders:routing.yaml')

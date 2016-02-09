@@ -1,0 +1,11 @@
+=need('jquery')
+=need('sliders')
+=need('bootstrap')
+%html
+  %head
+
+  %body
+    %div.container
+      %div.row.text-center
+        -for tab in tabs.values():
+          =tab()

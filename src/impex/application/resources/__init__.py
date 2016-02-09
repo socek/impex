@@ -105,6 +105,20 @@ bracket = Resource(
     bottom=True,
 )
 
+sliders_css = Resource(
+    library,
+    'css/sliders.css',
+)
+
+sliders = Resource(
+    library,
+    'js/sliders.js',
+    depends=[
+        sliders_css,
+    ],
+    bottom=True,
+)
+
 
 class Resources(BaseResources):
 
@@ -146,4 +160,8 @@ class Resources(BaseResources):
         self.add_resource(
             'bracket',
             'impex.application.resources:bracket',
+        )
+        self.add_resource(
+            'sliders',
+            'impex.application.resources:sliders',
         )

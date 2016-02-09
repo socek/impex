@@ -1,0 +1,9 @@
+impex.sliders.controllers:
+    -
+        controller: SliderShowController
+        route: sliders:main
+        url: /sliders/{event_id:\d+}/
+    -
+        controller: SliderCommand
+        route: sliders:command
+        url: /sliders/command/
