@@ -1,9 +1,12 @@
+from pyramid.response import Response
+
 from impaf.controller.json import JsonController
 from impex.application.controller import Controller
 from impex.application.requestable import Requestable
 from impex.application.testing import cache
 from impex.games.widgets import GameWidget
 
+from .widgets import ChangeableTabWidget
 from .widgets import FirstTabWidget
 from .widgets import ScoresTabWidget
 # from .widgets import SecondTabWidget
@@ -16,6 +19,7 @@ class TabsController(object):
         self.add_tab(FirstTabWidget)
         # self.add_tab(SecondTabWidget)
         self.add_tab(ScoresTabWidget)
+        self.add_tab(ChangeableTabWidget)
         return self.tabs
 
     def add_tab(self, cls, *args, **kwargs):
@@ -60,3 +64,16 @@ class SliderCommand(JsonController, Requestable, TabsController):
             self.context = tabs[number].to_dict()
         self.session['number'] = number + 1
         self.session.save()
+
+        self.context['refresh'] = []
+        if self.context['name'] == 'changeable':
+            self.context['refresh'].append('changeable')
+
+
+class RefreshTab(Controller, TabsController):
+
+    def make(self):
+        name = self.matchdict['name']
+        self.make_tabs()
+        tab = self.tabs[name]
+        self.response = Response(tab())

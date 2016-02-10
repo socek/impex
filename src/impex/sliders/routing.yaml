@@ -7,3 +7,7 @@ impex.sliders.controllers:
         controller: SliderCommand
         route: sliders:command
         url: /sliders/command/
+    -
+        controller: RefreshTab
+        route: sliders:refresh
+        url: /sliders/refresh/{name}/

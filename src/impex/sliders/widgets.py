@@ -56,7 +56,7 @@ class SecondTabWidget(SlideshowTabWidget):
 
 class ScoresTabWidget(TabWidget):
     name = 'scores'
-    speed = 10
+    speed = 12
     template = 'impex.sliders:templates/widgets/scores.haml'
 
     @property
@@ -84,3 +84,18 @@ class ScoresTabWidget(TabWidget):
         self.make(*args, **kwargs)
         rer = self.render(self.get_template())
         return rer
+
+
+class ChangeableTabWidget(TabWidget):
+    name = 'changeable'
+    speed = 10
+    template = 'impex.sliders:templates/widgets/changeable.haml'
+
+    def make(self):
+        super().make()
+        var = self.session.get('ses', 0)
+        var += 1
+        self.session['ses'] = var
+        self.session.save()
+
+        self.context['ses'] = var

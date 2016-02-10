@@ -26,14 +26,26 @@ $(function(){
             100
         );
     };
+    var refresh = function(name) {
+        $.ajax(
+            '/sliders/refresh/' +name+ '/'
+        ).done(function(data){
+            var display = $('.'+name).css('display');
+            $('.'+name).replaceWith(data).css('display', display);
+            $('.'+name).css('display', display);
+        });
+    };
     var sentAjax = function(onDone) {
         $.ajax(
             '/sliders/command/'
         ).done(onDone);
     };
-    var onDone = function(data) {
+    var onDone = function() {
         sentAjax(function(data){
             slide_tab('.'+ data.name, data.speed, onDone);
+            $(data.refresh).each(function(index, name){
+                refresh(name);
+            });
         });
     };
     sentAjax(function(data){
