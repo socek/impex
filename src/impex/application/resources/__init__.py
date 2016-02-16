@@ -16,11 +16,17 @@ bootstrap = Resource(
         bootstrap_js,
     ]
 )
+custom_js = Resource(
+    library,
+    'bootstrap/js/custom.js',
+    bottom=True,
+)
 custom = Resource(
     library,
     'bootstrap/css/custom.min.css',
     depends=[
         bootstrap_js,
+        custom_js,
     ]
 )
 datepicker_js = Resource(

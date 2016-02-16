@@ -35,13 +35,16 @@ $(function(){
             $('.'+name).css('display', display);
         });
     };
+    var onFail = function() {
+        setTimeout(onDone, 2000);
+    };
     var sentAjax = function(onDone) {
         $.ajax({
             url: '/sliders/command/',
             data: {
                 timestamp: ViewConfig.timestamp
             },
-        }).done(onDone);
+        }).done(onDone).fail(onFail);
     };
     var onDone = function() {
         sentAjax(function(data){
