@@ -1,3 +1,6 @@
+from datetime import datetime
+from time import mktime
+
 from pyramid.response import Response
 
 from impaf.controller.json import JsonController
@@ -6,26 +9,21 @@ from impex.application.requestable import Requestable
 from impex.application.testing import cache
 from impex.games.widgets import GameWidget
 
-from .widgets import ChangeableTabWidget
-from .widgets import FirstTabWidget
-from .widgets import ScoresTabWidget
-# from .widgets import SecondTabWidget
+from .tabs import TabList
 
 
 class TabsController(object):
 
-    def make_tabs(self):
-        self.tabs = {}
-        self.add_tab(FirstTabWidget)
-        # self.add_tab(SecondTabWidget)
-        self.add_tab(ScoresTabWidget)
-        self.add_tab(ChangeableTabWidget)
-        return self.tabs
+    @property
+    @cache
+    def tabs(self):
+        return TabList(self.request).tabs
 
-    def add_tab(self, cls, *args, **kwargs):
-        tab = cls(*args, **kwargs)
-        tab.feed_request(self.request)
-        self.tabs[tab.name] = tab
+    @property
+    def timestamp(self):
+        return '%d' % (
+            mktime(datetime.now().timetuple()),
+        )
 
 
 class SliderShowController(Controller, TabsController):
@@ -43,7 +41,9 @@ class SliderShowController(Controller, TabsController):
         return self.drivers.events.get_by_id(self.event_id)
 
     def make(self):
-        self.context['tabs'] = self.make_tabs()
+        self.context['tabs'] = self.tabs
+        self.context['timestamp'] = self.timestamp
+        self.context['event_id'] = self.event_id
 
     def _make_widgets(self, query):
         for game in query:
@@ -55,7 +55,7 @@ class SliderShowController(Controller, TabsController):
 class SliderCommand(JsonController, Requestable, TabsController):
 
     def make(self):
-        tabs = list(self.make_tabs().values())
+        tabs = list(self.tabs.values())
         number = self.session.get('number', 0)
         try:
             self.context = tabs[number].to_dict()
@@ -65,15 +65,21 @@ class SliderCommand(JsonController, Requestable, TabsController):
         self.session['number'] = number + 1
         self.session.save()
 
+        self.context['timestamp'] = self.timestamp
+
+        self.parse_events()
+
+    def parse_events(self):
         self.context['refresh'] = []
-        if self.context['name'] == 'changeable':
-            self.context['refresh'].append('changeable')
+        timestamp = float(self.GET.get('timestamp', 0))
+        for event in self.drivers.slider_event.list_for_command(timestamp):
+            if event.name == 'refresh':
+                self.context['refresh'].append(event.value)
 
 
 class RefreshTab(Controller, TabsController):
 
     def make(self):
         name = self.matchdict['name']
-        self.make_tabs()
         tab = self.tabs[name]
         self.response = Response(tab())

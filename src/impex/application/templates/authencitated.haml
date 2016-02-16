@@ -20,6 +20,9 @@
             %li
               %a href="{{route_path('places:admin:list')}}"
                 Miejsca
+            %li
+              %a href="{{route_path('sliders:admin')}}"
+                Slidery
         %ul.nav.navbar-nav.navbar-right
           -if request.has_permission('auth')
             %li

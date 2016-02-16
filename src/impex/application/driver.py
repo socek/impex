@@ -7,6 +7,7 @@ from impex.events.driver import EventDriver
 from impex.games.driver import GameDriver
 from impex.groups.driver import GroupDriver
 from impex.places.driver import PlaceDriver
+from impex.sliders.driver import SliderEventDriver
 
 
 class ImpexDriverHolder(AuthDriverHolder):
@@ -38,3 +39,8 @@ class ImpexDriverHolder(AuthDriverHolder):
     @property
     def places(self):
         return self.feeded_driver(PlaceDriver())
+
+    @property
+    def slider_event(self):
+        return self.feeded_driver(SliderEventDriver())
+

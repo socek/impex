@@ -9,3 +9,8 @@
       %div.row.text-center
         -for tab in tabs.values():
           =tab()
+      %script
+        ViewConfig = {
+          timestamp: {{timestamp}},
+          event_id: {{event_id}}
+        };

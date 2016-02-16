@@ -28,7 +28,7 @@ $(function(){
     };
     var refresh = function(name) {
         $.ajax(
-            '/sliders/refresh/' +name+ '/'
+            '/sliders/' +ViewConfig.event_id+ '/refresh/' +name+ '/'
         ).done(function(data){
             var display = $('.'+name).css('display');
             $('.'+name).replaceWith(data).css('display', display);
@@ -36,9 +36,12 @@ $(function(){
         });
     };
     var sentAjax = function(onDone) {
-        $.ajax(
-            '/sliders/command/'
-        ).done(onDone);
+        $.ajax({
+            url: '/sliders/command/',
+            data: {
+                timestamp: ViewConfig.timestamp
+            },
+        }).done(onDone);
     };
     var onDone = function() {
         sentAjax(function(data){
@@ -46,6 +49,7 @@ $(function(){
             $(data.refresh).each(function(index, name){
                 refresh(name);
             });
+            ViewConfig.timestamp = data.timestamp;
         });
     };
     sentAjax(function(data){

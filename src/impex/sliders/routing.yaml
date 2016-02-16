@@ -10,4 +10,9 @@ impex.sliders.controllers:
     -
         controller: RefreshTab
         route: sliders:refresh
-        url: /sliders/refresh/{name}/
+        url: /sliders/{event_id:\d+}/refresh/{name}/
+impex.sliders.admin_controllers:
+    -
+        controller: SliderAdminController
+        route: sliders:admin
+        url: /sliders/admin/
