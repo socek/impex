@@ -16,7 +16,7 @@ class SlideshowTabWidget(TabWidget):
 
 class LogaTabWidget(SlideshowTabWidget):
     name = 'first'
-    speed = 3
+    speed = 4
 
     images = [
         'loga/adencja.png',
