@@ -10,6 +10,7 @@ from impex.application.testing import cache
 from impex.games.widgets import GameWidget
 
 from .tabs import TabList
+from .events import RefreshEvent
 
 
 class TabsController(object):
@@ -54,6 +55,10 @@ class SliderShowController(Controller, TabsController):
 
 class SliderCommand(JsonController, Requestable, TabsController):
 
+    events = [
+        RefreshEvent,
+    ]
+
     def make(self):
         tabs = list(self.tabs.values())
         number = self.session.get('number', 0)
@@ -70,11 +75,13 @@ class SliderCommand(JsonController, Requestable, TabsController):
         self.parse_events()
 
     def parse_events(self):
-        self.context['refresh'] = []
+        parsers = {}
+        for parser in self.events:
+            parsers[parser.name] = parser(self.request, self.context)
+            parsers[parser.name].prepere()
         timestamp = float(self.GET.get('timestamp', 0))
         for event in self.drivers.slider_event.list_for_command(timestamp):
-            if event.name == 'refresh':
-                self.context['refresh'].append(event.value)
+            parsers[event.name].parse(event)
 
 
 class RefreshTab(Controller, TabsController):
