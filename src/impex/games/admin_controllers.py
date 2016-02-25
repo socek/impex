@@ -65,6 +65,7 @@ class GameEditController(BaseController):
                 'games:admin:list',
                 event_id=self.matchdict['event_id'],
             )
+            self.refresh_scores()
 
 
 class GameEditScoresController(BaseController):
@@ -85,3 +86,4 @@ class GameEditScoresController(BaseController):
                 event_id=self.matchdict['event_id'],
                 game_id=self.matchdict['game_id'],
             )
+            self.refresh_scores()

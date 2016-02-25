@@ -20,6 +20,14 @@ class RequestCase(
         self.mrequest().session = {}
         return self.mrequest().session
 
+    @cache
+    def madd_event(self):
+        return self.pobject(self.object(), 'add_event')
+
+    @cache
+    def mrefresh_scores(self):
+        return self.pobject(self.object(), 'refresh_scores')
+
 
 class ControllerCase(
     FormskitControllerCase,

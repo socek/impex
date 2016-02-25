@@ -99,6 +99,7 @@ class TestGameEditController(BaseControllerCase):
         self.mredirect()
         self.mdrivers()
         self.mget_event()
+        self.mrefresh_scores()
 
         self.object().make()
 
@@ -121,6 +122,7 @@ class TestGameEditController(BaseControllerCase):
             'games:admin:list',
             event_id=sentinel.event_id,
         )
+        self.mrefresh_scores().assert_called_once_with()
 
     def test_make_on_fail(self):
         self.madd_form_widget().return_value.validate.return_value = False
@@ -149,6 +151,7 @@ class TestGameEditScoresController(BaseControllerCase):
         self.madd_flashmsg()
         self.mredirect()
         self.mdrivers()
+        self.mrefresh_scores()
 
         self.object().make()
 
@@ -169,6 +172,7 @@ class TestGameEditScoresController(BaseControllerCase):
             event_id=sentinel.event_id,
             game_id=sentinel.game_id,
         )
+        self.mrefresh_scores()
 
     def test_make_on_fail(self):
         self.madd_form_widget().return_value.validate.return_value = False
