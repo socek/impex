@@ -4,7 +4,7 @@ impex.sliders.controllers:
         route: sliders:main
         url: /sliders/{event_id:\d+}/
     -
-        controller: SliderCommand
+        controller: SliderCommandController
         route: sliders:command
         url: /sliders/command/
     -

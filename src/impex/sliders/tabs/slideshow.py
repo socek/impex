@@ -41,8 +41,3 @@ class LogaTabWidget(SlideshowTabWidget):
     ]
 
 
-class SecondTabWidget(SlideshowTabWidget):
-    name = 'second'
-    local_path = '/home/socek/zdjecia/mlk/second'
-    speed = 2
-

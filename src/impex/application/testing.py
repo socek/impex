@@ -15,7 +15,10 @@ class RequestCase(
     PyTestCase,
     FlashMessageCase,
 ):
-    pass
+    @cache
+    def msession(self):
+        self.mrequest().session = {}
+        return self.mrequest().session
 
 
 class ControllerCase(
