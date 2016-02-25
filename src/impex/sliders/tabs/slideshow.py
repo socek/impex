@@ -4,6 +4,7 @@ from .base import TabWidget
 class SlideshowTabWidget(TabWidget):
     host = 'http://turniejserv/'
     template = 'impex.sliders:templates/widgets/slideshow.haml'
+    additional_css = 'text-center'
 
     def _get_images(self):
         for image in self.images:

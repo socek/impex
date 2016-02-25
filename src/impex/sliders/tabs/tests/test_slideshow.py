@@ -30,4 +30,5 @@ class TestSlidershowTabWidget(RequestCase):
             'name': 'myname',
             'request': self.mrequest(),
             'widget': self.tab_widget(),
+            'additional_css': 'text-center',
         }

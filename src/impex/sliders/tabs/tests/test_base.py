@@ -21,6 +21,7 @@ class TestTabList(RequestCase):
             'name': 'myname',
             'request': self.mrequest(),
             'widget': self.tab_widget(),
+            'additional_css': '',
         }
 
     def test_to_dict(self):
@@ -31,4 +32,5 @@ class TestTabList(RequestCase):
         assert self.tab_widget().to_dict() == {
             'name': 'myname',
             'speed': 5,
+            'additional_css': '',
         }
