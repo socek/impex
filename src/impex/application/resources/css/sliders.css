@@ -9,3 +9,6 @@ body div.main {
 .tab {
     display: none;
 }
+.text-center {
+    text-align: unset !important;
+}

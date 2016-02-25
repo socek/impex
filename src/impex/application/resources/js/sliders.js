@@ -58,4 +58,11 @@ $(function(){
     sentAjax(function(data){
         slide_tab('.'+ data.name, data.speed, onDone);
     });
+    var ladder = function() {
+        var data = $.parseJSON($('div.hide.data').html());
+        $('.ladder').bracket({
+            init: data /* data to initialize the bracket with */
+        });
+    };
+    ladder();
 });
