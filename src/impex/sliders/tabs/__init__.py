@@ -1,4 +1,6 @@
 from impex.application.requestable import Requestable
+
+from .scores import HighScoresTabWidget
 from .scores import ScoresTabWidget
 from .slideshow import LogaTabWidget
 
@@ -10,6 +12,7 @@ class TabList(Requestable):
         self.tabs = {}
         self.add_tab(LogaTabWidget)
         self.add_tab(ScoresTabWidget)
+        self.add_tab(HighScoresTabWidget)
 
     def add_tab(self, cls, *args, **kwargs):
         tab = cls(*args, **kwargs)
