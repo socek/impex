@@ -29,6 +29,7 @@ class GroupHighScoreWidget(SingleWidget, Requestable):
 
     def make(self):
         self.context['teams'] = self.make_scores()
+        self.context['group'] = self.group
 
     def make_scores(self):
         self.scores = defaultdict(lambda: {

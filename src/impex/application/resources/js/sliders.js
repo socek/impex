@@ -4,6 +4,10 @@ var Events = {
         $('.ladder').bracket({
             init: data /* data to initialize the bracket with */
         });
+    },
+    finals: function() {
+        this.high_scores();
+        $('.tab.finals .game:first').css('margin-top', '260px');
     }
 };
 $(function(){
