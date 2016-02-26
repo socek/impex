@@ -69,6 +69,6 @@ $(function(){
     };
     sentAjax(function(data){
         slide_tab('.'+ data.name, data.speed, onDone);
+        Events['high_scores']();
     });
-    Events['high_scores']();
 });
