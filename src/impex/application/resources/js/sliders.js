@@ -1,3 +1,11 @@
+var Events = {
+    high_scores: function() {
+        var data = $.parseJSON($('div.hide.data').html());
+        $('.ladder').bracket({
+            init: data /* data to initialize the bracket with */
+        });
+    }
+};
 $(function(){
     slide_tab = function(name, speed, complete) {
         var tabs = $('.tab'),
@@ -48,21 +56,19 @@ $(function(){
     };
     var onDone = function() {
         sentAjax(function(data){
-            slide_tab('.'+ data.name, data.speed, onDone);
+            var name = data.name;
+            slide_tab('.'+ name, data.speed, onDone);
             $(data.refresh).each(function(index, name){
                 refresh(name);
             });
             ViewConfig.timestamp = data.timestamp;
+            if(name in Events) {
+                Events[name]();
+            }
         });
     };
     sentAjax(function(data){
         slide_tab('.'+ data.name, data.speed, onDone);
     });
-    var ladder = function() {
-        var data = $.parseJSON($('div.hide.data').html());
-        $('.ladder').bracket({
-            init: data /* data to initialize the bracket with */
-        });
-    };
-    ladder();
+    Events['high_scores']();
 });
