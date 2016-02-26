@@ -34,6 +34,11 @@ $(function(){
             100
         );
     };
+    var run_event = function(name) {
+        if(name in Events) {
+            Events[name]();
+        };
+    };
     var refresh = function(name) {
         $.ajax(
             '/sliders/' +ViewConfig.event_id+ '/refresh/' +name+ '/'
@@ -62,13 +67,11 @@ $(function(){
                 refresh(name);
             });
             ViewConfig.timestamp = data.timestamp;
-            if(name in Events) {
-                Events[name]();
-            }
+            run_event(name);
         });
     };
     sentAjax(function(data){
         slide_tab('.'+ data.name, data.speed, onDone);
-        Events['high_scores']();
+        run_event(data.name);
     });
 });
