@@ -1,6 +1,8 @@
 -extends "impex.sliders:templates/widgets/tab.haml"
 -block tab
-  -for group in groups:
-    =group()
-  -for game in games:
-    =game()
+  %div style="display: flex;"
+    -for group in groups:
+      =group()
+  %div
+    -for game in games:
+      =game()

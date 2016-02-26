@@ -7,7 +7,6 @@ var Events = {
     },
     finals: function() {
         this.high_scores();
-        $('.tab.finals .game:first').css('margin-top', '260px');
     }
 };
 $(function(){

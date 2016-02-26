@@ -10,7 +10,7 @@
   %body
     %div.container
       %div.row
-        -for tab in tabs.values():
+        -for tab in tabs:
           =tab()
       %script
         ViewConfig = {

@@ -66,8 +66,7 @@ class SliderCommandController(JsonController, Requestable, TabsController):
         self.session['tab_number'] = tab_number
 
     def _get_tab(self):
-        tabs = list(self.tabs.values())
-        return tabs[self._get_tab_number()].to_dict()
+        return self.tabs[self._get_tab_number()].to_dict()
 
     def parse_events(self):
         parsers = {}
