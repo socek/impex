@@ -1,6 +1,8 @@
 =widget.begin(htmlcls='form-horizontal')
   %fieldset
     =widget.select('refresh')
+    -for tab in widget.form.tab_data:
+      =widget.checkbox("is_visible-" + tab.name)
     -block submit
       =widget.submit("Zapisz")
 

@@ -37,11 +37,11 @@ class TestTabList(RequestCase):
 
     def test_add_tab(self):
         tab = MagicMock()
-        self.tab_list().tabs = []
+        self.tab_list().tabs = {}
 
         self.tab_list().add_tab(tab, 'x', y='y')
 
         tab.assert_called_once_with('x', y='y')
         tab.return_value.feed_request.assert_called_once_with(self.mrequest())
 
-        assert self.tab_list().tabs == [tab.return_value]
+        assert self.tab_list().tabs == {tab.return_value.name: tab.return_value}

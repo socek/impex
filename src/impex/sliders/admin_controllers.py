@@ -11,5 +11,6 @@ class SliderAdminController(Controller):
         form = self.add_form_widget(
             SliderAdminFormWidget,
         )
+        form.fill()
         if form.validate():
             self.add_flashmsg('Zapisano.', 'info')

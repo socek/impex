@@ -19,3 +19,6 @@ class TabDataDriver(ModelDriver):
 
     def list(self):
         return self.find_all().filter(TabData.is_visible.is_(True))
+
+    def admin_list(self):
+        return self.find_all().order_by(TabData.id)

@@ -55,7 +55,7 @@ class TestSliderShowController(TabsControllerCase):
         self.object().make()
 
         assert self.context() == {
-            'tabs': self.mtabs().tabs,
+            'tabs': self.mtabs().tabs.values(),
             'timestamp': '1326550500',
             'event_id': sentinel.event_id,
         }
@@ -77,7 +77,7 @@ class TestSliderCommandController(TabsControllerCase):
         return self.pobject(self.object(), 'parse_events')
 
     def test_incremenet_tab_number(self):
-        self.mtabs().tabs = [1, 2, 3]
+        self.object().tabs_data = [1, 2, 3]
         session = self.msession()
 
         self.object()._incremenet_tab_number()
@@ -92,10 +92,16 @@ class TestSliderCommandController(TabsControllerCase):
     def test_get_tab(self):
         one = MagicMock()
         two = MagicMock()
+        two.name = 'two'
         three = MagicMock()
-        self.mtabs().tabs = [one, two, three]
+        self.mtabs().tabs = {
+            'one': one,
+            'two': two,
+            'three': three,
+        }
         session = self.msession()
         session['tab_number'] = 1
+        self.object().tabs_data = [one, two, three]
 
         assert self.object()._get_tab() == two.to_dict.return_value
         two.to_dict.assert_called_once_with()
