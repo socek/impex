@@ -93,7 +93,7 @@ class TestSliderCommandController(TabsControllerCase):
         one = MagicMock()
         two = MagicMock()
         three = MagicMock()
-        self.mtabs().tabs.values.return_value = [one, two, three]
+        self.mtabs().tabs = [one, two, three]
         session = self.msession()
         session['tab_number'] = 1
 

@@ -88,6 +88,7 @@ class TestGroupHighScoreWidget(ScoreCase):
 
         assert self.object().context == {
             'teams': self.mmake_scores().return_value,
+            'group': self.mgroup(),
         }
 
 

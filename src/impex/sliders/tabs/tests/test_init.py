@@ -4,6 +4,9 @@ from mock import call
 from impex.application.testing import RequestCase
 from impex.application.testing import cache
 
+from impex.sliders.tabs import FinalsTabWidget
+from impex.sliders.tabs import GroupATabWidget
+from impex.sliders.tabs import GroupBTabWidget
 from impex.sliders.tabs import LogaTabWidget
 from impex.sliders.tabs import ScoresTabWidget
 from impex.sliders.tabs import TabList
@@ -24,20 +27,21 @@ class TestTabList(RequestCase):
 
         self.tab_list()
 
-        self.madd_tab().assert_has_calls(
-            [
-                call(LogaTabWidget),
-                call(ScoresTabWidget),
-            ]
-        )
+        assert self.madd_tab().call_args_list == [
+            call(LogaTabWidget),
+            call(ScoresTabWidget),
+            call(GroupATabWidget),
+            call(GroupBTabWidget),
+            call(FinalsTabWidget),
+        ]
 
     def test_add_tab(self):
         tab = MagicMock()
-        tab.return_value.name = 'myname'
+        self.tab_list().tabs = []
 
         self.tab_list().add_tab(tab, 'x', y='y')
 
         tab.assert_called_once_with('x', y='y')
         tab.return_value.feed_request.assert_called_once_with(self.mrequest())
 
-        assert self.tab_list().tabs['myname'] == tab.return_value
+        assert self.tab_list().tabs == [tab.return_value]

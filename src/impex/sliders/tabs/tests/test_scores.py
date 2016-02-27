@@ -4,6 +4,7 @@ from mock import sentinel
 from impex.application.testing import RequestCase
 from impex.application.testing import cache
 
+from ..scores import FinalsTabWidget
 from ..scores import HighScoresTabWidget
 from ..scores import ScoresTabWidget
 
@@ -107,6 +108,7 @@ class TestHighScoresTabWidget(RequestCase):
         self.object().context = {'groups': []}
         group = MagicMock()
         group.ladder = True
+        self.object().groups = []
 
         self.object()._append_group(group)
 
@@ -118,12 +120,14 @@ class TestHighScoresTabWidget(RequestCase):
         self.mladder_widget().return_value.feed_request.assert_called_once_with(
             self.mrequest(),
         )
+        assert self.object().groups == [group]
 
     def test_append_group_for_group(self):
         self.mevent()
         self.mladder_widget()
         self.mgroup_high_score_widget()
         self.object().context = {'groups': []}
+        self.object().groups = []
         group = MagicMock()
         group.ladder = False
 
@@ -139,4 +143,53 @@ class TestHighScoresTabWidget(RequestCase):
         )
         self.mgroup_high_score_widget().return_value.feed_request.assert_called_once_with(
             self.mrequest(),
+        )
+        assert self.object().groups == [group]
+
+
+class TestFinalsTabWidget(RequestCase):
+
+    @cache
+    def object(self):
+        widget = FinalsTabWidget()
+        widget.feed_request(self.mrequest())
+        return widget
+
+    @cache
+    def mappend_group(self):
+        return self.pobject(self.object(), '_append_group')
+
+    @cache
+    def mevent(self):
+        return self.mdrivers().events.get_by_id.return_value
+
+    @cache
+    def mgenerate_games(self):
+        return self.pobject(self.object(), '_generate_games')
+
+    def test_make(self):
+        group = MagicMock()
+
+        def side_effect(*args):
+            self.object().groups = [group]
+        self.mdrivers().groups.list_not_empty.return_value = [group]
+        self.mappend_group().side_effect = side_effect
+        self.matchdict()['event_id'] = sentinel.event_id
+        self.context()
+        self.object().index = 0
+        self.mgenerate_games()
+
+        self.object().make()
+
+        self.mdrivers().groups.list_not_empty.assert_called_once_with(
+            self.mevent().id
+        )
+        self.mappend_group().assert_called_once_with(group)
+        assert self.object().context['games'] == self.mgenerate_games().return_value
+        self.mdrivers().games.list_for_group.assert_called_once_with(
+            self.object().event_id,
+            group.id
+        )
+        self.mgenerate_games().assert_called_once_with(
+            self.mdrivers().games.list_for_group.return_value,
         )
