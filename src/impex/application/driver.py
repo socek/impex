@@ -1,13 +1,14 @@
 from implugin.auth.driver import AuthDriverHolder
 
-from impex.orders.driver import OrderDriver
-from impex.teams.driver import TeamDriver
 from impex.auth.drivers import AuthDriver
 from impex.events.driver import EventDriver
 from impex.games.driver import GameDriver
 from impex.groups.driver import GroupDriver
+from impex.orders.driver import OrderDriver
 from impex.places.driver import PlaceDriver
 from impex.sliders.driver import SliderEventDriver
+from impex.sliders.driver import TabDataDriver
+from impex.teams.driver import TeamDriver
 
 
 class ImpexDriverHolder(AuthDriverHolder):
@@ -44,3 +45,6 @@ class ImpexDriverHolder(AuthDriverHolder):
     def slider_event(self):
         return self.feeded_driver(SliderEventDriver())
 
+    @property
+    def tab_data(self):
+        return self.feeded_driver(TabDataDriver())

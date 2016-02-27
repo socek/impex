@@ -12,7 +12,7 @@ class TabList(Requestable):
 
     def __init__(self, request):
         self.feed_request(request)
-        self.tabs = []
+        self.tabs = {}
         self.add_tab(LogaTabWidget)
         self.add_tab(ScoresTabWidget)
         self.add_tab(GroupATabWidget)
@@ -22,4 +22,4 @@ class TabList(Requestable):
     def add_tab(self, cls, *args, **kwargs):
         tab = cls(*args, **kwargs)
         tab.feed_request(self.request)
-        self.tabs.append(tab)
+        self.tabs[tab.name] = tab

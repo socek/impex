@@ -3,6 +3,7 @@ from datetime import datetime
 from implugin.sqlalchemy.driver import ModelDriver
 
 from .models import SliderEvent
+from .models import TabData
 
 
 class SliderEventDriver(ModelDriver):
@@ -11,3 +12,10 @@ class SliderEventDriver(ModelDriver):
     def list_for_command(self, timestamp):
         date = datetime.fromtimestamp(timestamp)
         return self.find_all().filter(SliderEvent.when_created >= date)
+
+
+class TabDataDriver(ModelDriver):
+    model = TabData
+
+    def list(self):
+        return self.find_all().filter(TabData.is_visible.is_(True))

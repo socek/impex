@@ -36,7 +36,7 @@ class SliderShowController(Controller, TabsController):
         return self.matchdict['event_id']
 
     def make(self):
-        self.context['tabs'] = self.tabs
+        self.context['tabs'] = self.tabs.values()
         self.context['timestamp'] = self.timestamp
         self.context['event_id'] = self.event_id
 
@@ -48,6 +48,7 @@ class SliderCommandController(JsonController, Requestable, TabsController):
     ]
 
     def make(self):
+        self._retrive_tabs()
         self._incremenet_tab_number()
         self.context = self._get_tab()
         self.session.save()
@@ -56,17 +57,21 @@ class SliderCommandController(JsonController, Requestable, TabsController):
 
         self.parse_events()
 
+    def _retrive_tabs(self):
+        self.tabs_data = list(self.drivers.tab_data.list())
+
     def _get_tab_number(self):
         return self.session.get('tab_number', 0)
 
     def _incremenet_tab_number(self):
         tab_number = self._get_tab_number() + 1
-        if tab_number >= len(self.tabs):
+        if tab_number >= len(self.tabs_data):
             tab_number = 0
         self.session['tab_number'] = tab_number
 
     def _get_tab(self):
-        return self.tabs[self._get_tab_number()].to_dict()
+        data = self.tabs_data[self._get_tab_number()]
+        return self.tabs[data.name].to_dict()
 
     def parse_events(self):
         parsers = {}
