@@ -53,6 +53,8 @@ class HighScoresTabWidget(BaseScoreTabWidget):
         groups = self.drivers.groups.list_not_empty(self.event.id)
         group = groups[self.index]
         self._append_group(group)
+        query = self.drivers.games.list_for_group(self.event_id, group.id)
+        self.context['games'] = self._generate_games(query)
 
     def _append_group(self, group):
         widget_cls = LadderWidget if group.ladder else GroupHighScoreWidget
@@ -75,9 +77,3 @@ class GroupBTabWidget(HighScoresTabWidget):
 class FinalsTabWidget(HighScoresTabWidget):
     name = 'finals'
     index = 2
-
-    def make(self):
-        super().make()
-        group = self.groups[0]
-        query = self.drivers.games.list_for_group(self.event_id, group.id)
-        self.context['games'] = self._generate_games(query)

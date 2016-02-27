@@ -25,7 +25,7 @@ class SliderAdminForm(PostForm):
         for tab in self.tab_data:
             self.add_field(
                 self._get_key(tab),
-                label=tab.name,
+                label=tab.label,
                 validators=[],
                 convert=ToBool(),
             )

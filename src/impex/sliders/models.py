@@ -23,4 +23,5 @@ class TabData(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
+    label = Column(String)
     is_visible = Column(Boolean, default=True)
