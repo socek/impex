@@ -1,6 +1,6 @@
 import twitter
 
-from .requestable import Requestable
+from impex.application.requestable import Requestable
 
 
 class TwitterDriver(Requestable):
@@ -19,6 +19,11 @@ class TwitterDriver(Requestable):
         )
 
     def post_scores(self, game):
+        url = self.settings['main_url'] + self.route_path(
+            'games:show',
+            event_id=self.matchdict['event_id'],
+            game_id=self.matchdict['game_id'],
+        )
         data = {
             'group': game.group.name,
             'left_name': game.left.name,
@@ -26,7 +31,8 @@ class TwitterDriver(Requestable):
             'left_score': game.get_sum_for_quart('left', 4),
             'right_score': game.get_sum_for_quart('right', 4),
             'hashtag': self.hashtag,
+            'url': url,
         }
-        template = 'Wynik meczu: %(group)s - %(left_name)s %(left_score)d:%(right_score)d %(right_name)s %(hashtag)s'
+        template = 'Wynik meczu: %(group)s - %(left_name)s %(left_score)d:%(right_score)d %(right_name)s %(hashtag)s %(url)s'
         txt = template % data
         self.api.PostUpdate(txt)

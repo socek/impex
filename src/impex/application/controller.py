@@ -7,8 +7,8 @@ from implugin.formskit.controller import FormskitController
 from .plugins.flashmessage import ImpexFlashMessageWidget
 from .requestable import Requestable
 from .resources import Resources
-from .twitter import TwitterDriver
 from impex.breadcrumb.widgets import BreadCrumbsWidget
+from impex.twitter.models import TwitterDriver
 
 
 class Controller(

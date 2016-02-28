@@ -6,6 +6,7 @@ from impex.application.testing import ControllerCase
 from impex.application.testing import cache
 
 from ..controllers import GameListController
+from ..controllers import GameShowController
 from ..controllers import TimetableController
 
 
@@ -19,6 +20,10 @@ class GameListControllerCase(ControllerCase):
     def mevent(self):
         self.matchdict()['event_id'] = sentinel.event_id
         return self.mdrivers().events.get_by_id.return_value
+
+    @cache
+    def mgame_widget(self):
+        return self.patch('impex.games.controllers.GameWidget')
 
 
 class TestGameListController(GameListControllerCase):
@@ -35,10 +40,6 @@ class TestGameListController(GameListControllerCase):
     @cache
     def mgroup(self):
         return self.mdrivers().groups.get_by_id.return_value
-
-    @cache
-    def mgame_widget(self):
-        return self.patch('impex.games.controllers.GameWidget')
 
     @cache
     def mgrouphighscorewidget(self):
@@ -198,3 +199,28 @@ class TestTimetableController(GameListControllerCase):
             'games': self.mdrivers().games.list.return_value,
         }
         self.mdrivers().games.list.assert_called_once_with(sentinel.event_id)
+
+
+class TestGameShowController(GameListControllerCase):
+    _object_cls = GameShowController
+
+    @cache
+    def mgame(self):
+        self.matchdict()['game_id'] = sentinel.game_id
+        return self.mdrivers().games.get_by_id.return_value
+
+    def test_make(self):
+        self.meventwidget()
+        self.mgame_widget()
+        self.mevent()
+        self.mgame()
+        self.madd_widget()
+
+        self.object().make()
+
+        assert self.madd_widget().call_args_list == [
+            call('event', self.meventwidget().return_value),
+            call('game', self.mgame_widget().return_value),
+        ]
+        self.meventwidget().assert_called_once_with(self.mevent())
+        self.mgame_widget().assert_called_once_with(self.mgame())

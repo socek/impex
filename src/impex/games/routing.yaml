@@ -1,30 +1,34 @@
 impex.games.admin_controllers:
-    -
-        controller: GameListController
-        route: games:admin:list
-        url: /admin/event/{event_id:\d+}/games/
-    -
-        controller: GameCreateController
-        route: games:admin:create
-        url: /admin/event/{event_id:\d+}/game/create/
-    -
-        controller: GameEditController
-        route: games:admin:edit
-        url: /admin/event/{event_id:\d+}/game/{game_id:\d+}/edit
-    -
-        controller: GameEditScoresController
-        route: games:admin:edit_scores
-        url: /admin/event/{event_id:\d+}/game/{game_id:\d+}/edit/scores
+  -
+    controller: GameListController
+    route: games:admin:list
+    url: /admin/event/{event_id:\d+}/games/
+  -
+    controller: GameCreateController
+    route: games:admin:create
+    url: /admin/event/{event_id:\d+}/game/create/
+  -
+    controller: GameEditController
+    route: games:admin:edit
+    url: /admin/event/{event_id:\d+}/game/{game_id:\d+}/edit
+  -
+    controller: GameEditScoresController
+    route: games:admin:edit_scores
+    url: /admin/event/{event_id:\d+}/game/{game_id:\d+}/edit/scores
 impex.games.controllers:
-    -
-        controller: GameListController
-        route: games:list
-        url: /event/{event_id:\d+}/games/
-    -
-        controller: GameListController
-        route: games:group_list
-        url: /event/{event_id:\d+}/games/{group_id:\d+}
-    -
-        controller: TimetableController
-        route: games:timetable
-        url: /event/{event_id:\d+}/timetable/
+  -
+    controller: GameListController
+    route: games:list
+    url: /event/{event_id:\d+}/games/
+  -
+    controller: GameShowController
+    route: games:show
+    url: /event/{event_id:\d+}/game/{game_id:\d+}
+  -
+    controller: GameListController
+    route: games:group_list
+    url: /event/{event_id:\d+}/games/{group_id:\d+}
+  -
+    controller: TimetableController
+    route: games:timetable
+    url: /event/{event_id:\d+}/timetable/

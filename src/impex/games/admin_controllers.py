@@ -81,7 +81,8 @@ class GameEditScoresController(BaseController):
         self.twitter()
 
         if form.validate():
-            self.add_flashmsg('<i class="fa fa-floppy-o"></i> Zapisano tabelę wyników.', 'info')
+            self.add_flashmsg(
+                '<i class="fa fa-floppy-o"></i> Zapisano tabelę wyników.', 'info')
             self.redirect(
                 'games:admin:edit_scores',
                 event_id=self.matchdict['event_id'],
@@ -96,4 +97,5 @@ class GameEditScoresController(BaseController):
 
     def post_on_twitter(self, game):
         self.twitter().post_scores(game)
-        self.add_flashmsg('<i class="fa fa-twitter"></i> Wysłano na twittera.', 'info')
+        self.add_flashmsg(
+            '<i class="fa fa-twitter"></i> Wysłano na twittera.', 'info')

@@ -1,0 +1,15 @@
+-extends "impex.application:templates/authencitated.haml"
+-block content
+  =need('gamelist')
+  =need('bracket')
+  %div.col-lg-12
+    %div.bs-component
+      =event(False)
+
+  %div.col-lg-12
+    %div.bs-component
+      %div
+        =game()
+
+
+

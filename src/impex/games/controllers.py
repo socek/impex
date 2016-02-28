@@ -80,6 +80,26 @@ class GameListController(BaseGameList):
             return self.drivers.games.list(self.event_id)
 
 
+class GameShowController(BaseGameList):
+
+    renderer = 'impex.games:templates/show.haml'
+    crumbs = 'games:list'
+
+    @property
+    @cache
+    def game_id(self):
+        return self.matchdict['game_id']
+
+    @property
+    @cache
+    def game(self):
+        return self.drivers.games.get_by_id(self.game_id)
+
+    def make(self):
+        self.add_widget('event', EventWidget(self.event))
+        self.add_widget('game', GameWidget(self.game))
+
+
 class TimetableController(BaseGameList):
 
     renderer = 'impex.games:templates/timetable.haml'
