@@ -28,6 +28,7 @@ install_requires = [
     'fanstatic==1.0a5',
     'uwsgi',
     'fixdep',
+    'python-twitter==3.0rc1',
 ]
 
 
