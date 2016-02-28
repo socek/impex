@@ -78,12 +78,22 @@ class GameEditScoresController(BaseController):
         game = self.drivers.games.get_by_id(game_id)
         form = self.add_form_widget(ScoreBoardWidget)
         form.read_from(game)
+        self.twitter()
 
         if form.validate():
-            self.add_flashmsg('Zapisano tabelę wyników.', 'info')
+            self.add_flashmsg('<i class="fa fa-floppy-o"></i> Zapisano tabelę wyników.', 'info')
             self.redirect(
                 'games:admin:edit_scores',
                 event_id=self.matchdict['event_id'],
                 game_id=self.matchdict['game_id'],
             )
             self.refresh_scores()
+            if self.should_post_on_twitter(game):
+                self.post_on_twitter(game)
+
+    def should_post_on_twitter(self, game):
+        return game.event.enable_twtitter and game.status == game.STATUS_ENDED
+
+    def post_on_twitter(self, game):
+        self.twitter().post_scores(game)
+        self.add_flashmsg('<i class="fa fa-twitter"></i> Wysłano na twittera.', 'info')

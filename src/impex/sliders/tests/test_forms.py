@@ -70,6 +70,7 @@ class TestSliderAdminForm(PostFormCase):
     def test_create_form(self):
         tab = MagicMock()
         tab.name = 'kanada'
+        tab.label = 'joko'
         self.mdrivers().tab_data.admin_list.return_value = [tab]
         self.madd_field()
         self.mto_bool()
@@ -80,7 +81,7 @@ class TestSliderAdminForm(PostFormCase):
             call('refresh', label='Odśwież', validators=[]),
             call(
                 'is_visible-kanada',
-                label='kanada',
+                label='joko',
                 convert=self.mto_bool().return_value,
                 validators=[],
             ),

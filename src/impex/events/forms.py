@@ -14,6 +14,11 @@ class CreateEventForm(PostForm):
         self.add_field('end_date', label='Data zakończenia',
                        convert=ToDate())
         self.add_field('is_visible', label='Opublikowane', convert=ToBool())
+        self.add_field(
+            'enable_twtitter',
+            label='Włącz twittera',
+            convert=ToBool(),
+        )
 
     def on_success(self):
         data = self.get_data_dict(True)
@@ -22,6 +27,7 @@ class CreateEventForm(PostForm):
             start_date=data['start_date'],
             end_date=data['end_date'],
             is_visible=data['is_visible'],
+            enable_twtitter=data['enable_twtitter'],
         )
         self.database().commit()
 
@@ -34,6 +40,7 @@ class EditEventForm(CreateEventForm):
         self.instance.start_date = data['start_date']
         self.instance.end_date = data['end_date']
         self.instance.is_visible = data['is_visible']
+        self.instance.enable_twtitter = data['enable_twtitter']
         self.drivers.events.update(self.instance)
         self.database().commit()
 
@@ -42,4 +49,5 @@ class EditEventForm(CreateEventForm):
         self.set_value('start_date', event.start_date)
         self.set_value('end_date', event.end_date)
         self.set_value('is_visible', event.is_visible)
+        self.set_value('enable_twtitter', event.enable_twtitter)
         self.instance = event

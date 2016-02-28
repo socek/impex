@@ -14,6 +14,7 @@
                 =table.index_header()
                 %th -> Nazwa
                 %th -> Opublikowane
+                %th -> Twitter
                 %th -> Akcje
 
             %tbody
@@ -24,6 +25,11 @@
                     {{event.name}}
                   %td
                     -if event.is_visible:
+                      %i.fa.fa-check style="color: #5cb85c;"
+                    -else:
+                      %i.fa.fa-times style="color: red;"
+                  %td
+                    -if event.enable_twtitter:
                       %i.fa.fa-check style="color: #5cb85c;"
                     -else:
                       %i.fa.fa-times style="color: red;"

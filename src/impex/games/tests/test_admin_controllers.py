@@ -1,3 +1,4 @@
+from mock import MagicMock
 from mock import sentinel
 
 from impaf.testing import cache
@@ -144,6 +145,18 @@ class TestGameEditController(BaseControllerCase):
 class TestGameEditScoresController(BaseControllerCase):
     _object_cls = GameEditScoresController
 
+    @cache
+    def mtwitter(self):
+        return self.pobject(self.object(), 'twitter')
+
+    @cache
+    def mshould_post_on_twitter(self):
+        return self.pobject(self.object(), 'should_post_on_twitter')
+
+    @cache
+    def mpost_on_twitter(self):
+        return self.pobject(self.object(), 'post_on_twitter')
+
     def test_make_on_success(self):
         self.matchdict()['event_id'] = sentinel.event_id
         self.matchdict()['game_id'] = sentinel.game_id
@@ -152,19 +165,22 @@ class TestGameEditScoresController(BaseControllerCase):
         self.mredirect()
         self.mdrivers()
         self.mrefresh_scores()
+        self.mshould_post_on_twitter()
+        self.mpost_on_twitter()
 
         self.object().make()
 
+        game = self.mdrivers().games.get_by_id.return_value
         self.madd_form_widget().assert_called_once_with(ScoreBoardWidget)
         self.madd_form_widget().return_value.validate.assert_called_once_with()
         self.madd_form_widget().return_value.read_from.assert_called_once_with(
-            self.mdrivers().games.get_by_id.return_value,
+            game,
         )
         self.mdrivers().games.get_by_id.assert_called_once_with(
             sentinel.game_id,
         )
         self.madd_flashmsg().assert_called_once_with(
-            'Zapisano tabelę wyników.',
+            '<i class="fa fa-floppy-o"></i> Zapisano tabelę wyników.',
             'info',
         )
         self.mredirect().assert_called_once_with(
@@ -173,6 +189,43 @@ class TestGameEditScoresController(BaseControllerCase):
             game_id=sentinel.game_id,
         )
         self.mrefresh_scores()
+        self.mshould_post_on_twitter().assert_called_once_with(game)
+        self.mpost_on_twitter().assert_called_once_with(game)
+
+    def test_make_on_success_without_twitter(self):
+        self.matchdict()['event_id'] = sentinel.event_id
+        self.matchdict()['game_id'] = sentinel.game_id
+        self.madd_form_widget().return_value.validate.return_value = True
+        self.madd_flashmsg()
+        self.mredirect()
+        self.mdrivers()
+        self.mrefresh_scores()
+        self.mshould_post_on_twitter().return_value = False
+        self.mpost_on_twitter()
+
+        self.object().make()
+
+        game = self.mdrivers().games.get_by_id.return_value
+        self.madd_form_widget().assert_called_once_with(ScoreBoardWidget)
+        self.madd_form_widget().return_value.validate.assert_called_once_with()
+        self.madd_form_widget().return_value.read_from.assert_called_once_with(
+            game,
+        )
+        self.mdrivers().games.get_by_id.assert_called_once_with(
+            sentinel.game_id,
+        )
+        self.madd_flashmsg().assert_called_once_with(
+            '<i class="fa fa-floppy-o"></i> Zapisano tabelę wyników.',
+            'info',
+        )
+        self.mredirect().assert_called_once_with(
+            'games:admin:edit_scores',
+            event_id=sentinel.event_id,
+            game_id=sentinel.game_id,
+        )
+        self.mrefresh_scores()
+        self.mshould_post_on_twitter().assert_called_once_with(game)
+        assert self.mpost_on_twitter().called is False
 
     def test_make_on_fail(self):
         self.madd_form_widget().return_value.validate.return_value = False
@@ -185,3 +238,30 @@ class TestGameEditScoresController(BaseControllerCase):
         self.madd_form_widget().return_value.validate.assert_called_once_with()
         assert not self.madd_flashmsg().called
         assert not self.mredirect().called
+
+    def test_should_post_on_twitter(self):
+        game = MagicMock()
+        game.event.enable_twtitter = False
+
+        assert self.object().should_post_on_twitter(game) is False
+
+        game.event.enable_twtitter = True
+        assert self.object().should_post_on_twitter(game) is False
+
+        game.status = game.STATUS_ENDED
+        assert self.object().should_post_on_twitter(game) is True
+
+        game.event.enable_twtitter = False
+        assert self.object().should_post_on_twitter(game) is False
+
+    def test_post_on_twitter(self):
+        self.mtwitter()
+        self.madd_flashmsg()
+        game = MagicMock()
+
+        self.object().post_on_twitter(game)
+        self.mtwitter().return_value.post_scores.assert_called_once_with(game)
+        self.madd_flashmsg().assert_called_once_with(
+            '<i class="fa fa-twitter"></i> Wysłano na twittera.',
+            'info',
+        )

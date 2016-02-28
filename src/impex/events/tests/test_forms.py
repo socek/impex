@@ -19,6 +19,7 @@ class TestCreateEventForm(PostFormCase):
             'start_date': sentinel.start_date,
             'end_date': sentinel.end_date,
             'is_visible': '',
+            'enable_twtitter': '',
         }
 
         self.object().on_success()
@@ -29,6 +30,7 @@ class TestCreateEventForm(PostFormCase):
             start_date=sentinel.start_date,
             end_date=sentinel.end_date,
             is_visible='',
+            enable_twtitter='',
         )
         self.mdatabase().commit.assert_called_once_with()
 
@@ -52,6 +54,7 @@ class TestEditEventForm(PostFormCase):
             'start_date': sentinel.start_date,
             'end_date': sentinel.end_date,
             'is_visible': True,
+            'enable_twtitter': False,
         }
 
         self.object().on_success()
@@ -60,6 +63,7 @@ class TestEditEventForm(PostFormCase):
         assert self.minstance().start_date == sentinel.start_date
         assert self.minstance().end_date == sentinel.end_date
         assert self.minstance().is_visible is True
+        assert self.minstance().enable_twtitter is False
         self.mdrivers().events.update.assert_called_once_with(
             self.minstance()
         )
@@ -70,6 +74,7 @@ class TestEditEventForm(PostFormCase):
         instance.start_date = sentinel.start_date
         instance.end_date = sentinel.end_date
         instance.is_visible = False
+        instance.enable_twtitter = True
 
         self.object().read_from(instance)
 
@@ -79,6 +84,7 @@ class TestEditEventForm(PostFormCase):
             'name': sentinel.name,
             'end_date': sentinel.end_date,
             'is_visible': False,
+            'enable_twtitter': True,
         }
 
         assert self.object().instance is instance

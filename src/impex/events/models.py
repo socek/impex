@@ -17,5 +17,6 @@ class Event(Base):
     start_date = Column(Date)
     end_date = Column(Date)
     is_visible = Column(Boolean(), default=False)
+    enable_twtitter = Column(Boolean(), default=False)
 
     games = relationship(Game, order_by=Game.priority)

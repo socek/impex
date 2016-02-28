@@ -4,5 +4,5 @@
       %div class="alert alert-dismissible alert-{{message.msgtype}}"
         %button.close data-dismiss="alert" type="button"
           x
-        =message.message
+        =message.message|safe
 
