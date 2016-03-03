@@ -87,5 +87,8 @@ class RefreshTab(Controller, TabsController):
 
     def make(self):
         name = self.matchdict['name']
-        tab = self.tabs[name]
-        self.response = Response(tab())
+        try:
+            tab = self.tabs[name]
+            self.response = Response(tab())
+        except:
+            pass
