@@ -18,7 +18,9 @@ $(function(){
             var name = 'input[name='+ key +']';
             if(value) {
                 $(name).val(value);
-            };
+            } else {
+                $(name).val('0');
+            }
         };
         set_value('left_quart_2_sum', count_for_quart('left', 2));
         set_value('left_quart_3_sum', count_for_quart('left', 3));
