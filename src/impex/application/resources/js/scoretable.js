@@ -3,12 +3,14 @@ $(function(){
         var count_for_quart = function (team, number) {
             var result = 0;
             for(var loop=0; loop<number; loop++) {
-                console.log('input[name='+ team +'_quart_' + (loop + 1) +']');
                 var value = parseInt($('input[name='+ team +'_quart_' + (loop + 1) +']').val());
                 if(isNaN(value)){
                     return null;
                 }
                 result += value;
+            }
+            if(value <= 0){
+                return 0;
             }
             return result;
         };
