@@ -35,4 +35,7 @@ class TwitterDriver(Requestable):
         }
         template = 'Wynik meczu: %(group)s - %(left_name)s %(left_score)d:%(right_score)d %(right_name)s %(hashtag)s %(url)s'
         txt = template % data
-        self.api.PostUpdate(txt)
+        try:
+            self.api.PostUpdate(txt)
+        except:
+            pass
