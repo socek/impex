@@ -116,11 +116,18 @@ sliders_css = Resource(
     'css/sliders.css',
 )
 
+ajax_queue = Resource(
+    library,
+    'js/jquery.ajaxQueue.min.js',
+    bottom=True,
+)
+
 sliders = Resource(
     library,
     'js/sliders.js',
     depends=[
         sliders_css,
+        ajax_queue,
     ],
     bottom=True,
 )

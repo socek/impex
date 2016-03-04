@@ -42,20 +42,21 @@ $(function(){
             Events[name]();
         };
     };
-    var refresh = function(name) {
-        $.ajax(
+    var refresh = function(name, next) {
+        $.ajaxQueue(
             '/sliders/' +ViewConfig.event_id+ '/refresh/' +name+ '/'
         ).done(function(data){
             var display = $('.'+name).css('display');
             $('.'+name).replaceWith(data).css('display', display);
             $('.'+name).css('display', display);
+            next();
         });
     };
     var onFail = function() {
         setTimeout(onDone, 2000);
     };
     var sentAjax = function(onDone) {
-        $.ajax({
+        $.ajaxQueue({
             url: '/sliders/command/',
             data: {
                 timestamp: ViewConfig.timestamp
@@ -64,13 +65,26 @@ $(function(){
     };
     var onDone = function() {
         sentAjax(function(data){
+            var send_event = function() {
+                slide_tab('.'+ name, data.speed, onDone);
+                ViewConfig.timestamp = data.timestamp;
+                run_event(name);
+            };
             var name = data.name;
-            slide_tab('.'+ name, data.speed, onDone);
-            $(data.refresh).each(function(index, name){
-                refresh(name);
-            });
-            ViewConfig.timestamp = data.timestamp;
-            run_event(name);
+            var len = data.refresh.length;
+            if(len) {
+                $(data.refresh).each(function(index, name){
+                    if(index == len - 1) {
+                        var next = send_event;
+                    } else {
+                        var next = function(){};
+                    }
+                    refresh(name, next);
+                });
+            } else {
+                send_event();
+            }
+
         });
     };
     sentAjax(function(data){
