@@ -24,7 +24,6 @@ class Requestable(
 
     def refresh_scores(self):
         self.add_event('refresh', 'scores')
-        self.add_event('refresh', 'high_scores')
         self.add_event('refresh', 'group_a')
         self.add_event('refresh', 'group_b')
         self.add_event('refresh', 'finals')
