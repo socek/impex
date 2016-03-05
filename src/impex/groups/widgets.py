@@ -38,6 +38,7 @@ class GroupHighScoreWidget(SingleWidget, Requestable):
             'wins': 0,
             'points': 0,
             'smallpoints': 0,
+            'second_points': 0,
         })
         games = self.drivers.games.list_for_group(
             self.event.id,
@@ -50,10 +51,40 @@ class GroupHighScoreWidget(SingleWidget, Requestable):
                     if game.status == game.STATUS_ENDED:
                         self.recalculate(game, team, side)
 
+        per_points = defaultdict(lambda: [])
+        for team_id, score in self.scores.items():
+            per_points[score['points']].append(team_id)
+        for key, tie_teams in per_points.items():
+            if len(tie_teams) > 1:
+                for game in games:
+                    if self._is_in_ties(game, tie_teams):
+                        left = game.get_sum_for_quart('left', 4)
+                        right = game.get_sum_for_quart('right', 4)
+                        if left > right:
+                            self.scores[game.left.id]['second_points'] += 2
+                            self.scores[game.right.id]['second_points'] += 1
+                        elif right > left:
+                            self.scores[game.left.id]['second_points'] += 1
+                            self.scores[game.right.id]['second_points'] += 2
+                        else:
+                            self.scores[game.left.id]['second_points'] += 1
+                            self.scores[game.right.id]['second_points'] += 1
+
         return reversed(sorted(
             self.scores.values(),
-            key=lambda obj: (obj['points'], obj['smallpoints'])
+            key=lambda obj: (
+                obj['points'],
+                obj['second_points'],
+                obj['smallpoints'],
+            )
         ))
+
+    def _is_in_ties(self, game, tie_teams):
+        return (
+            game.status == game.STATUS_ENDED and
+            game.left.id in tie_teams and
+            game.right.id in tie_teams
+        )
 
     def recalculate(self, game, team, side):
         otherside = 'left' if side == 'right' else 'right'
@@ -79,7 +110,8 @@ class LadderWidget(SingleWidget, Requestable):
         self.group = group
 
     def data(self):
-        self.games = self.drivers.games.list_for_group(self.event.id, self.group.id)
+        self.games = self.drivers.games.list_for_group(
+            self.event.id, self.group.id)
 
         return dumps({
             "teams": [

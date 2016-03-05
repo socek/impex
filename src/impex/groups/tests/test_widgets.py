@@ -60,8 +60,8 @@ class TestGroupHighScoreWidget(ScoreCase):
         self.mdrivers().games.list_for_group.return_value = [game]
 
         assert sorted(list(self.object().make_scores()), key=lambda x: x['name']) == [
-            {'games': 0, 'name': 'left', 'points': 0, 'smallpoints': 0, 'wins': 0},
-            {'games': 0, 'name': 'right', 'points': 0, 'smallpoints': 0, 'wins': 0},
+            {'games': 0, 'name': 'left', 'points': 0, 'smallpoints': 0, 'wins': 0, 'second_points': 0},
+            {'games': 0, 'name': 'right', 'points': 0, 'smallpoints': 0, 'wins': 0, 'second_points': 0},
         ]
 
     def test_simple(self):
@@ -74,10 +74,72 @@ class TestGroupHighScoreWidget(ScoreCase):
         ]
 
         assert list(self.object().make_scores()) == [
-            {'games': 3, 'name': '2', 'points': 5, 'smallpoints': 25, 'wins': 2},
-            {'games': 2, 'name': '1', 'points': 2, 'smallpoints': 20, 'wins': 1},
-            {'games': 1, 'name': '4', 'points': 1, 'smallpoints': 5, 'wins': 0},
-            {'games': 2, 'name': '3', 'points': 0, 'smallpoints': 15, 'wins': 0},
+            {'games': 3, 'name': '2', 'points': 5, 'smallpoints': 25, 'wins': 2, 'second_points': 0},
+            {'games': 2, 'name': '1', 'points': 3, 'smallpoints': 20, 'wins': 1, 'second_points': 0},
+            {'games': 2, 'name': '3', 'points': 2, 'smallpoints': 15, 'wins': 0, 'second_points': 0},
+            {'games': 1, 'name': '4', 'points': 1, 'smallpoints': 5, 'wins': 0, 'second_points': 0},
+        ]
+
+    def test_tie_situation(self):
+        przyjaciele = 1
+        kks_tg = 2
+        kks_tg_junior = 3
+        bekescaba = 4
+        olimpia = 5
+        self.mdrivers().games.list_for_group.return_value = [
+            self._create_game(przyjaciele, 49, kks_tg, 45),
+            self._create_game(kks_tg_junior, 50, bekescaba, 44),
+            self._create_game(przyjaciele, 55, olimpia, 32),
+            self._create_game(kks_tg, 74, kks_tg_junior, 41),
+            self._create_game(bekescaba, 59, olimpia, 27),
+            self._create_game(kks_tg_junior, 51, przyjaciele, 48),
+            self._create_game(kks_tg, 70, olimpia, 38),
+            self._create_game(bekescaba, 49, przyjaciele, 43),
+            self._create_game(olimpia, 66, kks_tg_junior, 40),
+            self._create_game(kks_tg, 77, bekescaba, 60),
+        ]
+
+        assert list(self.object().make_scores()) == [
+            {
+                'games': 4,
+                'name': str(kks_tg),
+                'points': 7,
+                'smallpoints': 266,
+                'wins': 3,
+                'second_points': 0,
+            },
+            {
+                'games': 4,
+                'name': str(kks_tg_junior),
+                'points': 6,
+                'smallpoints': 182,
+                'wins': 2,
+                'second_points': 4,
+            },
+            {
+                'games': 4,
+                'name': str(bekescaba),
+                'points': 6,
+                'smallpoints': 212,
+                'wins': 2,
+                'second_points': 3,
+            },
+            {
+                'games': 4,
+                'name': str(przyjaciele),
+                'points': 6,
+                'smallpoints': 195,
+                'wins': 2,
+                'second_points': 2,
+            },
+            {
+                'games': 4,
+                'name': str(olimpia),
+                'points': 5,
+                'smallpoints': 163,
+                'wins': 1,
+                'second_points': 0,
+            },
         ]
 
     def test_make(self):
