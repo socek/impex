@@ -64,7 +64,7 @@ class GroupHighScoreWidget(SingleWidget, Requestable):
             if score > other:
                 data['wins'] += 1
                 data['points'] += 2
-            elif score == other:
+            else:
                 data['points'] += 1
 
             data['smallpoints'] += score
