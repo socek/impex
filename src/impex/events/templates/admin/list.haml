@@ -36,3 +36,4 @@
                   %td
                     =table.edit_button(route_path('events:admin:edit', event_id=event.id))
                     =table.play_button(route_path('games:admin:list', event_id=event.id))
+                    %a.fa.btn.btn-sm.btn-left-margin.btn-info.fa-sliders  href="{{route_path('sliders:main', event_id=event.id)}}" title="Slider"
