@@ -1,25 +1,20 @@
-from bael.project.virtualenv import BaseVirtualenv
-from baelfire.dependencies import AlwaysRebuild
-from baelfire.dependencies import RunBefore
+from baelfire.dependencies import AlwaysTrue
 from baelfire.error import CommandAborted
+from baelfire.task.process import SubprocessTask
 
 from .alembic import AlembicUpgrade
 
 
-class Serve(BaseVirtualenv):
-
-    def phase_settings(self):
-        super().phase_settings()
-        self.paths.set_path('exe:pserve', 'virtualenv:bin', 'pserve')
+class Serve(SubprocessTask):
 
     def create_dependecies(self):
-        self.add_dependency(RunBefore(AlembicUpgrade()))
-        self.add_dependency(AlwaysRebuild())
+        self.run_before(AlembicUpgrade())
+        self.build_if(AlwaysTrue())
 
     def build(self):
         try:
-            self.popen(
-                ['%(exe:pserve)s %(frontendini)s --reload' % self.paths],
-            )
+            self.popen('{0} {1} --reload'.format(
+                self.paths.get('exe:pserve'),
+                self.paths.get('frontendini')))
         except CommandAborted:
             self.logger.info('Aborted')

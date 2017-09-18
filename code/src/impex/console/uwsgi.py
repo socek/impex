@@ -1,6 +1,5 @@
 from bael.project.virtualenv import BaseVirtualenv
-from baelfire.dependencies import AlwaysRebuild
-from baelfire.dependencies import RunBefore
+from baelfire.dependencies import AlwaysTrue
 from baelfire.dependencies.pid import PidIsNotRunning
 from baelfire.dependencies.pid import PidIsRunning
 from baelfire.error import CommandAborted
@@ -10,38 +9,30 @@ from .alembic import AlembicUpgrade
 
 class StartUwsgi(BaseVirtualenv):
 
-    def phase_settings(self):
-        super().phase_settings()
-        self.paths.set_path('exe:uwsgi', 'virtualenv:bin', 'uwsgi')
-
     def create_dependecies(self):
-        self.add_dependency(RunBefore(AlembicUpgrade()))
-        self.add_dependency(PidIsNotRunning(pid_file_name='uwsgi:pidfile'))
+        self.run_before(AlembicUpgrade())
+        self.build_if(PidIsNotRunning(pid_file_name='uwsgi:pidfile'))
 
     def build(self):
         try:
-            self.popen(
-                ['%(exe:uwsgi)s --ini-paste %(frontendini)s' % self.paths],
-            )
+            self.popen('{0} --ini-paste {1}'.format(
+                self.paths.get('exe:uwsgi'),
+                self.paths.get('frontendini')))
         except CommandAborted:
             self.logger.info('Aborted')
 
 
 class StopUwsgi(BaseVirtualenv):
 
-    def phase_settings(self):
-        super().phase_settings()
-        self.paths.set_path('exe:uwsgi', 'virtualenv:bin', 'uwsgi')
-
     def create_dependecies(self):
-        self.add_dependency(RunBefore(AlembicUpgrade()))
-        self.add_dependency(PidIsRunning(pid_file_name='uwsgi:pidfile'))
+        self.run_before(AlembicUpgrade())
+        self.build_if(PidIsRunning(pid_file_name='uwsgi:pidfile'))
 
     def build(self):
         try:
-            self.popen(
-                ['%(exe:uwsgi)s --stop %(uwsgi:pidfile)s' % self.paths],
-            )
+            self.popen('{0} --stop {1}'.format(
+                self.paths.get('exe:uwsgi'),
+                self.paths.get('uwsgi:pidfile')))
         except CommandAborted:
             self.logger.info('Aborted')
 
@@ -49,13 +40,13 @@ class StopUwsgi(BaseVirtualenv):
 class RestartUwsgi(BaseVirtualenv):
 
     def create_dependecies(self):
-        self.add_dependency(RunBefore(StopUwsgi()))
-        self.add_dependency(AlwaysRebuild())
+        self.run_before(StopUwsgi())
+        self.build_if(AlwaysTrue())
 
     def build(self):
         try:
-            self.popen(
-                ['%(exe:uwsgi)s --ini-paste %(frontendini)s' % self.paths],
-            )
+            self.popen('{0} --stop {1}'.format(
+                self.paths.get('exe:uwsgi'),
+                self.paths.get('uwsgi:pidfile')))
         except CommandAborted:
             self.logger.info('Aborted')

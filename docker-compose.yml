@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+  backend:
+    build: .
+    command: imcmd -s
+    env_file: .env
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./code:/code
+
+  postgres:
+    image: postgres:9.4
+    env_file: .env
+    labels:
+      - "traefik.enable=false"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=scoresturniej
+      - POSTGRES_USER=scoresturniej
+      - POSTGRES_DB=scoresturniej
+      - PGPASSWORD=scoresturniej
+
+volumes:
+  postgres-data:

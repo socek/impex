@@ -1,11 +1,11 @@
 import os
+
 from logging import getLogger
 
 from alembic import command
 from alembic.config import Config
-from bael.project.virtualenv import BaseVirtualenv
-from baelfire.dependencies import AlwaysRebuild
-from baelfire.dependencies import RunBefore
+from baelfire.dependencies import AlwaysTrue
+from baelfire.task.process import SubprocessTask
 
 from .base import IniTemplate
 from .dependency import MigrationChanged
@@ -20,26 +20,26 @@ def touch(fname, mode=0o666, dir_fd=None, **kwargs):
                  dir_fd=None if os.supports_fd else dir_fd, **kwargs)
 
 
-class AlembicUpgrade(BaseVirtualenv):
+class AlembicUpgrade(SubprocessTask):
 
     def create_dependecies(self):
-        self.add_dependency(RunBefore(IniTemplate()))
-        self.add_dependency(MigrationChanged('versions', 'sqlite_db'))
+        self.run_before(IniTemplate())
+        self.build_if(MigrationChanged('versions', 'sqlite_db'))
 
     def build(self):
         log.info("Running migrations...")
-        alembic_cfg = Config(self.paths['frontendini'])
+        alembic_cfg = Config(self.paths.get('frontendini'))
         command.upgrade(alembic_cfg, "head")
-        touch(self.paths['sqlite_db'])
+        touch(self.paths.get('sqlite_db'))
 
 
-class AlembicRevision(BaseVirtualenv):
+class AlembicRevision(SubprocessTask):
 
     def create_dependecies(self):
-        self.add_dependency(RunBefore(IniTemplate()))
-        self.add_dependency(AlwaysRebuild())
+        self.run_before(IniTemplate())
+        self.build_if(AlwaysTrue())
 
     def build(self):
-        alembic_cfg = Config(self.paths['frontendini'])
+        alembic_cfg = Config(self.paths.get('frontendini'))
         message = input('Revision message:')
         command.revision(alembic_cfg, message)

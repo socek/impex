@@ -18,7 +18,7 @@ port = 6543
     {% endfor %}
 
 [uwsgi]
-socket = {{paths['uwsgi:socket']}}
+socket = {{paths.get('uwsgi:socket')}}
 master = true
 
 need-app = true
@@ -26,6 +26,4 @@ processes = 4
 chmod-socket = 777
 
 pythonpath = *.egg
-pidfile = {{paths['uwsgi:pidfile']}}
-logto = {{paths['uwsgi:logto']}}
-daemonize2 = {{paths['uwsgi:daemonize2']}}
+pidfile = {{paths.get('uwsgi:pidfile')}}

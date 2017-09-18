@@ -14,11 +14,11 @@ class MigrationChanged(Dependency):
 
     @property
     def src(self):
-        return self.paths[self.src_name]
+        return self.paths.get(self.src_name)
 
     @property
     def destination(self):
-        return self.paths[self.destination_name]
+        return self.paths.get(self.destination_name)
 
     def should_build(self):
         try:

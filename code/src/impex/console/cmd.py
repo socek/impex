@@ -1,7 +1,16 @@
 from argparse import ArgumentParser
+from logging import getLogger
+
 from baelfire.application.application import Application
 from baelfire.application.commands.graph.graph import Graph
-from logging import getLogger
+
+from impex.console.alembic import AlembicRevision
+from impex.console.alembic import AlembicUpgrade
+from impex.console.core import ImpexCore
+from impex.console.serve import Serve
+from impex.console.uwsgi import RestartUwsgi
+from impex.console.uwsgi import StartUwsgi
+from impex.console.uwsgi import StopUwsgi
 
 log = getLogger(__name__)
 
@@ -9,13 +18,12 @@ log = getLogger(__name__)
 class WeWalletApplication(Application):
 
     tasks = {
-        'develop': 'bael.project.develop:Develop',
-        'serve': 'impex.console.serve:Serve',
-        'alembic-upgrade': 'impex.console.alembic:AlembicUpgrade',
-        'alembic-revision': 'impex.console.alembic:AlembicRevision',
-        'uwsgi_start': 'impex.console.uwsgi:StartUwsgi',
-        'uwsgi_stop': 'impex.console.uwsgi:StopUwsgi',
-        'uwsgi_restart': 'impex.console.uwsgi:RestartUwsgi',
+        'serve': Serve,
+        'alembic-upgrade': AlembicUpgrade,
+        'alembic-revision': AlembicRevision,
+        'uwsgi_start': StartUwsgi,
+        'uwsgi_stop': StopUwsgi,
+        'uwsgi_restart': RestartUwsgi,
     }
 
     def create_parser(self):
@@ -112,8 +120,7 @@ class WeWalletApplication(Application):
             self.parser.print_help()
 
     def _get_task(self, args):
-        url = self.tasks[args.task]
-        return self.import_task(url)()
+        return self.tasks[args.task](ImpexCore())
 
 
 def run():
