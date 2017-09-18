@@ -20,7 +20,7 @@ class SettingsFactory(object):
         'uwsgi': [('local', False)],
         'tests': [('tests', False)],
         'shell': [('shell', False), ('local_shell', False)],
-        'command': [('command', False), ('local_command', False)],
+        'command': [('command', False), ('local', False)],
     }
 
     def __init__(self, module, settings=None, paths=None):

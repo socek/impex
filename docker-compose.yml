@@ -9,6 +9,8 @@ services:
     stdin_open: true
     volumes:
       - ./code:/code
+    ports:
+      - 8000:8000
 
   postgres:
     image: postgres:9.4

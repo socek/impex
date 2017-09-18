@@ -4,7 +4,7 @@ use = egg:{{settings['package_name']}}
 [server:main]
 use = egg:waitress#main
 host = 0.0.0.0
-port = 6543
+port = 8000
 
 {% for key, data in settings['loggers'].items() %}
 [{{key}}]
@@ -18,12 +18,8 @@ port = 6543
     {% endfor %}
 
 [uwsgi]
-socket = {{paths.get('uwsgi:socket')}}
+socket = 0.0.0.0:8000
 master = true
-
 need-app = true
 processes = 4
-chmod-socket = 777
-
 pythonpath = *.egg
-pidfile = {{paths.get('uwsgi:pidfile')}}
