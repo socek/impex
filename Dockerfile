@@ -9,7 +9,7 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . $APP_DIR
 RUN python setup.py develop
-RUN mkdir data
+RUN mkdir -p data
 CMD uwsgi --ini-paste frontend.ini
 
 EXPOSE 8000

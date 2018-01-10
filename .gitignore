@@ -39,7 +39,6 @@ tmpdata/*
 *.sublime-*
 htmlcov
 .ropeproject
-local.py
 .idea
 .baelfire.*
 *.flag
