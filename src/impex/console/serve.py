@@ -10,7 +10,7 @@ class Serve(BaseVirtualenv):
 
     def phase_settings(self):
         super().phase_settings()
-        self.paths.set_path('exe:pserve', 'virtualenv:bin', 'pserve')
+        # self.paths.set_path('exe:pserve', 'virtualenv:bin', 'pserve')
 
     def create_dependecies(self):
         self.add_dependency(RunBefore(AlembicUpgrade()))

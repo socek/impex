@@ -62,10 +62,10 @@ def fanstatic(settings, paths):
 
 
 def debug(settings, paths):
-    settings['debug'] = True
-    settings['pyramid.reload_templates'] = True
-    settings['pyramid.debug_notfound'] = True
-    settings['pyramid.debug_routematch'] = True
+    settings['debug'] = False
+    settings['pyramid.reload_templates'] = False
+    settings['pyramid.debug_notfound'] = False
+    settings['pyramid.debug_routematch'] = False
 
 
 def auth(settings, paths):

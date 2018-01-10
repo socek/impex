@@ -23,8 +23,9 @@ def touch(fname, mode=0o666, dir_fd=None, **kwargs):
 class AlembicUpgrade(BaseVirtualenv):
 
     def create_dependecies(self):
-        self.add_dependency(RunBefore(IniTemplate()))
+        # self.add_dependency(RunBefore(IniTemplate()))
         self.add_dependency(MigrationChanged('versions', 'sqlite_db'))
+        print(self.paths)
 
     def build(self):
         log.info("Running migrations...")
@@ -36,7 +37,7 @@ class AlembicUpgrade(BaseVirtualenv):
 class AlembicRevision(BaseVirtualenv):
 
     def create_dependecies(self):
-        self.add_dependency(RunBefore(IniTemplate()))
+        # self.add_dependency(RunBefore(IniTemplate()))
         self.add_dependency(AlwaysRebuild())
 
     def build(self):

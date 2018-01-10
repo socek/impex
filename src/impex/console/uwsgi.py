@@ -12,16 +12,16 @@ class StartUwsgi(BaseVirtualenv):
 
     def phase_settings(self):
         super().phase_settings()
-        self.paths.set_path('exe:uwsgi', 'virtualenv:bin', 'uwsgi')
+        # self.paths.set_path('exe:uwsgi', 'virtualenv:bin', 'uwsgi')
 
     def create_dependecies(self):
         self.add_dependency(RunBefore(AlembicUpgrade()))
-        self.add_dependency(PidIsNotRunning(pid_file_name='uwsgi:pidfile'))
+        # self.add_dependency(PidIsNotRunning(pid_file_name='uwsgi:pidfile'))
 
     def build(self):
         try:
             self.popen(
-                ['%(exe:uwsgi)s --ini-paste %(frontendini)s' % self.paths],
+                ['uwsgi --ini-paste %(frontendini)s' % self.paths],
             )
         except CommandAborted:
             self.logger.info('Aborted')
