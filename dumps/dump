@@ -1,0 +1,4 @@
+#!/bin/bash
+NOW=`date +%Y-%m-%d-%H%M`
+
+docker-compose exec postgres pg_dump -Uscores scores > ${NOW}.sql
