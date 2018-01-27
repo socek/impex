@@ -1,17 +1,13 @@
-version: '3'
+version: '3.3'
 
 services:
-
   app:
     build: .
-    env_file: .env
+    env_file: env
     volumes:
       - .:/code
     ports:
       - "${BACKEND_PORT:-8000}:8000"
-    labels:
-      - "traefik.backend=app"
-      - "traefik.frontend.rule=PathPrefix:/"
 
   postgres:
     image: postgres:10.1

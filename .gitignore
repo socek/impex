@@ -48,3 +48,5 @@ TODO
 pytest.ini
 .cache
 .env
+env
+/psql
