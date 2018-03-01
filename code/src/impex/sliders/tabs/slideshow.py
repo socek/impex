@@ -41,6 +41,7 @@ class LogaTabWidget(SlideshowTabWidget):
         'loga/kks.jpg',
         'loga/manual_med.jpg',
         'loga/mk-tance.png',
+        'loga/bragson_nieruchomosci.png',
         'loga/inicjatywa.gif',
         'loga/winnice-eurazji.jpg',
         'loga/zpomyslami.jpg',
