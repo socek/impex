@@ -25,9 +25,7 @@ class LogaTabWidget(SlideshowTabWidget):
         'loga/remondis.gif',
         'loga/veolia.jpg',
         'loga/mtbs.png',
-        'loga/logo-mzkp-ee.png',
         'loga/bluvision.jpg',
-        'loga/cafe-silesia.png',
         'loga/azaria.jpg',
         'loga/parkwodny.png',
         'loga/kbh_akord.png',
@@ -43,6 +41,5 @@ class LogaTabWidget(SlideshowTabWidget):
         'loga/mk-tance.png',
         'loga/bragson_nieruchomosci.png',
         'loga/inicjatywa.gif',
-        'loga/winnice-eurazji.jpg',
         'loga/zpomyslami.jpg',
     ]
