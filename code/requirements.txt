@@ -34,7 +34,7 @@ jedi==0.10.2
 Jinja2==2.11.3
 js.bootstrap==3.3.4
 js.jquery==1.9.1
-Mako==1.0.7
+Mako==1.2.2
 MarkupSafe==1.0
 mock==2.0.0
 MorfDict==0.3.7
