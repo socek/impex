@@ -4,7 +4,7 @@ Babel==2.5.0
 bael.project==0.2
 baelfire==0.3.1
 Beaker==1.9.0
-certifi==2017.7.27.1
+certifi==2022.12.7
 chardet==3.0.4
 coverage==4.4.1
 decorator==4.1.2
